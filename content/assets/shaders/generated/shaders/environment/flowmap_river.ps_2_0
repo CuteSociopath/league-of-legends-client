@@ -1,0 +1,580 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_PS.hls"
+#include "DATA/Shaders/HLSL/ShadowMap/pcf1.hls"
+#include "DATA/Shaders/HLSL/MipLevels.hls"
+
+// Texture for dynamic shadows
+sampler2D BAKED_SHADOW;
+float4 BAKED_SHADOW_SCALE_AND_BIAS;
+float3 MESH_CENTER;
+
+#ifdef FEATURE_BAKED_PAINT
+float4 BAKED_PAINT_UV_SCALE_BIAS;
+#endif
+
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING)
+#define ENABLE_BAKED_SHADOW
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+
+float4 Parameter0; // (Color_Outside = Parameter0.xyzw) 
+float4 Parameter1; // (Color_Inside = Parameter1.xyzw) 
+float4 Parameter2; // (Color_Highlight_Contrast = Parameter2.xy,Flowmap_Strength = Parameter2.zw) 
+float4 Parameter3; // (FlowMap_Speed = Parameter3.x,Color_Baseline = Parameter3.y,Distortion_Highlight_Contrast = Parameter3.zw) 
+float4 Parameter4; // (CamSpec_Color = Parameter4.xyzw) 
+float3 Parameter5; // (CameraSpec_Size = Parameter5.x,CamSpec_Power = Parameter5.y,CamSpec_Intensity = Parameter5.z) 
+float4 Parameter6; // (Distortion_LowHigh = Parameter6.xy,FlowNormal_Tile = Parameter6.zw) 
+sampler2D Flow_Map;
+sampler2D Normal_Texture_B;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants & Structures
+/////////////////////////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float3 interp_0 : TEXCOORD_INTERP;
+};
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    // Dummy slot for unused "CharacterInking". DX9 doesn't like have gaps in the MRT output
+    float4 m_DummyColorOutput: COLOR1;
+#endif
+    float4 m_BloomColor : COLOR2; // the bloom color is always in slot 2 of the MRT. We don't write to slot 1
+#endif
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    float3 screenSpacePerspDivide = interpolants.vScreenSpaceUV.xyz / interpolants.vScreenSpaceUV.w;
+    float2 screenSpaceUV = screenSpacePerspDivide.xy;
+    float screenSpaceDepth = screenSpacePerspDivide.z;
+    screenSpaceUV *= 0.5f;
+    screenSpaceUV += 0.5f;
+#ifndef IS_OPENGL
+    screenSpaceUV.y = 1.0f - screenSpaceUV.y;
+#else
+    // OpenGL clip space is -1 to 1 on Z but we want Z in in the 0-1 range to be
+    // able to sample the depth texture if necessasry
+    screenSpaceDepth = (screenSpaceDepth * 0.5f) + 0.5f;
+#endif
+
+#endif
+
+#ifdef FEATURE_BAKED_PAINT
+    // we set up this variable so node graphs can use the snippet for it
+    float2 bakedTerrainPaintUVs = interpolants.m_Texcoord.zw * BAKED_PAINT_UV_SCALE_BIAS.xy;
+    bakedTerrainPaintUVs += BAKED_PAINT_UV_SCALE_BIAS.zw;
+#endif
+
+    float2 defaultUVs = interpolants.m_Texcoord.xy;
+
+    float3 worldNormalIn = normalize(interpolants.m_WorldNormalAndHeight.xyz);
+    float worldHeight = interpolants.m_WorldNormalAndHeight.w;
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float3 worldPosition = float3(interpolants.m_WorldPositionXZ.x, worldHeight, interpolants.m_WorldPositionXZ.y);
+#endif
+#ifdef FEATURE_VERTEX_COLOR
+     float4 vColorIn0 = interpolants.m_VertexColor;
+#endif
+
+#ifdef FEATURE_TANGENT
+    // plugging something into TANGENT_SPACE_NORMAL defines FEATURE_TANGENT
+    
+    float3 tangentSpaceNormal =  float3(0.0,0.0,1) ;
+
+    float3 worldTangent = normalize(interpolants.m_WorldTangent.xyz);
+    float3 worldBinormal = cross(worldNormalIn, worldTangent) * interpolants.m_WorldTangent.w;
+    float3x3 tangentBasis = float3x3(worldTangent, worldBinormal, worldNormalIn);
+
+    worldNormalIn = mul(tangentSpaceNormal, tangentBasis);
+
+#endif
+    
+    float3 worldNormal =  worldNormalIn;
+
+
+
+#ifndef LOW_QUALITY_MODE
+    float3 viewDirection = normalize(vCamera - worldPosition);
+#endif
+
+    float4 var0 = Parameter0.xyzw; // Color_Outside
+    float4 var1 = Parameter1.xyzw; // Color_Inside
+    float4 var2;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var2 = result;
+    }
+    float var3 = var2.x; // Mask
+    float2 var4 = Parameter2.xy; // Color_Highlight_Contrast
+    float2 var5 = interpolants.interp_0.xy; // EvaluateInVertexShader
+    float4 var6 = tex2D(Flow_Map, defaultUVs); // Flow_Map
+    float2 var7 = var6.xy; // Mask
+    float2 var8;
+    { // (simpleRemapFloat2)
+    float2 input = var7;
+    float2 result = float2(input.x*2-1, input.y*2-1);
+    var8 = result;
+    }
+    float2 var9 = Parameter2.zw; // Flowmap_Strength
+    float4 var10 = tex2D(Flow_Map, defaultUVs); // Flow_Map
+    float var11 = lerp(var9.x, var9.y, var10.z); // Lerp
+    float2 var12 = var8 * var11; // Multiply
+    float4 var13 = TIME; // Time
+    float var14 = Parameter3.x; // FlowMap_Speed
+    float var15 = var13.x * var14; // Multiply
+    float var16 = frac(var15); // frac
+    float2 var17 = var12 * var16; // Multiply
+    float2 var18 = var5 + var17; // Add
+    float4 var19 = tex2D(Normal_Texture_B, var18); // Normal_Texture_B
+    float3 var20;
+    { // (UnpackNormal)
+    float4 nmTexture = var19;
+    float2 components = nmTexture.ag * 2.0f - 1.0f;
+    float z = sqrt(1 - dot(components, components));
+    float3 result = float3(components.y, components.x, z);
+    var20 = result;
+    }
+    float var21 = 0.5; // FloatLiteral
+    float var22 = var15 + var21; // Add
+    float var23 = frac(var22); // frac
+    float2 var24 = var12 * var23; // Multiply
+    float2 var25 = var5 + var24; // Add
+    float4 var26 = tex2D(Normal_Texture_B, var25); // Normal_Texture_B
+    float3 var27;
+    { // (UnpackNormal)
+    float4 nmTexture = var26;
+    float2 components = nmTexture.ag * 2.0f - 1.0f;
+    float z = sqrt(1 - dot(components, components));
+    float3 result = float3(components.y, components.x, z);
+    var27 = result;
+    }
+    float var28 = interpolants.interp_0.z; // EvaluateInVertexShader
+    float3 var29 = lerp(var20, var27, var28); // Lerp
+    float3 var30;
+    { // (PixelLuminance)
+    float3 input = var29;
+    float3 lumTable = float3( 0.3, 0.59, 0.11 );
+    float Lum = dot( input, lumTable );
+    float3 result = float3(Lum,Lum,Lum);
+    var30 = result;
+    }
+    float var31 = var30.x; // Mask
+    float var32 = smoothstep(var4.x, var4.y, var31); // smoothstep
+    float4 var33 = tex2D(Flow_Map, defaultUVs); // Flow_Map
+    float var34 = var32 * var33.z; // Multiply
+    float var35 = Parameter3.y; // Color_Baseline
+    float var36 = max(var34,var35); // max
+    float var37 = var3 * var36; // Multiply
+    float4 var38 = lerp(var0, var1, var37); // Lerp
+    float3 var39 = var38.xyz; // Mask
+    float2 var40 = Parameter3.zw; // Distortion_Highlight_Contrast
+    float var41 = smoothstep(var40.x, var40.y, var31); // smoothstep
+    float3 var42 = float3(var41,var41,var41); // Splat
+    float3 var43 = float3(0,0,0); // Float3Literal
+    
+    #if DEBUG_VIEW_NORMALS // STATIC_SWITCH: DEBUG_VIEW_NORMALS
+        float3 var44 =  var42;
+    #else
+        float3 var44 =  var43;
+    #endif
+    
+    
+    #if DEBUG_VIEW_COLORS // STATIC_SWITCH: DEBUG_VIEW_COLORS
+        float3 var45 =  var39;
+    #else
+        float3 var45 =  var44;
+    #endif
+    
+    
+    float4 color = float4(var45, 1.0f);    
+    float var46 = 0.45; // FloatLiteral
+    float4 var47;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var47 = result;
+    }
+    float var48 = var47.x; // Mask
+    float var49 = var46 * var48; // Multiply
+    
+    #ifdef LOW_QUALITY_MODE
+        float var50 =  var49;
+    #else
+        float var50 =  var48;
+    #endif
+    
+    
+    color.a = var50;
+    float4 baseColor = color;
+
+#ifdef FEATURE_MASKED
+#ifdef DISCARD_ALPHA_TEXELS
+    if (color.a < 1.0f)
+    {
+        discard;
+    }
+#else
+    
+    float alphaMaskValue =  0.5 ;
+    if (color.a < alphaMaskValue)
+    {
+        discard;
+    }
+#endif
+#endif
+
+    
+    float3 specularColor =  float3(0,0,0) ;
+    
+    float gloss =  0.0 ;
+    float specPower = exp2(10 * gloss + 1);
+
+    // Dynamic shadow
+#ifndef DISABLE_SHADOWS
+    float sunShadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC);
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+#else
+    float4 bakedShadow = float4(1,1,1,1);
+#endif
+
+    sunShadowMask = min(sunShadowMask, bakedShadow.a);
+
+    // the baked diffuse lighting from all point lights
+    float3 pointLightInfo = bakedShadow.rgb;
+
+#else   
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+    float sunShadowMask = bakedShadow.a;
+    float3 pointLightInfo = bakedShadow.rgb;
+#else
+    float sunShadowMask = 1.0f;
+    float3 pointLightInfo = float3(1,1,1);
+#endif
+
+#endif
+
+    float3 diffuseReflection = float3(0,0,0);
+    float3 specularReflection = float3(0,0,0);
+    float3 sunLightCol = SUN_LIGHT_COLOR;
+#ifdef CLOUD_SHADOWS
+    #ifdef CLOUDS_NEED_UV
+        float2 tc = interpolants.m_Clouds_TC.xy;
+    #else
+        float2 tc = interpolants.m_FoW_TC.xy;
+    #endif
+
+    float cloudStrengthR = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[0].xy + CloudsScaleBias[0].zw).r;
+    float cloudStrengthG = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[1].xy + CloudsScaleBias[1].zw).g;
+    float cloudStrengthB = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[2].xy + CloudsScaleBias[2].zw).b;
+	float cloudStrength = saturate(cloudStrengthR + cloudStrengthG + cloudStrengthB);
+	    sunLightCol = lerp(sunLightCol, CloudsSunColor, cloudStrength);
+#endif
+    float3 sunColor = sunLightCol * sunShadowMask;
+    float sunDot = dot(worldNormal, SUN_LIGHT_DIRECTION);
+    diffuseReflection += max(sunDot, 0.0f) * sunColor;
+
+    // low quality mode gets no sun spec
+#ifndef LOW_QUALITY_MODE
+    // half vector
+    float3 sunHalfAngle = normalize(SUN_LIGHT_DIRECTION_FOR_SPEC + viewDirection);
+    float sunSpecularTerm = pow(abs(dot(worldNormal, sunHalfAngle)), specPower);
+    sunSpecularTerm *= step(0.0f, sunDot);
+
+    specularReflection += specularColor * sunColor * sunSpecularTerm;
+#endif
+
+    // add the diffuse contribution we baked    
+    diffuseReflection += pointLightInfo * LIGHT_MAP_COLOR_SCALE;
+
+    float var51 = 0.5; // FloatLiteral
+    float4 var52 = var0 * var51; // Multiply
+    float3 var53 = var52.xyz; // Mask
+    float4 var54 = Parameter4.xyzw; // CamSpec_Color
+    float3 var55 = var54.xyz; // Mask
+    float2 var56 = float2(0.5,0.5); // Float2Literal
+    float var57 = -1; // FloatLiteral
+    float var58 = Parameter5.x; // CameraSpec_Size
+    float var59 = var57 * var58; // Multiply
+    float3 var60;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var60 = result;
+    }
+    float2 var61 = var60.xz; // Mask
+    float3 var62;
+    { // (CameraPos)
+    float3 result = vCamera;
+    var62 = result;
+    }
+    float2 var63 = var62.xz; // Mask
+    float2 var64 = float2(0,0); // Float2Literal
+    float2 var65 = float2(0,1250); // Float2Literal
+    float3 var66;
+    { // (CameraPos)
+    float3 result = vCamera;
+    var66 = result;
+    }
+    float var67 = var66.y; // Mask
+    float4 var68 = float4(0,1900,0,1); // Float4Literal
+    float var69;
+    { // (ComplexRemap)
+    float OldValue = var67;
+    float OldMin = var68.x;
+    float OldMax = var68.y;
+    float NewMin = var68.z;
+    float NewMax = var68.w;
+    float OldRange = ( OldMax - OldMin );
+    float NewRange = ( NewMax - NewMin );
+    float result  = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+    var69 = result;
+    }
+    float2 var70 = lerp(var64, var65, var69); // Lerp
+    float2 var71 = var63 + var70; // Add
+    float2 var72 = var61 - var71; // Subtract
+    float2 var73 = smoothstep(float2(var59,var59), float2(var58,var58), var72); // smoothstep
+    float var74 = distance(var56,var73); // Distance
+    float var75 = saturate(var74); // saturate
+    float var76;
+    { // (OneMinus)
+    float input =var75;
+    float result = 1.0f - input;
+    var76 = result;
+    }
+    float var77 = Parameter5.y; // CamSpec_Power
+    float var78 = pow(var76,var77); // Pow
+    float var79 = Parameter5.z; // CamSpec_Intensity
+    float var80 = var78 * var79; // Multiply
+    float var81 = saturate(var80); // saturate
+    float3 var82 = var55 * var81; // Multiply
+    float3 var83 = var53 + var82; // Add
+    float3 var84 = float3(0,1,0); // Float3Literal
+    float3 var85;
+    { // (PlanarNormalOverride)
+    float3 nrm = var29;
+    nrm = nrm * 2.0f - 1.0f;
+    // turn blue encoded normal map into our y up space
+    float3 result = nrm.xzy;
+    
+    var85 = result;
+    }
+    float3 var86 = lerp(var84, var85, var41); // Lerp
+    float3 var87 = normalize(var86); // normalize
+    float2 var88 = var87.xz; // Mask
+    float2 var89 = Parameter6.xy; // Distortion_LowHigh
+    float4 var90;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var90 = result;
+    }
+    float var91 = var90.x; // Mask
+    float var92 = var41 * var91; // Multiply
+    float var93 = lerp(var89.x, var89.y, var92); // Lerp
+    float2 var94 = var88 * var93; // Multiply
+    float3 var95;
+    { // (EnvDistortion)
+    float2 offset = var94;
+    
+    float2 totalUvs =  screenSpaceUV + offset;
+    
+    float depth = tex2D(sDepthTexture, totalUvs).x;
+    float3 result;
+    if (depth > screenSpaceDepth)
+    {
+        result = tex2D(SAMPLER_BACK_BUFFER_COPY, totalUvs).rgb;	
+    }
+    else
+    {
+        result = tex2D(SAMPLER_BACK_BUFFER_COPY, screenSpaceUV).rgb;	
+    }
+    
+    var95 = result;
+    }
+    float3 var96 = var95 * var39; // Multiply
+    float3 var97 = var96 + var82; // Add
+    
+    #ifdef LOW_QUALITY_MODE
+        float3 var98 =  var83;
+    #else
+        float3 var98 =  var97;
+    #endif
+    
+    
+    #if DEBUG_VIEW_NORMALS // STATIC_SWITCH: DEBUG_VIEW_NORMALS
+        float3 var99 =  var43;
+    #else
+        float3 var99 =  var98;
+    #endif
+    
+    
+    #if DEBUG_VIEW_COLORS // STATIC_SWITCH: DEBUG_VIEW_COLORS
+        float3 var100 =  var43;
+    #else
+        float3 var100 =  var99;
+    #endif
+    
+    
+    float3 emissiveColor = var100;
+
+#ifdef NO_BAKED_LIGHTING
+
+    // Dynamic shadow, no baked lighting
+    // using the shadow color complement
+#ifndef DISABLE_SHADOWS
+    float3 shadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC)*SHADOW_COLOR_COMPLEMENT + SHADOW_COLOR; // i.e. lerp(SHADOW_COLOR, white, sampledValue)
+    color.rgb *= shadowMask;
+#endif
+
+#else // NO_BAKED_LIGHTING
+    color.rgb *= diffuseReflection;
+    color.rgb += specularReflection;
+#endif
+
+
+#ifdef DISABLE_DEPTH_FOG
+    // normally we have the fog modulate the emissive somewhat.
+    // But if we turn off fog, we still want the emissive contribution
+    color.rgb += emissiveColor;
+#else
+#ifndef LOW_QUALITY_MODE    
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    // these constants correct for the fact that the exponentional fog calcs don't actually get completely fogged or unfogged
+    float fogFactor = saturate(((1.0f / exp(fDist * 2.0f)) - 0.13533528323) * 1.15651764274);
+    float RMfogFactor = saturate(ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.w * fogFactor - 1.0f);
+    
+    float3 fogColor = lerp(ENV_FOG_COLOR, ENV_FOG_ALT_COLOR, fogFactor);
+    color.rgb = lerp(color.rgb, fogColor.rgb, fogFactor);
+    color.rgb += emissiveColor * (1 - RMfogFactor);
+#else
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    float RMfogFactor = saturate(fDist*fDist + ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.z);
+
+    float3 fogColor = lerp(ENV_FOG_ALT_COLOR, ENV_FOG_COLOR, fDist);
+    color.rgb = lerp( fogColor.rgb,color.rgb, fDist);
+    color.rgb += emissiveColor * RMfogFactor;
+    //color.rgb += emissiveColor;
+#endif   
+#endif
+
+    // Fog of war
+#ifndef DISABLE_FOW
+    #ifdef FOW_FADE_TO_FOGGED
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardFogged(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #else
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardClear(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #endif
+
+    #ifdef PREMULTIPLIED_ALPHA
+        // to deal with cases where we are using premultiplied alpha
+        // we need to also multiply the fowFactors by alpha so we don't get
+        // strange brightening on the edges
+        fowFactors.rgb *= color.a;
+    #endif
+        // Blend between the computed color of this point on the map and the fog color.
+        color.rgb = lerp(fowFactors.rgb, color.rgb, fowFactors.a);
+#endif
+    color.rgb = ApplyMipColorsVisualization(color.rgb, interpolants.m_Texcoord.xy);
+
+
+
+    FRAGMENT fragment;
+    fragment.m_Color0 = color;
+   
+
+#ifdef MRT_SUPPORTED
+    
+    float bloomAlphaOverride =  1.0f;
+
+    #if defined(FEATURE_BLOOM) && !defined(LOW_QUALITY_MODE)
+        
+        float3 bloomColor =  float3(0,0,0) ;
+        #ifndef DISABLE_DEPTH_FOG
+            bloomColor *=  (1 - RMfogFactor);
+        #endif
+        fragment.m_BloomColor = float4(bloomColor, bloomAlphaOverride);
+    #else
+        fragment.m_BloomColor = float4(0,0,0, bloomAlphaOverride);
+    #endif
+#endif
+
+#ifdef SHOW_LIGHTING
+    fragment.m_Color0.rgb = diffuseReflection + specularReflection + emissiveColor;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    fragment.m_Color0 = baseColor;
+#endif
+
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    fragment.m_DummyColorOutput = float4(0,0,0,0);
+#endif
+#endif
+
+    
+
+    return fragment;
+}

@@ -1,0 +1,490 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////////////////////////////
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_MATRIX_INV; // used if particular snippets are used and optimized out if not
+float3 MESH_CENTER;
+
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+    float3 m_Normal         : X3D_VSIN_NORMAL;
+    float2 m_Texcoord       : X3D_VSIN_TEXCOORD0;
+    
+    
+#ifdef FEATURE_TANGENT
+    float4 m_Tangent : X3D_VSIN_TEXCOORD6;
+#endif
+    // if the vertex color is used in either the vertex shader or pixel shader
+    // we need the input
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 m_Color : X3D_VSIN_COLOR0;
+#endif
+#if defined(NEED_ATLAS_UVS) || defined(CAPTURE_DIFFUSE)
+    float2 m_AtlasTexcoord  : X3D_VSIN_TEXCOORD7;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float3 interp_0 : TEXCOORD_INTERP;
+};
+
+float4 Parameter0; // (X_Offset_Value = Parameter0.xy,X_Time_Multiplier = Parameter0.z,Y_Time_Multiplier = Parameter0.w) 
+float4 Parameter1; // (X_Time_Offset = Parameter1.xy,Y_Offset_Value = Parameter1.zw) 
+float4 Parameter2; // (Y_Time_Offset = Parameter2.xy,Z_Offset_Value = Parameter2.zw) 
+float4 Parameter3; // (Z_Time_Offset = Parameter3.xy,Z_Time_Multiplier = Parameter3.z,WS_Sin_Speed = Parameter3.w) 
+float4 Parameter4; // (Mask_A_LS_Bounds = Parameter4.xyz,WS_Sin_Frequency = Parameter4.w) 
+float3 Parameter5; // (Mask_A_LS_Vector = Parameter5.xyz) 
+float4 Parameter6; // (Wind_Bend_Intensity = Parameter6.xy,Wind_Shake_Intensity = Parameter6.zw) 
+float4 Parameter7; // (X_WS_Offset = Parameter7.xy,WS_Sin_Bounds = Parameter7.zw) 
+float3 Parameter8; // (WS_Sin_Vector = Parameter8.xyz) 
+float4 Parameter9; // (Y_WS_Offset = Parameter9.xy,Z_WS_Offset = Parameter9.zw) 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.m_Texcoord;
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float3 worldNormal = normalize(mul(float4(vertex.m_Normal,0), WORLD_MATRIX).xyz);
+
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.m_Color;
+#endif
+
+
+    float2 var0 = Parameter0.xy; // X_Offset_Value
+    float var1;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var0.x;
+    float y = var0.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var1 = result;
+    }
+    float var2;
+    { // (OneMinus)
+    float input =var1;
+    float result = 1.0f - input;
+    var2 = result;
+    }
+    float var3 = Parameter0.z; // X_Time_Multiplier
+    float2 var4 = Parameter1.xy; // X_Time_Offset
+    float var5;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var4.x;
+    float y = var4.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var5 = result;
+    }
+    float4 var6 = TIME; // Time
+    float var7 = var5 + var6.x; // Add
+    float var8 = var3 * var7; // Multiply
+    float var9 = cos(var8); // cos
+    float var10;
+    { // (simpleRemap)
+    float input = var9;
+    float result = ( input + 1 ) * 0.5;
+    var10 = result;
+    }
+    float var11 = lerp(var1, var2, var10); // Lerp
+    float var12 = 0; // FloatLiteral
+    
+    #if USE_X_OFFSET // STATIC_SWITCH: USE_X_OFFSET
+        float var13 =  var11;
+    #else
+        float var13 =  var12;
+    #endif
+    
+    float2 var14 = Parameter1.zw; // Y_Offset_Value
+    float var15;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var14.x;
+    float y = var14.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var15 = result;
+    }
+    float var16;
+    { // (OneMinus)
+    float input =var15;
+    float result = 1.0f - input;
+    var16 = result;
+    }
+    float2 var17 = Parameter2.xy; // Y_Time_Offset
+    float var18;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var17.x;
+    float y = var17.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var18 = result;
+    }
+    float var19 = var6.x + var18; // Add
+    float var20 = Parameter0.w; // Y_Time_Multiplier
+    float var21 = var19 * var20; // Multiply
+    float var22 = cos(var21); // cos
+    float var23;
+    { // (simpleRemap)
+    float input = var22;
+    float result = ( input + 1 ) * 0.5;
+    var23 = result;
+    }
+    float var24 = lerp(var15, var16, var23); // Lerp
+    
+    #if USE_Y_OFFSET // STATIC_SWITCH: USE_Y_OFFSET
+        float var25 =  var24;
+    #else
+        float var25 =  var12;
+    #endif
+    
+    float2 var26 = float2(var13,var25); // Combine
+    float2 var27 = Parameter2.zw; // Z_Offset_Value
+    float var28;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var27.x;
+    float y = var27.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var28 = result;
+    }
+    float var29;
+    { // (OneMinus)
+    float input =var28;
+    float result = 1.0f - input;
+    var29 = result;
+    }
+    float2 var30 = Parameter3.xy; // Z_Time_Offset
+    float var31;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var30.x;
+    float y = var30.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var31 = result;
+    }
+    float var32 = var6.x + var31; // Add
+    float var33 = Parameter3.z; // Z_Time_Multiplier
+    float var34 = var32 * var33; // Multiply
+    float var35 = cos(var34); // cos
+    float var36;
+    { // (simpleRemap)
+    float input = var35;
+    float result = ( input + 1 ) * 0.5;
+    var36 = result;
+    }
+    float var37 = lerp(var28, var29, var36); // Lerp
+    
+    #if USE_Z_OFFSET // STATIC_SWITCH: USE_Z_OFFSET
+        float var38 =  var37;
+    #else
+        float var38 =  var12;
+    #endif
+    
+    float3 var39 = float3(var26.xy,var38); // Combine
+    float3 var40 = Parameter4.xyz; // Mask_A_LS_Bounds
+    float2 var41;
+    { // (Float2Randomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float s = ( factor + 1 ) * 0.5;
+    float x = var40.x;
+    float y = var40.y;
+    float z = var40.z;
+    float2 both = float2(x, y);
+    float2 value = both * z;
+    float2 result = lerp(value, both, s);
+    
+    
+    var41 = result;
+    }
+    float var42 = var41.x; // Mask
+    float var43 = var41.y; // Mask
+    float3 var44;
+    { // (LocalPosition)
+    float3 result = localPosition.xyz;
+    var44 = result;
+    }
+    float3 var45 = Parameter5.xyz; // Mask_A_LS_Vector
+    float var46 = dot(var44,var45); // Dot
+    float var47 = smoothstep(var42, var43, var46); // smoothstep
+    float3 var48 = var39 * var47; // Multiply
+    float2 var49 = Parameter6.xy; // Wind_Bend_Intensity
+    float var50;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var49.x;
+    float y = var49.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var50 = result;
+    }
+    float3 var51 = var48 * var50; // Multiply
+    
+    localPosition.xyz += var51;
+
+    float3 worldPosition = mul(localPosition, WORLD_MATRIX).xyz;
+    float2 var52 = Parameter6.zw; // Wind_Shake_Intensity
+    float var53;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var52.x;
+    float y = var52.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var53 = result;
+    }
+    float2 var54 = Parameter7.xy; // X_WS_Offset
+    float var55;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var54.x;
+    float y = var54.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var55 = result;
+    }
+    float var56 = -1; // FloatLiteral
+    float var57 = var55 * var56; // Multiply
+    float2 var58 = Parameter7.zw; // WS_Sin_Bounds
+    float3 var59;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var59 = result;
+    }
+    float3 var60 = Parameter8.xyz; // WS_Sin_Vector
+    float var61 = dot(var59,var60); // Dot
+    float var62 = smoothstep(var58.x, var58.y, var61); // smoothstep
+    float4 var63 = TIME; // Time
+    float var64 = -0.1; // FloatLiteral
+    float var65 = var63.x * var64; // Multiply
+    float var66 = Parameter3.w; // WS_Sin_Speed
+    float var67 = var65 * var66; // Multiply
+    float var68 = var62 + var67; // Add
+    float var69 = Parameter4.w; // WS_Sin_Frequency
+    float var70 = var68 * var69; // Multiply
+    float var71 = sin(var70); // sin
+    float var72;
+    { // (simpleRemap)
+    float input = var71;
+    float result = ( input + 1 ) * 0.5;
+    var72 = result;
+    }
+    float var73 = lerp(var55, var57, var72); // Lerp
+    float var74 = 0; // FloatLiteral
+    
+    #if USE_WS_X_OFFSET // STATIC_SWITCH: USE_WS_X_OFFSET
+        float var75 =  var73;
+    #else
+        float var75 =  var74;
+    #endif
+    
+    float2 var76 = Parameter9.xy; // Y_WS_Offset
+    float var77;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var76.x;
+    float y = var76.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var77 = result;
+    }
+    float var78 = -1; // FloatLiteral
+    float var79 = var77 * var78; // Multiply
+    float var80 = lerp(var77, var79, var72); // Lerp
+    float var81 = 0; // FloatLiteral
+    
+    #if USE_WS_X_OFFSET // STATIC_SWITCH: USE_WS_X_OFFSET
+        float var82 =  var80;
+    #else
+        float var82 =  var81;
+    #endif
+    
+    float2 var83 = float2(var75,var82); // Combine
+    float2 var84 = Parameter9.zw; // Z_WS_Offset
+    float var85;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var84.x;
+    float y = var84.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var85 = result;
+    }
+    float var86 = -1; // FloatLiteral
+    float var87 = var85 * var86; // Multiply
+    float var88 = lerp(var85, var87, var72); // Lerp
+    float var89 = 0; // FloatLiteral
+    
+    #if USE_WS_X_OFFSET // STATIC_SWITCH: USE_WS_X_OFFSET
+        float var90 =  var88;
+    #else
+        float var90 =  var89;
+    #endif
+    
+    float3 var91 = float3(var83.xy,var90); // Combine
+    float3 var92 = var91 * var47; // Multiply
+    float3 var93 = var53 * var92; // Multiply
+    
+    worldPosition.xyz += var93;
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(worldPosition, 1.0f), VIEW_PROJECTION_MATRIX);
+
+#ifdef FEATURE_SCREENSPACE_UV
+    interpolants.vScreenSpaceUV = interpolants.m_Position.xyzw;
+#endif
+
+    interpolants.m_Texcoord.xy = vertex.m_Texcoord;
+
+#if defined(NEED_ATLAS_UVS)
+    interpolants.m_Texcoord.zw = vertex.m_AtlasTexcoord;
+#endif
+
+    interpolants.m_WorldNormalAndHeight = float4(worldNormal, worldPosition.y);
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    interpolants.m_WorldPositionXZ = worldPosition.xz;
+#endif
+
+#ifdef FEATURE_TANGENT
+    float3 worldTangent = normalize(mul(float4(vertex.m_Tangent.xyz,0), WORLD_MATRIX).xyz);
+    interpolants.m_WorldTangent = float4(worldTangent, vertex.m_Tangent.w);
+#endif
+
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(float4(worldPosition,1), SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+#ifndef DISABLE_FOW
+        // Fog of war texture coordinates
+    #ifdef FOW_FADE_TO_FOGGED
+        // the height value we need for fading to fogged is in w, not z
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyw;
+    #else
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyz;
+    #endif
+#endif
+#ifdef CLOUDS_NEED_UV
+     interpolants.m_Clouds_TC = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+#endif
+
+#ifdef FEATURE_VERTEX_COLOR
+    interpolants.m_VertexColor = vertex.m_Color;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    interpolants.m_Position = float4(vertex.m_AtlasTexcoord * 2.0f - 1.0f, 0.0f, 1.0f);
+    DoDX9HalfPixelAdjust(interpolants.m_Position);
+#endif
+
+    float3 var157 = float3(var47,var47,var47); // Splat
+    interpolants.interp_0.xyz = var157;
+    
+    
+
+    return interpolants;
+}

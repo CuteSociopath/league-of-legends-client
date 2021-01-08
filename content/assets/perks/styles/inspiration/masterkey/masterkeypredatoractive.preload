@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredatorActiveVisualMax.lua"}}, 
+{Function=BBPreloadModule, Params={Name="Global.AdaptiveDamageModule"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredatorSpotted.lua"}}, 
+}

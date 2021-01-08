@@ -1,0 +1,492 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_PS.hls"
+#include "DATA/Shaders/HLSL/ShadowMap/pcf1.hls"
+#include "DATA/Shaders/HLSL/MipLevels.hls"
+
+// Texture for dynamic shadows
+sampler2D BAKED_SHADOW;
+float4 BAKED_SHADOW_SCALE_AND_BIAS;
+float3 MESH_CENTER;
+
+#ifdef FEATURE_BAKED_PAINT
+float4 BAKED_PAINT_UV_SCALE_BIAS;
+#endif
+
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING)
+#define ENABLE_BAKED_SHADOW
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+
+float4 Parameter0; // (ScanLine_minmax = Parameter0.xy,ScanLine_rate = Parameter0.z,ScanLine_amount = Parameter0.w) 
+float4 Parameter1; // (Flipbook_Offset = Parameter1.xy,Rotation_Center = Parameter1.zw) 
+float4 Parameter2; // (Flipbook_RotationSpeed = Parameter2.x,Flipbook_Tiling = Parameter2.y,Flipbook_Dims = Parameter2.zw) 
+float4 Parameter3; // (Flipbook_FPS = Parameter3.x,Overlay_Range = Parameter3.yz,Pulse_Rate = Parameter3.w) 
+sampler2D Mask_Texture;
+sampler2D Diffuse_Texture;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants & Structures
+/////////////////////////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float2 interp_0 : TEXCOORD_INTERP;
+};
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    // Dummy slot for unused "CharacterInking". DX9 doesn't like have gaps in the MRT output
+    float4 m_DummyColorOutput: COLOR1;
+#endif
+    float4 m_BloomColor : COLOR2; // the bloom color is always in slot 2 of the MRT. We don't write to slot 1
+#endif
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    float3 screenSpacePerspDivide = interpolants.vScreenSpaceUV.xyz / interpolants.vScreenSpaceUV.w;
+    float2 screenSpaceUV = screenSpacePerspDivide.xy;
+    float screenSpaceDepth = screenSpacePerspDivide.z;
+    screenSpaceUV *= 0.5f;
+    screenSpaceUV += 0.5f;
+#ifndef IS_OPENGL
+    screenSpaceUV.y = 1.0f - screenSpaceUV.y;
+#else
+    // OpenGL clip space is -1 to 1 on Z but we want Z in in the 0-1 range to be
+    // able to sample the depth texture if necessasry
+    screenSpaceDepth = (screenSpaceDepth * 0.5f) + 0.5f;
+#endif
+
+#endif
+
+#ifdef FEATURE_BAKED_PAINT
+    // we set up this variable so node graphs can use the snippet for it
+    float2 bakedTerrainPaintUVs = interpolants.m_Texcoord.zw * BAKED_PAINT_UV_SCALE_BIAS.xy;
+    bakedTerrainPaintUVs += BAKED_PAINT_UV_SCALE_BIAS.zw;
+#endif
+
+    float2 defaultUVs = interpolants.m_Texcoord.xy;
+
+    float3 worldNormalIn = normalize(interpolants.m_WorldNormalAndHeight.xyz);
+    float worldHeight = interpolants.m_WorldNormalAndHeight.w;
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float3 worldPosition = float3(interpolants.m_WorldPositionXZ.x, worldHeight, interpolants.m_WorldPositionXZ.y);
+#endif
+#ifdef FEATURE_VERTEX_COLOR
+     float4 vColorIn0 = interpolants.m_VertexColor;
+#endif
+
+#ifdef FEATURE_TANGENT
+    // plugging something into TANGENT_SPACE_NORMAL defines FEATURE_TANGENT
+    
+    float3 tangentSpaceNormal =  float3(0.0,0.0,1) ;
+
+    float3 worldTangent = normalize(interpolants.m_WorldTangent.xyz);
+    float3 worldBinormal = cross(worldNormalIn, worldTangent) * interpolants.m_WorldTangent.w;
+    float3x3 tangentBasis = float3x3(worldTangent, worldBinormal, worldNormalIn);
+
+    worldNormalIn = mul(tangentSpaceNormal, tangentBasis);
+
+#endif
+    
+    float3 worldNormal =  worldNormalIn;
+
+
+
+#ifndef LOW_QUALITY_MODE
+    float3 viewDirection = normalize(vCamera - worldPosition);
+#endif
+
+    float2 var0 = Parameter0.xy; // ScanLine_minmax
+    float var1 = Parameter0.z; // ScanLine_rate
+    float4 var2 = TIME; // Time
+    float var3 = var1 * var2.x; // Multiply
+    float2 var4;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var4 = result;
+    }
+    float var5 = var4.y; // Mask
+    float var6 = var3 + var5; // Add
+    float var7 = Parameter0.w; // ScanLine_amount
+    float var8 = var6 * var7; // Multiply
+    float var9 = sin(var8); // sin
+    float var10 = smoothstep(var0.x, var0.y, var9); // smoothstep
+    float var11 = saturate(var10); // saturate
+    float4 var12 = tex2D(Mask_Texture, defaultUVs); // Mask_Texture
+    float2 var13 = float2(0.5,1); // Float2Literal
+    float2 var14 = interpolants.interp_0.xy; // EvaluateInVertexShader
+    float4 var15 = tex2D(Mask_Texture, var14); // Mask_Texture
+    float var16 = smoothstep(var13.x, var13.y, var15.y); // smoothstep
+    float2 var17 = Parameter1.xy; // Flipbook_Offset
+    float2 var18;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var18 = result;
+    }
+    float2 var19 = Parameter1.zw; // Rotation_Center
+    float4 var20 = TIME; // Time
+    float var21 = Parameter2.x; // Flipbook_RotationSpeed
+    float var22 = var20.x * var21; // Multiply
+    float2 var23;
+    { // (UVRotation)
+    float2 uvInput = var18;
+    float2 uvPivot = var19;
+    float RotAngle = var22 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var23 = result;
+    }
+    
+    #if USE_FLIPBOOK_ROTATION // STATIC_SWITCH: USE_FLIPBOOK_ROTATION
+        float2 var24 =  var23;
+    #else
+        float2 var24 =  var18;
+    #endif
+    
+    float var25 = Parameter2.y; // Flipbook_Tiling
+    float2 var26 = var24 * var25; // Multiply
+    float2 var27 = var17 + var26; // Add
+    
+    #if USE_FLIPBOOK_OFFSET // STATIC_SWITCH: USE_FLIPBOOK_OFFSET
+        float2 var28 =  var27;
+    #else
+        float2 var28 =  var26;
+    #endif
+    
+    float2 var29 = frac(var28); // frac
+    float2 var30 = Parameter2.zw; // Flipbook_Dims
+    float var31 = Parameter3.x; // Flipbook_FPS
+    float4 var32 = TIME; // Time
+    float2 var33;
+    { // (AtlasWalk)
+    float2 uv = var29;
+    float2 Dims = var30;
+    float FPS = var31;
+    float TIME = var32.x;
+    float stepTime = floor(TIME * FPS);
+    float jumpY = floor(stepTime/Dims.y);
+    float2 newUVs = float2(stepTime,jumpY) + uv;
+    float2 result = frac(newUVs * (1/Dims));
+    var33 = result;
+    }
+    float4 var34 = tex2D(Mask_Texture, var33); // Mask_Texture
+    float var35 = var16 * var34.z; // Multiply
+    float var36 = var12.x * var35; // Multiply
+    float var37 = lerp(var12.x, var36, var16); // Lerp
+    float var38 = saturate(var37); // saturate
+    
+    #if USE_ANIMATEDMASK // STATIC_SWITCH: USE_ANIMATEDMASK
+        float var39 =  var38;
+    #else
+        float var39 =  var12.x;
+    #endif
+    
+    float var40 = var11 * var39; // Multiply
+    
+    #if USE_SCANLINES // STATIC_SWITCH: USE_SCANLINES
+        float var41 =  var40;
+    #else
+        float var41 =  var39;
+    #endif
+    
+    float4 var42 = float4(var41,var41,var41,var41); // Splat
+    float4 var43 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    float2 var44 = Parameter3.yz; // Overlay_Range
+    float4 var45 = TIME; // Time
+    float var46 = Parameter3.w; // Pulse_Rate
+    float var47 = 0.5; // FloatLiteral
+    float var48;
+    { // (SineFunctionComplete)
+    float Time = var45.x;
+    float Freq = var46;
+    float Amp = var47;
+    float Offset = var47;
+    float result = sin( Time * Freq ) * Amp + Offset;
+    var48 = result;
+    }
+    float var49 = lerp(var44.x, var44.y, var48); // Lerp
+    float3 var50;
+    { // (Overlay)
+    float3 base = var43.xyz;
+    float3 blend = float3(var49,var49,var49);
+    float3 result = (base < 0.5 ? (2.0 * base * blend) : (1.0 - 2.0 * (1.0 - base) * (1.0 - blend)));
+    var50 = result;
+    }
+    float4 var51 = lerp(var43, float4(var50, 1.0f), var41); // Lerp
+    
+    #if USE_OVERLAY // STATIC_SWITCH: USE_OVERLAY
+        float4 var52 =  var51;
+    #else
+        float4 var52 =  var43;
+    #endif
+    
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var53 =  var43;
+    #else
+        float4 var53 =  var52;
+    #endif
+    
+    
+    #if DEBUG_MASK // STATIC_SWITCH: DEBUG_MASK
+        float4 var54 =  var42;
+    #else
+        float4 var54 =  var53;
+    #endif
+    
+    
+    float4 color = var54;    
+    float var55 = 1; // FloatLiteral
+    
+    color.a = var55;
+    float4 baseColor = color;
+
+#ifdef FEATURE_MASKED
+#ifdef DISCARD_ALPHA_TEXELS
+    if (color.a < 1.0f)
+    {
+        discard;
+    }
+#else
+    
+    float alphaMaskValue =  0.5 ;
+    if (color.a < alphaMaskValue)
+    {
+        discard;
+    }
+#endif
+#endif
+
+    
+    float3 specularColor =  float3(0,0,0) ;
+    
+    float gloss =  0.0 ;
+    float specPower = exp2(10 * gloss + 1);
+
+    // Dynamic shadow
+#ifndef DISABLE_SHADOWS
+    float sunShadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC);
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+#else
+    float4 bakedShadow = float4(1,1,1,1);
+#endif
+
+    sunShadowMask = min(sunShadowMask, bakedShadow.a);
+
+    // the baked diffuse lighting from all point lights
+    float3 pointLightInfo = bakedShadow.rgb;
+
+#else   
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+    float sunShadowMask = bakedShadow.a;
+    float3 pointLightInfo = bakedShadow.rgb;
+#else
+    float sunShadowMask = 1.0f;
+    float3 pointLightInfo = float3(1,1,1);
+#endif
+
+#endif
+
+    float3 diffuseReflection = float3(0,0,0);
+    float3 specularReflection = float3(0,0,0);
+    float3 sunLightCol = SUN_LIGHT_COLOR;
+#ifdef CLOUD_SHADOWS
+    #ifdef CLOUDS_NEED_UV
+        float2 tc = interpolants.m_Clouds_TC.xy;
+    #else
+        float2 tc = interpolants.m_FoW_TC.xy;
+    #endif
+
+    float cloudStrengthR = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[0].xy + CloudsScaleBias[0].zw).r;
+    float cloudStrengthG = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[1].xy + CloudsScaleBias[1].zw).g;
+    float cloudStrengthB = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[2].xy + CloudsScaleBias[2].zw).b;
+	float cloudStrength = saturate(cloudStrengthR + cloudStrengthG + cloudStrengthB);
+	    sunLightCol = lerp(sunLightCol, CloudsSunColor, cloudStrength);
+#endif
+    float3 sunColor = sunLightCol * sunShadowMask;
+    float sunDot = dot(worldNormal, SUN_LIGHT_DIRECTION);
+    diffuseReflection += max(sunDot, 0.0f) * sunColor;
+
+    // low quality mode gets no sun spec
+#ifndef LOW_QUALITY_MODE
+    // half vector
+    float3 sunHalfAngle = normalize(SUN_LIGHT_DIRECTION_FOR_SPEC + viewDirection);
+    float sunSpecularTerm = pow(abs(dot(worldNormal, sunHalfAngle)), specPower);
+    sunSpecularTerm *= step(0.0f, sunDot);
+
+    specularReflection += specularColor * sunColor * sunSpecularTerm;
+#endif
+
+    // add the diffuse contribution we baked    
+    diffuseReflection += pointLightInfo * LIGHT_MAP_COLOR_SCALE;
+
+    
+    float3 emissiveColor =  float3(0,0,0) ;
+
+#ifdef NO_BAKED_LIGHTING
+
+    // Dynamic shadow, no baked lighting
+    // using the shadow color complement
+#ifndef DISABLE_SHADOWS
+    float3 shadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC)*SHADOW_COLOR_COMPLEMENT + SHADOW_COLOR; // i.e. lerp(SHADOW_COLOR, white, sampledValue)
+    color.rgb *= shadowMask;
+#endif
+
+#else // NO_BAKED_LIGHTING
+    color.rgb *= diffuseReflection;
+    color.rgb += specularReflection;
+#endif
+
+
+#ifdef DISABLE_DEPTH_FOG
+    // normally we have the fog modulate the emissive somewhat.
+    // But if we turn off fog, we still want the emissive contribution
+    color.rgb += emissiveColor;
+#else
+#ifndef LOW_QUALITY_MODE    
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    // these constants correct for the fact that the exponentional fog calcs don't actually get completely fogged or unfogged
+    float fogFactor = saturate(((1.0f / exp(fDist * 2.0f)) - 0.13533528323) * 1.15651764274);
+    float RMfogFactor = saturate(ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.w * fogFactor - 1.0f);
+    
+    float3 fogColor = lerp(ENV_FOG_COLOR, ENV_FOG_ALT_COLOR, fogFactor);
+    color.rgb = lerp(color.rgb, fogColor.rgb, fogFactor);
+    color.rgb += emissiveColor * (1 - RMfogFactor);
+#else
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    float RMfogFactor = saturate(fDist*fDist + ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.z);
+
+    float3 fogColor = lerp(ENV_FOG_ALT_COLOR, ENV_FOG_COLOR, fDist);
+    color.rgb = lerp( fogColor.rgb,color.rgb, fDist);
+    color.rgb += emissiveColor * RMfogFactor;
+    //color.rgb += emissiveColor;
+#endif   
+#endif
+
+    // Fog of war
+#ifndef DISABLE_FOW
+    #ifdef FOW_FADE_TO_FOGGED
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardFogged(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #else
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardClear(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #endif
+
+    #ifdef PREMULTIPLIED_ALPHA
+        // to deal with cases where we are using premultiplied alpha
+        // we need to also multiply the fowFactors by alpha so we don't get
+        // strange brightening on the edges
+        fowFactors.rgb *= color.a;
+    #endif
+        // Blend between the computed color of this point on the map and the fog color.
+        color.rgb = lerp(fowFactors.rgb, color.rgb, fowFactors.a);
+#endif
+    color.rgb = ApplyMipColorsVisualization(color.rgb, interpolants.m_Texcoord.xy);
+
+
+
+    FRAGMENT fragment;
+    fragment.m_Color0 = color;
+   
+
+#ifdef MRT_SUPPORTED
+    
+    float bloomAlphaOverride =  1.0f;
+
+    #if defined(FEATURE_BLOOM) && !defined(LOW_QUALITY_MODE)
+        
+        float3 bloomColor =  float3(0,0,0) ;
+        #ifndef DISABLE_DEPTH_FOG
+            bloomColor *=  (1 - RMfogFactor);
+        #endif
+        fragment.m_BloomColor = float4(bloomColor, bloomAlphaOverride);
+    #else
+        fragment.m_BloomColor = float4(0,0,0, bloomAlphaOverride);
+    #endif
+#endif
+
+#ifdef SHOW_LIGHTING
+    fragment.m_Color0.rgb = diffuseReflection + specularReflection + emissiveColor;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    fragment.m_Color0 = baseColor;
+#endif
+
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    fragment.m_DummyColorOutput = float4(0,0,0,0);
+#endif
+#endif
+
+    
+
+    return fragment;
+}

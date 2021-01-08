@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/Guardian/GuardianArmed.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/Guardian/GuardianWillProtect.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/Guardian/GuardianShield.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/Guardian/GuardianHaste.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="runes_ksguardian_trail_mis"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/Guardian/GuardianCooldown.lua"}}, 
+}

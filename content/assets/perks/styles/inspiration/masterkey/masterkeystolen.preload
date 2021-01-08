@@ -1,0 +1,18 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKey"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyFleetFootwork.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyConqueror.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyLethalTempo.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPressTheAttack.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyElectrocute.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredator.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyDarkHarvest.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyHailOfBlades.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeySummonAery.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyArcaneComet.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPhaseRush.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyGraspOfTheUndying.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyAftershock.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyGlacialAugment.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyCooldown.lua"}}, 
+}

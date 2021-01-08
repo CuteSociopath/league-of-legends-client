@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="sru_dragon_air"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/DragonPedestalManager_Dragon.lua"}}, 
+}

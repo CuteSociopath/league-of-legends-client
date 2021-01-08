@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ASSETS/Perks/Styles/Sorcery/PhaseRush/PhaseRush"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Sorcery/PhaseRush/PhaseRushTrackingBuff.lua"}}, 
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.DarkHarvest"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/DarkHarvest/DarkHarvestHasSoulMarker.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/DarkHarvest/DarkHarvestCooldown.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="ksdarkharvestpickupmis"}}, 
+}

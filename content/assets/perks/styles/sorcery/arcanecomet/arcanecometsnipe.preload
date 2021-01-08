@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="perks_arcanecomet_mis_idle"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Sorcery/ArcaneComet/ArcaneCometRechargeSnipe.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_arcanecomet_mis_arc"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_arcanecomet_mis"}}, 
+{Function=BBPreloadModule, Params={Name="Global.AdaptiveDamageModule"}}, 
+}

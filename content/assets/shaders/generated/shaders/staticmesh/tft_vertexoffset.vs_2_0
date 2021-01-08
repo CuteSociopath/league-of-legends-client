@@ -1,0 +1,271 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////////////////////////////
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_MATRIX_INV; // used if particular snippets are used and optimized out if not
+float3 MESH_CENTER;
+
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+    float3 m_Normal         : X3D_VSIN_NORMAL;
+    float2 m_Texcoord       : X3D_VSIN_TEXCOORD0;
+    
+    
+#ifdef FEATURE_TANGENT
+    float4 m_Tangent : X3D_VSIN_TEXCOORD6;
+#endif
+    // if the vertex color is used in either the vertex shader or pixel shader
+    // we need the input
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 m_Color : X3D_VSIN_COLOR0;
+#endif
+#if defined(NEED_ATLAS_UVS) || defined(CAPTURE_DIFFUSE)
+    float2 m_AtlasTexcoord  : X3D_VSIN_TEXCOORD7;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float interp_0 : TEXCOORD_INTERP;
+};
+
+float4 Parameter0; // (Vertex_Offset_Global = Parameter0.xy,X_Offset = Parameter0.zw) 
+float4 Parameter1; // (Y_Offset = Parameter1.xy,Z_Offset = Parameter1.zw) 
+float4 Parameter2; // (Time_Offset_Modifier = Parameter2.x,Alpha_Fade_Min_Max = Parameter2.yz,Alpha_Fade_Time = Parameter2.w) 
+float2 Parameter3; // (Alpha_Fade_Randomizer = Parameter3.xy) 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.m_Texcoord;
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float3 worldNormal = normalize(mul(float4(vertex.m_Normal,0), WORLD_MATRIX).xyz);
+
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.m_Color;
+#endif
+
+
+    float2 var0 = Parameter0.xy; // Vertex_Offset_Global
+    float var1;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var0.x;
+    float y = var0.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var1 = result;
+    }
+    float2 var2 = Parameter0.zw; // X_Offset
+    float var3;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var2.x;
+    float y = var2.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var3 = result;
+    }
+    float2 var4 = Parameter1.xy; // Y_Offset
+    float var5;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var4.x;
+    float y = var4.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var5 = result;
+    }
+    float2 var6 = float2(var3,var5); // Combine
+    float2 var7 = Parameter1.zw; // Z_Offset
+    float var8;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var7.x;
+    float y = var7.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var8 = result;
+    }
+    float3 var9 = float3(var6.xy,var8); // Combine
+    float var10 = -1; // FloatLiteral
+    float3 var11 = var9 * var10; // Multiply
+    float var12 = Parameter2.x; // Time_Offset_Modifier
+    float4 var13 = TIME; // Time
+    float var14 = var12 * var13.x; // Multiply
+    float var15 = cos(var14); // cos
+    float var16;
+    { // (simpleRemap)
+    float input = var15;
+    float result = ( input + 1 ) * 0.5;
+    var16 = result;
+    }
+    float3 var17 = lerp(var9, var11, var16); // Lerp
+    float3 var18 = var1 * var17; // Multiply
+    float3 var19 = float3(0,0,0); // Float3Literal
+    
+    #if USE_VERTEX_OFFSET // STATIC_SWITCH: USE_VERTEX_OFFSET
+        float3 var20 =  var18;
+    #else
+        float3 var20 =  var19;
+    #endif
+    
+    
+    localPosition.xyz += var20;
+
+    float3 worldPosition = mul(localPosition, WORLD_MATRIX).xyz;
+    
+    worldPosition.xyz +=  float3(0,0,0) ;
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(worldPosition, 1.0f), VIEW_PROJECTION_MATRIX);
+
+#ifdef FEATURE_SCREENSPACE_UV
+    interpolants.vScreenSpaceUV = interpolants.m_Position.xyzw;
+#endif
+
+    interpolants.m_Texcoord.xy = vertex.m_Texcoord;
+
+#if defined(NEED_ATLAS_UVS)
+    interpolants.m_Texcoord.zw = vertex.m_AtlasTexcoord;
+#endif
+
+    interpolants.m_WorldNormalAndHeight = float4(worldNormal, worldPosition.y);
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    interpolants.m_WorldPositionXZ = worldPosition.xz;
+#endif
+
+#ifdef FEATURE_TANGENT
+    float3 worldTangent = normalize(mul(float4(vertex.m_Tangent.xyz,0), WORLD_MATRIX).xyz);
+    interpolants.m_WorldTangent = float4(worldTangent, vertex.m_Tangent.w);
+#endif
+
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(float4(worldPosition,1), SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+#ifndef DISABLE_FOW
+        // Fog of war texture coordinates
+    #ifdef FOW_FADE_TO_FOGGED
+        // the height value we need for fading to fogged is in w, not z
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyw;
+    #else
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyz;
+    #endif
+#endif
+#ifdef CLOUDS_NEED_UV
+     interpolants.m_Clouds_TC = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+#endif
+
+#ifdef FEATURE_VERTEX_COLOR
+    interpolants.m_VertexColor = vertex.m_Color;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    interpolants.m_Position = float4(vertex.m_AtlasTexcoord * 2.0f - 1.0f, 0.0f, 1.0f);
+    DoDX9HalfPixelAdjust(interpolants.m_Position);
+#endif
+
+    float2 var30 = Parameter3.xy; // Alpha_Fade_Randomizer
+    float var31;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var30.x;
+    float y = var30.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var31 = result;
+    }
+    float var32 = Parameter2.w; // Alpha_Fade_Time
+    float var33 = 0.2; // FloatLiteral
+    float4 var34 = TIME; // Time
+    float var35 = var33 * var34.x; // Multiply
+    float var36 = var32 * var35; // Multiply
+    float var37 = var31 * var36; // Multiply
+    float var38 = cos(var37); // cos
+    float var39;
+    { // (simpleRemap)
+    float input = var38;
+    float result = ( input + 1 ) * 0.5;
+    var39 = result;
+    }
+    interpolants.interp_0 = var39;
+    
+    
+
+    return interpolants;
+}

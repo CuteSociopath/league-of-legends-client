@@ -1,0 +1,647 @@
+#ifndef GENERATE_SHADOW_MAP
+#include "DATA/Shaders/HLSL/DeathScreen.hls"
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_PS.hls"
+#include "DATA/Shaders/HLSL/Lighting/LightGrid.hls"
+#include "DATA/Shaders/HLSL/MipLevels.hls"
+#include "DATA/Shaders/HLSL/Transition/Transition.hls"
+#endif
+#ifdef LOW_QUALITY_MODE
+    #define NO_LIGHTING
+    #define DISABLE_SHADOWS
+    #ifndef FORCE_FOW
+        #define DISABLE_FOW
+    #endif
+    #undef FOG_PIXELSHADER_BLEND
+#endif
+
+float4 Parameter0; // (FX_Scale_NO_Scroll = Parameter0.xy,FX_Pulse_Rate = Parameter0.z,FX_Pulse_Amplitude = Parameter0.w) 
+float4 Parameter1; // (FX_Pulse_Offset = Parameter1.x,FX_Global_Opacity = Parameter1.y,Dissolve_SmoothStep = Parameter1.zw) 
+float4 Parameter2; // (Dissolve_Bias = Parameter2.x,Dissolve_Gradient_Sharpness = Parameter2.y,Alpha_Pulse_Frequency = Parameter2.z,Alpha_Pulse_Amplitude = Parameter2.w) 
+float4 Parameter3; // (Alpha_Pulse_Offset = Parameter3.x,Alpha_SmoothStep = Parameter3.y,Dissolve_Alpha_Sharpness = Parameter3.z,Spec_Global = Parameter3.w) 
+float4 Parameter4; // (Light_Color = Parameter4.xyzw) 
+float4 Parameter5; // (Spec_Minimum = Parameter5.x,Spec_Maximum = Parameter5.y,Rim_Intensity = Parameter5.z,Rim_Power = Parameter5.w) 
+float4 Parameter6; // (LightVector_SmoothStep = Parameter6.xy,LightVector_Intensity = Parameter6.z,Scanlines_Power = Parameter6.w) 
+float4 Parameter7; // (LightVector = Parameter7.xyz,ScanLine_ScrollSpeed = Parameter7.w) 
+float4 Parameter8; // (ScanLines_StepValues = Parameter8.xy,ScanLine_WS_GradientBounds = Parameter8.zw) 
+float4 Parameter9; // (ScanLine_Direction = Parameter9.xyz,ScanLines_Frequency = Parameter9.w) 
+float4 Parameter10; // (ScanLines_Color = Parameter10.xyzw) 
+float4 Parameter11; // (Boss_PowerLevel = Parameter11.x,Bloom_Intensity = Parameter11.y,FX_Scroll_Scale = Parameter11.zw) 
+sampler2D Diffuse_Texture;
+sampler2D TileableFX_Texture;
+sampler2D FX_Spec_Mask_Texture;
+sampler2D Gradient_Texture;
+
+
+#include "DATA/Shaders/HLSL/ShadowMap/pcf1.hls"
+
+#if defined(MRT_SUPPORTED) && !defined(GENERATE_SHADOW_MAP)
+#define WRITE_MRT 1
+#endif
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef WRITE_MRT
+    float4  m_Color1 : COLOR1;
+
+#ifndef LOW_QUALITY_MODE
+    float4  m_BloomColor : COLOR2;
+#endif
+
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+#ifndef NO_LIGHTING
+    float4  lightingColor        : COLOR0;
+#endif
+#if defined(FEATURE_VERTEX_COLOR)
+   float4  vertexColor       : TEXCOORD_INTERP;
+#elif defined(FEATURE_TANGENT)
+   float4  worldTanget  : TEXCOORD_INTERP;
+#elif defined(FEATURE_SCREENSPACE_UV)
+   float4  screenSpaceUV : TEXCOORD_INTERP;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+   float4  uv1             : TEXCOORD_INTERP;
+#else
+   float2  uv1             : TEXCOORD_INTERP;
+#endif
+#ifndef GENERATE_SHADOW_MAP
+   float2  worldXZ    : TEXCOORD_INTERP;
+#else
+   float   depth        : TEXCOORD_INTERP;
+#endif
+#if defined(FEATURE_WORLD_NORMAL)
+   float3  worldNormal  : TEXCOORD_INTERP;
+#endif
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+   float3  worldPosition   : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+   float3  shadowMapUV            : TEXCOORD_INTERP;
+#endif
+  float2 interp_0 : TEXCOORD_INTERP;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+///////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+    float2 defaultUVs = interpolants.uv1.xy;
+
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    float2 screenSpaceUV = interpolants.screenSpaceUV.xy / interpolants.screenSpaceUV.w;
+    screenSpaceUV *= 0.5f;
+    screenSpaceUV += 0.5f;
+#endif
+
+#if defined(FEATURE_WORLD_NORMAL)
+    float3 worldNormal = normalize(interpolants.worldNormal);
+#endif
+
+#if defined(FEATURE_WORLD_POSITION)
+    float3 worldPosition = interpolants.worldPosition;
+#endif
+
+#if defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = interpolants.vertexColor;
+#endif
+
+
+#ifdef FEATURE_TANGENT
+    // plugging something into TANGENT_SPACE_NORMAL defines FEATURE_TANGENT
+    
+    float3 tangentSpaceNormal =  float3(0.0,0.0,1) ;
+
+    float3 worldTangent = normalize(interpolants.worldTanget.xyz);
+    // use the w component orientation factor (+/- 1) to set TBN frame handedness
+    float3 worldBinormal = cross(worldNormal, worldTangent) * interpolants.worldTanget.w;
+    float3x3 tangentBasis = float3x3(worldTangent, worldBinormal, worldNormal);
+
+    worldNormal = mul(tangentSpaceNormal, tangentBasis);
+#endif
+
+    // Calculate Texture Diffuse color
+    float4 var0 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    float2 var1 = interpolants.interp_0.xy; // EvaluateInVertexShader
+    float2 var2;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var2 = result;
+    }
+    float2 var3 = Parameter0.xy; // FX_Scale_NO_Scroll
+    float2 var4 = var2 * var3; // Multiply
+    
+    #if FX_USE_SCROLL // STATIC_SWITCH: FX_USE_SCROLL
+        float2 var5 =  var1;
+    #else
+        float2 var5 =  var4;
+    #endif
+    
+    float4 var6 = tex2D(TileableFX_Texture, var5); // TileableFX_Texture
+    float3 var7;
+    { // (ColorDodge)
+    float3 base = var0.xyz;
+    float3 blend = var6.xyz;
+    float3 result = ((blend == 1.0) ? blend : min(base / (1.0 - blend), 1.0));
+    var7 = result;
+    }
+    float3 var8;
+    { // (Overlay)
+    float3 base = var0.xyz;
+    float3 blend = var6.xyz;
+    float3 result = (base < 0.5 ? (2.0 * base * blend) : (1.0 - 2.0 * (1.0 - base) * (1.0 - blend)));
+    var8 = result;
+    }
+    float3 var9 = var6.xyz; // Mask
+    
+    #if FX_USE_OVERLAY // STATIC_SWITCH: FX_USE_OVERLAY
+        float3 var10 =  var8;
+    #else
+        float3 var10 =  var9;
+    #endif
+    
+    
+    #if FX_USE_COLORDODGE // STATIC_SWITCH: FX_USE_COLORDODGE
+        float3 var11 =  var7;
+    #else
+        float3 var11 =  var10;
+    #endif
+    
+    float4 var12 = tex2D(FX_Spec_Mask_Texture, defaultUVs); // FX_Spec_Mask_Texture
+    float4 var13 = TIME; // Time
+    float var14 = Parameter0.z; // FX_Pulse_Rate
+    float var15 = Parameter0.w; // FX_Pulse_Amplitude
+    float var16 = Parameter1.x; // FX_Pulse_Offset
+    float var17;
+    { // (SineFunctionComplete)
+    float Time = var13.x;
+    float Freq = var14;
+    float Amp = var15;
+    float Offset = var16;
+    float result = sin( Time * Freq ) * Amp + Offset;
+    var17 = result;
+    }
+    float var18 = saturate(var17); // saturate
+    float var19 = var12.x * var18; // Multiply
+    
+    #if FX_USE_PULSE // STATIC_SWITCH: FX_USE_PULSE
+        float var20 =  var19;
+    #else
+        float var20 =  var12.x;
+    #endif
+    
+    float4 var21 = lerp(var0, float4(var11, 1.0f), var20); // Lerp
+    float4 var22 = var21 * var12.x; // Multiply
+    float var23 = Parameter1.y; // FX_Global_Opacity
+    float4 var24 = var22 * var23; // Multiply
+    float4 var25 = var0 + var24; // Add
+    float4 var26 = float4(1,0,0,1); // Float4Literal
+    float4 var27 = float4(var25.xyz,var26.x); // Combine
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var28 =  var0;
+    #else
+        float4 var28 =  var27;
+    #endif
+    
+    
+    #if USE_FX_MASTER // STATIC_SWITCH: USE_FX_MASTER
+        float4 var29 =  var28;
+    #else
+        float4 var29 =  var0;
+    #endif
+    
+    float2 var30 = Parameter1.zw; // Dissolve_SmoothStep
+    float var31 = Parameter2.x; // Dissolve_Bias
+    float4 var32 = tex2D(FX_Spec_Mask_Texture, defaultUVs); // FX_Spec_Mask_Texture
+    float var33 = var31 + var32.z; // Add
+    float var34 = saturate(var33); // saturate
+    float var35;
+    { // (OneMinus)
+    float input =var34;
+    float result = 1.0f - input;
+    var35 = result;
+    }
+    float var36 = smoothstep(var30.x, var30.y, var35); // smoothstep
+    float var37 = Parameter2.y; // Dissolve_Gradient_Sharpness
+    float var38 = pow(var36,var37); // Pow
+    float var39 = 0.1; // FloatLiteral
+    float2 var40 = float2(var38,var39); // Combine
+    float4 var41 = tex2D(Gradient_Texture, var40); // Gradient_Texture
+    float4 var42 = lerp(var41, var29, var38); // Lerp
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var43 =  var29;
+    #else
+        float4 var43 =  var42;
+    #endif
+    
+    
+    #if USE_DISSOLVE // STATIC_SWITCH: USE_DISSOLVE
+        float4 var44 =  var43;
+    #else
+        float4 var44 =  var29;
+    #endif
+    
+    
+    float4 texelDiffuse = var44;
+    float4 var45 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    float var46 = 0; // FloatLiteral
+    float4 var47 = TIME; // Time
+    float var48 = Parameter2.z; // Alpha_Pulse_Frequency
+    float var49 = Parameter2.w; // Alpha_Pulse_Amplitude
+    float var50 = Parameter3.x; // Alpha_Pulse_Offset
+    float var51;
+    { // (SineFunctionComplete)
+    float Time = var47.w;
+    float Freq = var48;
+    float Amp = var49;
+    float Offset = var50;
+    float result = sin( Time * Freq ) * Amp + Offset;
+    var51 = result;
+    }
+    float var52 = saturate(var51); // saturate
+    float var53 = Parameter3.y; // Alpha_SmoothStep
+    
+    #if USE_ALPHA_PULSE // STATIC_SWITCH: USE_ALPHA_PULSE
+        float var54 =  var52;
+    #else
+        float var54 =  var53;
+    #endif
+    
+    float var55 = Parameter3.z; // Dissolve_Alpha_Sharpness
+    float var56 = pow(var36,var55); // Pow
+    float var57 = saturate(var56); // saturate
+    float var58 = smoothstep(var46, var54, var57); // smoothstep
+    float4 var59 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    float var60 = var58 * var59.w; // Multiply
+    
+    #ifdef LOW_QUALITY_MODE
+        float var61 =  var45.w;
+    #else
+        float var61 =  var60;
+    #endif
+    
+    
+    #if USE_DISSOLVE // STATIC_SWITCH: USE_DISSOLVE
+        float var62 =  var61;
+    #else
+        float var62 =  var45.w;
+    #endif
+    
+    
+    texelDiffuse.a = var62;
+    if (texelDiffuse.a == 0.0)
+    {
+        discard;
+    }
+
+    // Return fragment
+    FRAGMENT fragment;
+
+#ifdef GENERATE_SHADOW_MAP
+#ifdef FEATURE_SHADOW
+    
+    float shadowClip =  1.0f ;
+    if (shadowClip <= 0.0)
+    {
+        discard;
+    }
+#endif
+
+    fragment.m_Color0 = float4(packDepthToVec3(interpolants.depth), 0.0f);
+
+#else
+
+    
+    float emissiveFactor =  0.0f ;
+
+#ifndef NO_LIGHTING
+    #ifndef USE_LIGHT_GRID
+            float4 incidentSunLight = float4(interpolants.lightingColor.rgb,1);
+
+        #ifndef DISABLE_SHADOWS
+            // Modulate the incident sun light by the shadow
+            int shadowSamples = 1;
+
+            float shadowMask = saturate(SampleShadowMap(SHADOW_MAP, interpolants.shadowMapUV)+0.4f);
+            incidentSunLight *= shadowMask;
+        #endif
+
+            // Sum the incident sun light with contributions from environmental and ambient
+            float4 incidentLight = incidentSunLight + AMBIENT_COLOR;
+    #else
+        float4 incidentLight = float4(interpolants.lightingColor.rgb,1);
+    #endif
+
+        float diffuseFactor = saturate(1.f - emissiveFactor);   /// Amount of color which is diffuse
+
+    #if defined(FULLBRIGHT) //handle the fullbright debug visualization.
+        float4 lighting = 1.0f;
+    #elif defined(USE_LIGHT_GRID)
+        #if defined(SHOW_LIGHTING)
+            float lightScale = 1.0f;
+        #else
+            float lightScale = LightGridTextureScale();
+        #endif
+        float4 lighting = saturate(diffuseFactor * incidentLight * lightScale + emissiveFactor + LightGridFullBrightScale() * float4(SELF_ILLUMINATION, 0.f));
+    #else
+        float4 lighting = saturate(diffuseFactor * incidentLight + emissiveFactor + float4(SELF_ILLUMINATION, 0.f));
+    #endif
+
+#else // NO_LIGHTING
+    float4 lighting = 1.0f;
+#endif // NO_LIGHTING
+
+    // Compute albedo / final color using a combination of diffuse and emissive values
+    float4 finalColor = texelDiffuse * lighting;
+    finalColor.a = texelDiffuse.a;
+
+    // Add any post lighting inputs including emissive
+    float4 var63 = Parameter4.xyzw; // Light_Color
+    float var64 = Parameter3.w; // Spec_Global
+    float3 var65;
+    { // (EyeVector)
+    float3 result = normalize( vCamera - worldPosition );
+    var65 = result;
+    }
+    float3 var66;
+    { // (WorldNormal)
+    float3 result = worldNormal;
+    var66 = result;
+    }
+    float var67 = dot(var65,var66); // Dot
+    float var68 = Parameter5.x; // Spec_Minimum
+    float var69 = Parameter5.y; // Spec_Maximum
+    float4 var70 = tex2D(FX_Spec_Mask_Texture, defaultUVs); // FX_Spec_Mask_Texture
+    float var71 = lerp(var68, var69, var70.y); // Lerp
+    float var72 = pow(var67,var71); // Pow
+    float var73 = var64 * var72; // Multiply
+    float4 var74 = var63 * var73; // Multiply
+    float4 var75 = float4(0,0,0,0); // Float4Literal
+    float var76 = Parameter5.z; // Rim_Intensity
+    float var77 = pow(var67,var76); // Pow
+    float var78;
+    { // (OneMinus)
+    float input =var77;
+    float result = 1.0f - input;
+    var78 = result;
+    }
+    float var79 = Parameter5.w; // Rim_Power
+    float var80 = pow(var78,var79); // Pow
+    float var81 = 0; // FloatLiteral
+    
+    #if USE_RIM_LIGHTING // STATIC_SWITCH: USE_RIM_LIGHTING
+        float var82 =  var80;
+    #else
+        float var82 =  var81;
+    #endif
+    
+    float var83 = 0; // FloatLiteral
+    
+    #if USE_SPEC // STATIC_SWITCH: USE_SPEC
+        float var84 =  var73;
+    #else
+        float var84 =  var83;
+    #endif
+    
+    float2 var85 = Parameter6.xy; // LightVector_SmoothStep
+    float3 var86;
+    { // (WorldNormal)
+    float3 result = worldNormal;
+    var86 = result;
+    }
+    float3 var87 = Parameter7.xyz; // LightVector
+    float3 var88 = normalize(var87); // normalize
+    float var89 = dot(var86,var88); // Dot
+    float var90 = smoothstep(var85.x, var85.y, var89); // smoothstep
+    float var91 = Parameter6.z; // LightVector_Intensity
+    float var92 = var90 * var91; // Multiply
+    float var93 = 0; // FloatLiteral
+    
+    #if USE_LIGHT_VECTOR // STATIC_SWITCH: USE_LIGHT_VECTOR
+        float var94 =  var92;
+    #else
+        float var94 =  var93;
+    #endif
+    
+    float var95 = var84 + var94; // Add
+    float var96 = var82 + var95; // Add
+    float var97 = saturate(var96); // saturate
+    float4 var98 = Parameter4.xyzw; // Light_Color
+    float4 var99 = var97 * var98; // Multiply
+    float var100 = Parameter6.w; // Scanlines_Power
+    float2 var101 = Parameter8.xy; // ScanLines_StepValues
+    float var102 = Parameter7.w; // ScanLine_ScrollSpeed
+    float var103 = 1; // FloatLiteral
+    float var104 = var102 * var103; // Multiply
+    float4 var105 = TIME; // Time
+    float var106 = var104 * var105.x; // Multiply
+    float2 var107 = Parameter8.zw; // ScanLine_WS_GradientBounds
+    float3 var108;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var108 = result;
+    }
+    float3 var109 = Parameter9.xyz; // ScanLine_Direction
+    float var110 = dot(var108,var109); // Dot
+    float var111 = smoothstep(var107.x, var107.y, var110); // smoothstep
+    float var112 = var106 + var111; // Add
+    float var113 = Parameter9.w; // ScanLines_Frequency
+    float var114 = var112 * var113; // Multiply
+    float var115 = sin(var114); // sin
+    float var116 = smoothstep(var101.x, var101.y, var115); // smoothstep
+    float4 var117 = Parameter10.xyzw; // ScanLines_Color
+    float4 var118 = var116 * var117; // Multiply
+    float4 var119 = var100 * var118; // Multiply
+    float4 var120 = var119 * var82; // Multiply
+    float4 var121 = var120 + var99; // Add
+    float4 var122 = float4(0,0,0,0); // Float4Literal
+    
+    #if USE_SCANLINES_NO_FRESNEL // STATIC_SWITCH: USE_SCANLINES_NO_FRESNEL
+        float4 var123 =  var119;
+    #else
+        float4 var123 =  var122;
+    #endif
+    
+    float4 var124 = var123 + var99; // Add
+    
+    #if USE_SCANLINES_YES_FRESNEL // STATIC_SWITCH: USE_SCANLINES_YES_FRESNEL
+        float4 var125 =  var121;
+    #else
+        float4 var125 =  var124;
+    #endif
+    
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var126 =  var99;
+    #else
+        float4 var126 =  var125;
+    #endif
+    
+    
+    #if BOSS_MODE // STATIC_SWITCH: BOSS_MODE
+        float4 var127 =  var126;
+    #else
+        float4 var127 =  var75;
+    #endif
+    
+    float var128 = Parameter11.x; // Boss_PowerLevel
+    float4 var129 = lerp(var75, var127, var128); // Lerp
+    float4 var130 = var74 + var129; // Add
+    float4 var131 = saturate(var130); // saturate
+    
+    #if BOSS_MODE_BYPASS_SPEC // STATIC_SWITCH: BOSS_MODE_BYPASS_SPEC
+        float4 var132 =  var131;
+    #else
+        float4 var132 =  var129;
+    #endif
+    
+    float4 var133 = tex2D(FX_Spec_Mask_Texture, defaultUVs); // FX_Spec_Mask_Texture
+    float4 var134 = var132 * var133.y; // Multiply
+    
+    float3 emissiveColor = var134.xyz;
+
+#if !defined(DEPTH_FOG)
+    // if not using depth fog, we want to add the emissive term
+    // before doing the transition calculations.
+    // We use depth fog on level props rather than playable characters
+    // and we don't need to support transitions on those.
+    finalColor.rgb += emissiveColor;
+#endif
+
+    finalColor = ApplyTransition(finalColor, lighting.rgb, interpolants.uv1.xy);
+    finalColor.a *= kGrassFade.a; // apply any global alpha factor (e.g., the fading associated with being in the grass)
+
+#if defined(DEPTH_FOG)
+    #if !defined(LOW_QUALITY_MODE) && defined(WRITE_MRT)
+        float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+        float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+        float fDist = smoothstep(fEnd, fStart, interpolants.worldPosition.y);
+        // these constants correct for the fact that the exponentional fog calcs don't actually get completely fogged or unfogged
+        float fogFactor = saturate(((1.0f / exp(fDist * 2.0f)) - 0.13533528323) * 1.15651764274);
+        float RMfogFactor = saturate(ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.w * fogFactor - 1.0f);
+        
+        float3 fogColor = lerp(ENV_FOG_COLOR, ENV_FOG_ALT_COLOR, fogFactor);
+        finalColor.rgb = lerp(finalColor.rgb, fogColor.rgb, fogFactor);
+        finalColor.rgb += emissiveColor * (1 - RMfogFactor); 
+    #else
+        finalColor.rgb += emissiveColor;
+    #endif
+#endif
+
+    #if !defined(DISABLE_FOW) && !defined(FULLBRIGHT)
+        float4 fowFactors = GetFogOfWarFactors(interpolants.worldXZ.xy);
+        finalColor.rgb = lerp(fowFactors.rgb, finalColor.rgb, fowFactors.a);
+    #endif
+
+    #if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING)
+
+        //modify the fog color based on the fog of war...
+        float4 fogColorPSBlend = tex2D(FOGLIGHTING, interpolants.worldXZ.xy);
+        #ifndef DISABLE_FOW
+            fogColorPSBlend = lerp(fowFactors, fogColorPSBlend, fowFactors.a);
+        #endif
+        float fogOpacity = interpolants.lightingColor.a;
+        #ifdef MOD2X_COLORMAP
+            float colorMapOpacity = tex2D(COLORMAP, interpolants.uv1.zw).a;
+            fogOpacity = saturate( fogOpacity*colorMapOpacity*2.0f );
+        #endif
+
+        finalColor.rgb = lerp( finalColor, fogColorPSBlend, fogOpacity ).rgb;
+    #endif
+
+
+#if SKINNED_MATERIAL_ADDITIVE
+    finalColor.rgb *= kGrassFade.a;
+#endif
+
+    fragment.m_Color0 = finalColor;
+
+#ifdef WRITE_MRT
+
+    float3 delta = vCamera.xyz - interpolants.worldPosition.xyz;
+    float dist = DEPTH_SCALE_OFFSET.x * (length(delta) + DEPTH_SCALE_OFFSET.y); 
+    // we scale bloom strength by output alpha
+    float4 out_color1 = float4(dist*OUTLINE_MOD.x, OUTLINE_MOD.x, 0.0f, 1.f);
+    
+    //  This has the effect of thinning and lightening the outline as the fog gets more opaque.
+    //However the outline never completely disappears, which is desirable in order to make 
+    //characters easier to see even in foggy conditions.
+    //  In this way the outline can be affected by the fog (it looks terrible otherwise) but 
+    //without effecting the outline pass or drastically effecting performance.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING)
+    out_color1.xy = lerp(out_color1.xy, 4.0f, fogOpacity);
+#endif
+
+    fragment.m_Color1 = out_color1;
+
+#ifndef LOW_QUALITY_MODE
+    #ifdef FEATURE_BLOOM
+
+        float3 var135 = float3(0,0,0); // Float3Literal
+        float var136;
+        { // (OneMinus)
+        float input =var38;
+        float result = 1.0f - input;
+        var136 = result;
+        }
+        float4 var137 = var42 * var136; // Multiply
+        float var138 = Parameter11.y; // Bloom_Intensity
+        float4 var139 = var137 * var138; // Multiply
+        float3 var140 = var139.xyz; // Mask
+        
+        #ifdef LOW_QUALITY_MODE
+            float3 var141 =  var135;
+        #else
+            float3 var141 =  var140;
+        #endif
+        
+        
+        #if USE_DISSOLVE // STATIC_SWITCH: USE_DISSOLVE
+            float3 var142 =  var141;
+        #else
+            float3 var142 =  var135;
+        #endif
+        
+        
+        float3 bloomColor = var142;
+        float4 finalBloom = ApplyTransitionToColor(float4(bloomColor * finalColor.a, 1.0f),
+                                                   float4(0,0,0,1),
+                                                   interpolants.uv1.xy);
+        fragment.m_BloomColor = finalBloom;
+    #else
+        fragment.m_BloomColor = float4(0,0,0,1);
+    #endif
+#endif
+
+#endif    
+
+
+    //Editor / Debugging features.    
+    #if defined(SHOW_LIGHTING)
+        #if defined(USE_LIGHT_GRID)
+            fragment.m_Color0.rgb = lighting;
+        #else
+            fragment.m_Color0.rgb = lighting*0.25f;
+        #endif
+    #elif defined(GRAYSCALE)
+        float3 LUMINANCE_CONVERSION = float3(0.299f, 0.587f, 0.114f);
+        fragment.m_Color0.rgb = dot( fragment.m_Color0.rgb, LUMINANCE_CONVERSION );
+    #endif
+
+    fragment.m_Color0.rgb = ApplyMipColorsVisualization(fragment.m_Color0.rgb, interpolants.uv1.xy);
+#endif
+
+    
+
+    return fragment;
+}

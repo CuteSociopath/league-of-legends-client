@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/VeteranAftershock/VeteranAftershockActivate.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Resolve/VeteranAftershock/VeteranAftershockCooldownBuff.lua"}}, 
+}

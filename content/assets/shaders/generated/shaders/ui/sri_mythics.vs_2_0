@@ -1,0 +1,80 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+float4 Parameter13; // (RefractionNoise_Distance = Parameter13.x,RefractionNoiseSize = Parameter13.y,Blue_Channel_BG_Offset = Parameter13.z,Radial_Noise_Rotation = Parameter13.w) 
+float3 Parameter19; // (Radial_Noise_Speed = Parameter19.x,PinWheel_Rotation = Parameter19.y,RefractionSpeed = Parameter19.z) 
+
+
+static float2 RectTexCoords[4] =
+{
+    float2(0.0, 0.0),
+    float2(1.0, 0.0),
+    float2(0.0, 1.0),
+    float2(1.0, 1.0)
+};
+
+struct VERTEX
+{
+    float3 pos: X3D_VSIN_POSITION;
+    float4 col0: X3D_VSIN_COLOR0;
+    float2 tex0: X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position       : POSITION;
+    float4 perVertexColor : COLOR0;
+    float2 tex0           : TEXCOORD_INTERP;
+#ifdef FEATURE_UI_USER_PARAMS
+    float4 userParamsInterp: TEXCOORD_INTERP;
+#endif
+// this define gets enabled if the user uses the UI Original Texcoords snippet
+#ifdef FEATURE_UI_ORIGINAL_TEXCOORDS
+    float2 orginalTexCoords: TEXCOORD_INTERP;
+#endif
+
+    float4 interp_0 : TEXCOORD_INTERP;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float4 UIUserParams = UI_USER_PARAMS;
+    float2 orginalTexCoords = RectTexCoords[(int)vertex.pos.z];
+
+    
+    float2 localPositionOffset  =  float2(0,0) ;
+
+    interpolants.position = mul(float4(vertex.pos.xy + localPositionOffset, 0,1), UI_ELEMENT_MATRIX);
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    interpolants.perVertexColor = vertex.col0.VCOLORSWIZZLE;
+    interpolants.tex0 = vertex.tex0;
+
+#ifdef FEATURE_UI_USER_PARAMS
+    interpolants.userParamsInterp = UIUserParams;
+#endif
+#ifdef FEATURE_UI_ORIGINAL_TEXCOORDS
+    interpolants.orginalTexCoords = orginalTexCoords;
+#endif
+    float4 var280 = TIME; // Time
+    float var281 = Parameter13.w; // Radial_Noise_Rotation
+    float var282 = var280.x * var281; // Multiply
+    interpolants.interp_0.x = var282;
+    float4 var283 = TIME; // Time
+    float var284 = Parameter19.x; // Radial_Noise_Speed
+    float var285 = var283.x * var284; // Multiply
+    interpolants.interp_0.y = var285;
+    float var286 = Parameter19.y; // PinWheel_Rotation
+    float4 var287 = TIME; // Time
+    float var288 = var286 * var287.x; // Multiply
+    interpolants.interp_0.z = var288;
+    float var289 = Parameter19.z; // RefractionSpeed
+    float4 var290 = TIME; // Time
+    float var291 = var289 * var290.x; // Multiply
+    interpolants.interp_0.w = var291;
+    
+    
+
+    return interpolants;
+}

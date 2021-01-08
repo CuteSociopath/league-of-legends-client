@@ -1,0 +1,259 @@
+#include "DATA/Shaders/HLSL/SkinnedMesh/IOParam/IODefine_VS.hls"
+#include "DATA/Shaders/HLSL/Fog/Fog.hls"
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/Lighting/Lighting.hls"
+#include "DATA/Shaders/HLSL/SkinnedMesh/skinning.hls"
+
+#ifdef LOW_QUALITY_MODE
+    #define NO_LIGHTING
+    #define DISABLE_SHADOWS
+    #undef FOG_PIXELSHADER_BLEND
+#endif
+
+#if defined(MRT_SUPPORTED) && !defined(GENERATE_SHADOW_MAP)
+#define WRITE_MRT 1
+#endif
+
+
+float4 Parameter0; // (Pivot = Parameter0.xy,Resolution = Parameter0.z,FlipBook_Selector = Parameter0.w) 
+float4 Parameter4; // (Bloom_Intensity = Parameter4.x,Distortion_Frequency = Parameter4.yz,Distortion_TimeSpeed = Parameter4.w) 
+float3 Parameter5; // (Distortion_ScrollSpeed = Parameter5.xy,Distortion_Amount = Parameter5.z) 
+
+
+struct VERTEX
+{
+    float3      vPos                : X3D_VSIN_POSITION;
+    float4      vBlendWeight        : X3D_VSIN_BLENDWEIGHT;
+    float3      vNormal             : X3D_VSIN_NORMAL;
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4      vColorIn0           : X3D_VSIN_COLOR0;
+#endif
+    blendindex4 vBlendIndices       : X3D_VSIN_BLENDINDICES;
+    float2      vUV1                : X3D_VSIN_TEXCOORD0;
+#ifdef FEATURE_TANGENT
+   float4      vTangent            : X3D_VSIN_TEXCOORD6;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+#ifndef NO_LIGHTING
+    float4  lightingColor        : COLOR0;
+#endif
+#if defined(FEATURE_VERTEX_COLOR)
+   float4  vertexColor       : TEXCOORD_INTERP;
+#elif defined(FEATURE_TANGENT)
+   float4  worldTanget  : TEXCOORD_INTERP;
+#elif defined(FEATURE_SCREENSPACE_UV)
+   float4  screenSpaceUV : TEXCOORD_INTERP;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+   float4  uv1             : TEXCOORD_INTERP;
+#else
+   float2  uv1             : TEXCOORD_INTERP;
+#endif
+#ifndef GENERATE_SHADOW_MAP
+   float2  worldXZ    : TEXCOORD_INTERP;
+#else
+   float   depth        : TEXCOORD_INTERP;
+#endif
+#if defined(FEATURE_WORLD_NORMAL)
+   float3  worldNormal  : TEXCOORD_INTERP;
+#endif
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+   float3  worldPosition   : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+   float3  shadowMapUV            : TEXCOORD_INTERP;
+#endif
+  float3 interp_0 : TEXCOORD_INTERP;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.vUV1;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(vertex.vBlendWeight, vertex.vNormal, vertex.vUV1);     // unpack fixed point attributes
+#endif
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.vColorIn0;
+#endif
+
+    float4 localPosition = float4(vertex.vPos, 1.0f);
+
+    float3 worldPosition;
+    float3 worldNormal;
+    float3 worldTangent;
+#ifndef NO_SKINNING
+ #if defined(FEATURE_TANGENT)
+    SkinPositionAndTBN(vertex.vPos, vertex.vNormal, vertex.vTangent, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal, worldTangent);
+ #else
+    SkinPositionAndNormal(vertex.vPos, vertex.vNormal, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal);
+ #endif
+#else
+    worldPosition = mul(float4(vertex.vPos, 1.f), BONES[0]);
+    worldNormal = mul(float4(vertex.vNormal, 0.f), BONES[0]);
+ #if defined(FEATURE_TANGENT)
+    worldTangent = mul(float4(vertex.vTangent, 0.f), BONES[0]);
+ #endif
+#endif
+
+    float3 var0;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var0 = result;
+    }
+    float2 var1 = var0.xz; // Mask
+    float2 var2 = Parameter0.xy; // Pivot
+    float3 var3;
+    { // (CameraPos)
+    float3 result = vCamera;
+    var3 = result;
+    }
+    float2 var4 = var3.xz; // Mask
+    float2 var5 = var4 - var2; // Subtract
+    float2 var6 = normalize(var5); // normalize
+    float var7 = var6.x; // Mask
+    float var8 = var6.y; // Mask
+    float var9 = atan2(var7,var8); // atan2
+    float var10 = 3.141592741; // pi
+    float var11 = var9 + var10; // Add
+    float2 var12;
+    { // (UVRotation)
+    float2 uvInput = var1;
+    float2 uvPivot = var2;
+    float RotAngle = var11 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var12 = result;
+    }
+    float var13 = var0.y; // Mask
+    float2 var14 = float2(var12.x,var13); // Combine
+    float3 var15 = float3(var14.xy,var12.y); // Combine
+    float3 var16 = var15 - var0; // Subtract
+    float3 var17 = float3(0,0,0); // Float3Literal
+    
+    #if CAMERA_ROTATE // STATIC_SWITCH: CAMERA_ROTATE
+        float3 var18 =  var16;
+    #else
+        float3 var18 =  var17;
+    #endif
+    
+    
+    worldPosition += var18;
+
+#if defined(FEATURE_WORLD_NORMAL) || defined(FEATURE_TANGENT)
+    interpolants.worldNormal = worldNormal;
+#endif
+#if defined(FEATURE_TANGENT)
+    interpolants.worldTangent = float4(worldTangent, vTangent.w);    // propagate the handedness orientation factor in w so we can correctly orient the TBN frame
+#endif
+
+#if defined(FEATURE_VERTEX_COLOR)
+    interpolants.vertexColor = vertex.vColorIn0;
+#endif
+
+
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+    // Output world position
+    interpolants.worldPosition.xyz = worldPosition.xyz;
+#endif
+
+    // Output homogeneous position
+    interpolants.position = mul(float4(worldPosition.xyz, 1.0f), mProj);
+
+    // Output texture coordinate using texture transform. Optimizes out
+    // if not used
+    
+    float4 uvScaleAndOffset =  float4(1, 1, 0, 0);
+    interpolants.uv1.xy = vertex.vUV1 * uvScaleAndOffset.xy + uvScaleAndOffset.zw;
+
+
+#ifndef DISABLE_SHADOWS
+    // Output shadow position
+    interpolants.shadowMapUV = mul(float4(worldPosition.xyz, 1.0f), mShadowProj).xyz;
+#endif
+
+#ifndef NO_LIGHTING
+    #ifdef USE_LIGHT_GRID
+        float3 lighting = LightingLightGrid(worldNormal);
+    #else
+        float3 lighting = LightingSunLight(worldNormal);
+    #endif
+    interpolants.lightingColor = float4(lighting,0);
+#endif
+
+#ifdef GENERATE_SHADOW_MAP
+    interpolants.depth = interpolants.position.z;
+#ifdef IS_OPENGL
+    // fix the depth into the 0-1 range for OpenGL
+    interpolants.depth = (interpolants.depth * 0.5f) + 0.5f;
+#endif
+
+#else
+    // Fog of war
+    interpolants.worldXZ.xy = FogOfWarTextureCoordinates(worldPosition.xyz).xy;
+#endif
+
+    //Vertex fog.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+    interpolants.uv1.zw = interpolants.worldXZ.xy;
+    interpolants.uv1.w = 1.0f - interpolants.uv1.w;
+    interpolants.lightingColor.a = 1.0f - ComputeFogValue(interpolants.position, worldPosition.xyz);
+#endif
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    interpolants.screenSpaceUV = interpolants.position;
+#endif
+
+    float4 var99 = TIME; // Time
+    float2 var100 = Parameter4.yz; // Distortion_Frequency
+    float var101 = var99.x * var100.y; // Multiply
+    float var102 = 3.141592741; // pi
+    float var103 = fmod(var101,var102); // fmod
+    float var104 = var103 + var102; // Add
+    float var105 = cos(var104); // cos
+    float var106 = 2; // FloatLiteral
+    float var107 = var105 + var106; // Add
+    float var108 = Parameter4.w; // Distortion_TimeSpeed
+    float var109 = var107 * var108; // Multiply
+    float2 var110 = Parameter5.xy; // Distortion_ScrollSpeed
+    float2 var111;
+    { // (Panner)
+    float2 uvInput =  defaultUVs ;
+    float time = var109;
+    float2 speed = var110;
+    float2 scroll = float2( ( time * speed.x + uvInput.x ), ( time * speed.y + uvInput.y ));
+    float2 result = scroll;
+    var111 = result;
+    }
+    interpolants.interp_0.xy = var111;
+    float var112 = Parameter5.z; // Distortion_Amount
+    float var113 = var99.x * var100.x; // Multiply
+    float var114 = cos(var113); // cos
+    float var115 = 4.7; // FloatLiteral
+    float var116 = var113 * var115; // Multiply
+    float var117 = sin(var116); // sin
+    float var118 = var114 * var117; // Multiply
+    float var119 = var112 * var118; // Multiply
+    interpolants.interp_0.z = var119;
+    
+    
+
+    return interpolants;
+
+}

@@ -1,0 +1,760 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_PS.hls"
+#include "DATA/Shaders/HLSL/ShadowMap/pcf1.hls"
+#include "DATA/Shaders/HLSL/MipLevels.hls"
+
+// Texture for dynamic shadows
+sampler2D BAKED_SHADOW;
+float4 BAKED_SHADOW_SCALE_AND_BIAS;
+float3 MESH_CENTER;
+
+#ifdef FEATURE_BAKED_PAINT
+float4 BAKED_PAINT_UV_SCALE_BIAS;
+#endif
+
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING)
+#define ENABLE_BAKED_SHADOW
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+
+float4 Parameter0; // (X_Axis_Vertex_Displacement = Parameter0.xyz,X_Axis_UV_Offset_Low = Parameter0.w) 
+float4 Parameter1; // (X_Axis_UV_Offset_High = Parameter1.x,X_Axis_UV_Rotation = Parameter1.y,Time_Multiplier_X_Axis = Parameter1.zw) 
+float4 Parameter2; // (X_Axis_UV_Offset_Frequency = Parameter2.xy,X_Axis_Offset_UV_Wave = Parameter2.zw) 
+float4 Parameter3; // (X_Axis_UV_Mask_Low = Parameter3.x,X_Axis_UV_Mask_High = Parameter3.y,X_UV_Mask_Distance_Offset = Parameter3.z,Y_Axis_UV_Offset_Low = Parameter3.w) 
+float4 Parameter4; // (Y_Axis_Vertex_Displacement = Parameter4.xyz,Y_Axis_UV_Offset_High = Parameter4.w) 
+float4 Parameter5; // (Y_Axis_UV_Rotation = Parameter5.x,Time_Multiplier_Y_Axis = Parameter5.yz,Y_Axis_UV_Mask_Low = Parameter5.w) 
+float4 Parameter6; // (Y_Axis_UV_Offset_Frequency = Parameter6.xy,Y_Axis_Offset_UV_Wave = Parameter6.zw) 
+float4 Parameter7; // (Y_Axis_UV_Mask_High = Parameter7.x,Y_UV_Mask_Distance_Offset = Parameter7.y,Z_Axis_UV_Offset_Low = Parameter7.z,Z_Axis_UV_Offset_High = Parameter7.w) 
+float4 Parameter8; // (Z_Axis_Vertex_Displacement = Parameter8.xyz,Z_Axis_UV_Rotation = Parameter8.w) 
+float4 Parameter9; // (Time_Multiplier_Z_Axis = Parameter9.xy,Z_Axis_UV_Offset_Frequency = Parameter9.zw) 
+float4 Parameter10; // (Z_Axis_Offset_UV_Wave = Parameter10.xy,Z_Axis_UV_Mask_Low = Parameter10.z,Z_Axis_UV_Mask_High = Parameter10.w) 
+float3 Parameter11; // (Z_UV_Mask_Distance_Offset = Parameter11.x,Wind_Global_Intensity = Parameter11.yz) 
+sampler2D Diffuse_Texture;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants & Structures
+/////////////////////////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    
+};
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    // Dummy slot for unused "CharacterInking". DX9 doesn't like have gaps in the MRT output
+    float4 m_DummyColorOutput: COLOR1;
+#endif
+    float4 m_BloomColor : COLOR2; // the bloom color is always in slot 2 of the MRT. We don't write to slot 1
+#endif
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    float3 screenSpacePerspDivide = interpolants.vScreenSpaceUV.xyz / interpolants.vScreenSpaceUV.w;
+    float2 screenSpaceUV = screenSpacePerspDivide.xy;
+    float screenSpaceDepth = screenSpacePerspDivide.z;
+    screenSpaceUV *= 0.5f;
+    screenSpaceUV += 0.5f;
+#ifndef IS_OPENGL
+    screenSpaceUV.y = 1.0f - screenSpaceUV.y;
+#else
+    // OpenGL clip space is -1 to 1 on Z but we want Z in in the 0-1 range to be
+    // able to sample the depth texture if necessasry
+    screenSpaceDepth = (screenSpaceDepth * 0.5f) + 0.5f;
+#endif
+
+#endif
+
+#ifdef FEATURE_BAKED_PAINT
+    // we set up this variable so node graphs can use the snippet for it
+    float2 bakedTerrainPaintUVs = interpolants.m_Texcoord.zw * BAKED_PAINT_UV_SCALE_BIAS.xy;
+    bakedTerrainPaintUVs += BAKED_PAINT_UV_SCALE_BIAS.zw;
+#endif
+
+    float2 defaultUVs = interpolants.m_Texcoord.xy;
+
+    float3 worldNormalIn = normalize(interpolants.m_WorldNormalAndHeight.xyz);
+    float worldHeight = interpolants.m_WorldNormalAndHeight.w;
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float3 worldPosition = float3(interpolants.m_WorldPositionXZ.x, worldHeight, interpolants.m_WorldPositionXZ.y);
+#endif
+#ifdef FEATURE_VERTEX_COLOR
+     float4 vColorIn0 = interpolants.m_VertexColor;
+#endif
+
+#ifdef FEATURE_TANGENT
+    // plugging something into TANGENT_SPACE_NORMAL defines FEATURE_TANGENT
+    
+    float3 tangentSpaceNormal =  float3(0.0,0.0,1) ;
+
+    float3 worldTangent = normalize(interpolants.m_WorldTangent.xyz);
+    float3 worldBinormal = cross(worldNormalIn, worldTangent) * interpolants.m_WorldTangent.w;
+    float3x3 tangentBasis = float3x3(worldTangent, worldBinormal, worldNormalIn);
+
+    worldNormalIn = mul(tangentSpaceNormal, tangentBasis);
+
+#endif
+    
+    float3 worldNormal =  worldNormalIn;
+
+
+
+#ifndef LOW_QUALITY_MODE
+    float3 viewDirection = normalize(vCamera - worldPosition);
+#endif
+
+    float var138 = Parameter3.x; // X_Axis_UV_Mask_Low
+    float var139 = Parameter3.y; // X_Axis_UV_Mask_High
+    float var140 = Parameter3.z; // X_UV_Mask_Distance_Offset
+    float2 var141;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var141 = result;
+    }
+    float var142 = var141.x; // Mask
+    float var143 = var141.y; // Mask
+    
+    #if X_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: X_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var144 =  var142;
+    #else
+        float var144 =  var143;
+    #endif
+    
+    float var145 = distance(var140,var144); // Distance
+    float var146 = smoothstep(var138, var139, var145); // smoothstep
+    float var147 = saturate(var146); // saturate
+    float var148;
+    { // (OneMinus)
+    float input =var147;
+    float result = 1.0f - input;
+    var148 = result;
+    }
+    
+    #if X_AXIS_UV_MASK_DIRECTION_INVERT // STATIC_SWITCH: X_AXIS_UV_MASK_DIRECTION_INVERT
+        float var149 =  var148;
+    #else
+        float var149 =  var147;
+    #endif
+    
+    float4 var150 = float4(var149,var149,var149,var149); // Splat
+    float var151 = Parameter5.w; // Y_Axis_UV_Mask_Low
+    float var152 = Parameter7.x; // Y_Axis_UV_Mask_High
+    float var153 = Parameter7.y; // Y_UV_Mask_Distance_Offset
+    float2 var154;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var154 = result;
+    }
+    float var155 = var154.x; // Mask
+    float var156 = var154.y; // Mask
+    
+    #if Y_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: Y_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var157 =  var155;
+    #else
+        float var157 =  var156;
+    #endif
+    
+    float var158 = distance(var153,var157); // Distance
+    float var159 = smoothstep(var151, var152, var158); // smoothstep
+    float var160 = saturate(var159); // saturate
+    float var161;
+    { // (OneMinus)
+    float input =var160;
+    float result = 1.0f - input;
+    var161 = result;
+    }
+    
+    #if Y_AXIS_UV_MASK_DIRECTION_INVERT // STATIC_SWITCH: Y_AXIS_UV_MASK_DIRECTION_INVERT
+        float var162 =  var161;
+    #else
+        float var162 =  var160;
+    #endif
+    
+    float4 var163 = float4(var162,var162,var162,var162); // Splat
+    float var164 = Parameter10.z; // Z_Axis_UV_Mask_Low
+    float var165 = Parameter10.w; // Z_Axis_UV_Mask_High
+    float var166 = Parameter11.x; // Z_UV_Mask_Distance_Offset
+    float2 var167;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var167 = result;
+    }
+    float var168 = var167.x; // Mask
+    float var169 = var167.y; // Mask
+    
+    #if Z_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: Z_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var170 =  var168;
+    #else
+        float var170 =  var169;
+    #endif
+    
+    float var171 = distance(var166,var170); // Distance
+    float var172 = smoothstep(var164, var165, var171); // smoothstep
+    float var173 = saturate(var172); // saturate
+    float var174;
+    { // (OneMinus)
+    float input =var173;
+    float result = 1.0f - input;
+    var174 = result;
+    }
+    
+    #if Z_AXIS_UV_MASK_DIRECTION_INVERT // STATIC_SWITCH: Z_AXIS_UV_MASK_DIRECTION_INVERT
+        float var175 =  var174;
+    #else
+        float var175 =  var173;
+    #endif
+    
+    float4 var176 = float4(var175,var175,var175,var175); // Splat
+    float var177 = Parameter7.z; // Z_Axis_UV_Offset_Low
+    float var178 = Parameter7.w; // Z_Axis_UV_Offset_High
+    float2 var179;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var179 = result;
+    }
+    float2 var180 = float2(0.5,0.5); // Float2Literal
+    float var181 = Parameter8.w; // Z_Axis_UV_Rotation
+    float2 var182;
+    { // (UVRotation)
+    float2 uvInput = var179;
+    float2 uvPivot = var180;
+    float RotAngle = var181 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var182 = result;
+    }
+    float var183 = var182.x; // Mask
+    float var184 = var182.y; // Mask
+    
+    #if Z_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: Z_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var185 =  var183;
+    #else
+        float var185 =  var184;
+    #endif
+    
+    float4 var186 = TIME; // Time
+    float2 var187 = Parameter9.xy; // Time_Multiplier_Z_Axis
+    float var188;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var187.x;
+    float y = var187.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var188 = result;
+    }
+    float var189 = var186.x * var188; // Multiply
+    float var190 = var185 + var189; // Add
+    float2 var191 = Parameter9.zw; // Z_Axis_UV_Offset_Frequency
+    float var192;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var191.x;
+    float y = var191.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var192 = result;
+    }
+    float var193 = var190 * var192; // Multiply
+    float2 var194 = Parameter10.xy; // Z_Axis_Offset_UV_Wave
+    float var195;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var194.x;
+    float y = var194.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var195 = result;
+    }
+    float var196 = var193 + var195; // Add
+    float var197 = sin(var196); // sin
+    float var198 = smoothstep(var177, var178, var197); // smoothstep
+    float var199 = saturate(var198); // saturate
+    float4 var200 = float4(var199,var199,var199,var199); // Splat
+    float var201 = Parameter3.w; // Y_Axis_UV_Offset_Low
+    float var202 = Parameter4.w; // Y_Axis_UV_Offset_High
+    float2 var203;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var203 = result;
+    }
+    float2 var204 = float2(0.5,0.5); // Float2Literal
+    float var205 = Parameter5.x; // Y_Axis_UV_Rotation
+    float2 var206;
+    { // (UVRotation)
+    float2 uvInput = var203;
+    float2 uvPivot = var204;
+    float RotAngle = var205 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var206 = result;
+    }
+    float var207 = var206.x; // Mask
+    float var208 = var206.y; // Mask
+    
+    #if Y_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: Y_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var209 =  var207;
+    #else
+        float var209 =  var208;
+    #endif
+    
+    float4 var210 = TIME; // Time
+    float2 var211 = Parameter5.yz; // Time_Multiplier_Y_Axis
+    float var212;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var211.x;
+    float y = var211.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var212 = result;
+    }
+    float var213 = var210.x * var212; // Multiply
+    float var214 = var209 + var213; // Add
+    float2 var215 = Parameter6.xy; // Y_Axis_UV_Offset_Frequency
+    float var216;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var215.x;
+    float y = var215.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var216 = result;
+    }
+    float var217 = var214 * var216; // Multiply
+    float2 var218 = Parameter6.zw; // Y_Axis_Offset_UV_Wave
+    float var219;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var218.x;
+    float y = var218.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var219 = result;
+    }
+    float var220 = var217 + var219; // Add
+    float var221 = sin(var220); // sin
+    float var222 = smoothstep(var201, var202, var221); // smoothstep
+    float var223 = saturate(var222); // saturate
+    float4 var224 = float4(var223,var223,var223,var223); // Splat
+    float var225 = Parameter0.w; // X_Axis_UV_Offset_Low
+    float var226 = Parameter1.x; // X_Axis_UV_Offset_High
+    float2 var227;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var227 = result;
+    }
+    float2 var228 = float2(0.5,0.5); // Float2Literal
+    float var229 = Parameter1.y; // X_Axis_UV_Rotation
+    float2 var230;
+    { // (UVRotation)
+    float2 uvInput = var227;
+    float2 uvPivot = var228;
+    float RotAngle = var229 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var230 = result;
+    }
+    float var231 = var230.x; // Mask
+    float var232 = var230.y; // Mask
+    
+    #if X_AXIS_UV_MASK_DIRECTION_TOGGLE // STATIC_SWITCH: X_AXIS_UV_MASK_DIRECTION_TOGGLE
+        float var233 =  var231;
+    #else
+        float var233 =  var232;
+    #endif
+    
+    float4 var234 = TIME; // Time
+    float2 var235 = Parameter1.zw; // Time_Multiplier_X_Axis
+    float var236;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var235.x;
+    float y = var235.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var236 = result;
+    }
+    float var237 = var234.x * var236; // Multiply
+    float var238 = var233 + var237; // Add
+    float2 var239 = Parameter2.xy; // X_Axis_UV_Offset_Frequency
+    float var240;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var239.x;
+    float y = var239.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var240 = result;
+    }
+    float var241 = var238 * var240; // Multiply
+    float2 var242 = Parameter2.zw; // X_Axis_Offset_UV_Wave
+    float var243;
+    { // (FloatRandomize)
+    float3 mLoc = MESH_CENTER;
+    float factor = sin(mLoc.x + mLoc.y + mLoc.z);
+    float t = ( factor + 1 ) * 0.5;
+    float x = var242.x;
+    float y = var242.y;
+    float value = x * y;
+    float result = lerp(x, value,  t);
+    
+    
+    var243 = result;
+    }
+    float var244 = var241 + var243; // Add
+    float var245 = sin(var244); // sin
+    float var246 = smoothstep(var225, var226, var245); // smoothstep
+    float var247 = saturate(var246); // saturate
+    float4 var248 = float4(var247,var247,var247,var247); // Splat
+    float4 var249 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    
+    #if DEBUG_VIEW_X_OFFSET // STATIC_SWITCH: DEBUG_VIEW_X_OFFSET
+        float4 var250 =  var248;
+    #else
+        float4 var250 =  var249;
+    #endif
+    
+    
+    #if DEBUG_VIEW_Y_OFFSET // STATIC_SWITCH: DEBUG_VIEW_Y_OFFSET
+        float4 var251 =  var224;
+    #else
+        float4 var251 =  var250;
+    #endif
+    
+    
+    #if DEBUG_VIEW_Z_OFFSET // STATIC_SWITCH: DEBUG_VIEW_Z_OFFSET
+        float4 var252 =  var200;
+    #else
+        float4 var252 =  var251;
+    #endif
+    
+    
+    #if DEBUG_VIEW_UV_MASK_Z_AXIS // STATIC_SWITCH: DEBUG_VIEW_UV_MASK_Z_AXIS
+        float4 var253 =  var176;
+    #else
+        float4 var253 =  var252;
+    #endif
+    
+    
+    #if DEBUG_VIEW_UV_MASK_Y_AXIS // STATIC_SWITCH: DEBUG_VIEW_UV_MASK_Y_AXIS
+        float4 var254 =  var163;
+    #else
+        float4 var254 =  var253;
+    #endif
+    
+    
+    #if DEBUG_VIEW_UV_MASK_X_AXIS // STATIC_SWITCH: DEBUG_VIEW_UV_MASK_X_AXIS
+        float4 var255 =  var150;
+    #else
+        float4 var255 =  var254;
+    #endif
+    
+    float var256 = 1; // FloatLiteral
+    float4 var257 = float4(var255.xyz,var256); // Combine
+    
+    #if DEBUG_REMOVE_ALPHA // STATIC_SWITCH: DEBUG_REMOVE_ALPHA
+        float4 var258 =  var257;
+    #else
+        float4 var258 =  var255;
+    #endif
+    
+    
+    float4 color = var258;    
+    float4 var259 = tex2D(Diffuse_Texture, defaultUVs); // Diffuse_Texture
+    
+    color.a = var259.w;
+    float4 baseColor = color;
+
+#ifdef FEATURE_MASKED
+#ifdef DISCARD_ALPHA_TEXELS
+    if (color.a < 1.0f)
+    {
+        discard;
+    }
+#else
+    float var260 = 0.3; // FloatLiteral
+    
+    float alphaMaskValue = var260;
+    if (color.a < alphaMaskValue)
+    {
+        discard;
+    }
+#endif
+#endif
+
+    
+    float3 specularColor =  float3(0,0,0) ;
+    
+    float gloss =  0.0 ;
+    float specPower = exp2(10 * gloss + 1);
+
+    // Dynamic shadow
+#ifndef DISABLE_SHADOWS
+    float sunShadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC);
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+#else
+    float4 bakedShadow = float4(1,1,1,1);
+#endif
+
+    sunShadowMask = min(sunShadowMask, bakedShadow.a);
+
+    // the baked diffuse lighting from all point lights
+    float3 pointLightInfo = bakedShadow.rgb;
+
+#else   
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+    float sunShadowMask = bakedShadow.a;
+    float3 pointLightInfo = bakedShadow.rgb;
+#else
+    float sunShadowMask = 1.0f;
+    float3 pointLightInfo = float3(1,1,1);
+#endif
+
+#endif
+
+    float3 diffuseReflection = float3(0,0,0);
+    float3 specularReflection = float3(0,0,0);
+    float3 sunLightCol = SUN_LIGHT_COLOR;
+#ifdef CLOUD_SHADOWS
+    #ifdef CLOUDS_NEED_UV
+        float2 tc = interpolants.m_Clouds_TC.xy;
+    #else
+        float2 tc = interpolants.m_FoW_TC.xy;
+    #endif
+
+    float cloudStrengthR = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[0].xy + CloudsScaleBias[0].zw).r;
+    float cloudStrengthG = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[1].xy + CloudsScaleBias[1].zw).g;
+    float cloudStrengthB = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[2].xy + CloudsScaleBias[2].zw).b;
+	float cloudStrength = saturate(cloudStrengthR + cloudStrengthG + cloudStrengthB);
+	    sunLightCol = lerp(sunLightCol, CloudsSunColor, cloudStrength);
+#endif
+    float3 sunColor = sunLightCol * sunShadowMask;
+    float sunDot = dot(worldNormal, SUN_LIGHT_DIRECTION);
+    diffuseReflection += max(sunDot, 0.0f) * sunColor;
+
+    // low quality mode gets no sun spec
+#ifndef LOW_QUALITY_MODE
+    // half vector
+    float3 sunHalfAngle = normalize(SUN_LIGHT_DIRECTION_FOR_SPEC + viewDirection);
+    float sunSpecularTerm = pow(abs(dot(worldNormal, sunHalfAngle)), specPower);
+    sunSpecularTerm *= step(0.0f, sunDot);
+
+    specularReflection += specularColor * sunColor * sunSpecularTerm;
+#endif
+
+    // add the diffuse contribution we baked    
+    diffuseReflection += pointLightInfo * LIGHT_MAP_COLOR_SCALE;
+
+    
+    float3 emissiveColor =  float3(0,0,0) ;
+
+#ifdef NO_BAKED_LIGHTING
+
+    // Dynamic shadow, no baked lighting
+    // using the shadow color complement
+#ifndef DISABLE_SHADOWS
+    float3 shadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC)*SHADOW_COLOR_COMPLEMENT + SHADOW_COLOR; // i.e. lerp(SHADOW_COLOR, white, sampledValue)
+    color.rgb *= shadowMask;
+#endif
+
+#else // NO_BAKED_LIGHTING
+    color.rgb *= diffuseReflection;
+    color.rgb += specularReflection;
+#endif
+
+
+#ifdef DISABLE_DEPTH_FOG
+    // normally we have the fog modulate the emissive somewhat.
+    // But if we turn off fog, we still want the emissive contribution
+    color.rgb += emissiveColor;
+#else
+#ifndef LOW_QUALITY_MODE    
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    // these constants correct for the fact that the exponentional fog calcs don't actually get completely fogged or unfogged
+    float fogFactor = saturate(((1.0f / exp(fDist * 2.0f)) - 0.13533528323) * 1.15651764274);
+    float RMfogFactor = saturate(ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.w * fogFactor - 1.0f);
+    
+    float3 fogColor = lerp(ENV_FOG_COLOR, ENV_FOG_ALT_COLOR, fogFactor);
+    color.rgb = lerp(color.rgb, fogColor.rgb, fogFactor);
+    color.rgb += emissiveColor * (1 - RMfogFactor);
+#else
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    float RMfogFactor = saturate(fDist*fDist + ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.z);
+
+    float3 fogColor = lerp(ENV_FOG_ALT_COLOR, ENV_FOG_COLOR, fDist);
+    color.rgb = lerp( fogColor.rgb,color.rgb, fDist);
+    color.rgb += emissiveColor * RMfogFactor;
+    //color.rgb += emissiveColor;
+#endif   
+#endif
+
+    // Fog of war
+#ifndef DISABLE_FOW
+    #ifdef FOW_FADE_TO_FOGGED
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardFogged(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #else
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardClear(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #endif
+
+    #ifdef PREMULTIPLIED_ALPHA
+        // to deal with cases where we are using premultiplied alpha
+        // we need to also multiply the fowFactors by alpha so we don't get
+        // strange brightening on the edges
+        fowFactors.rgb *= color.a;
+    #endif
+        // Blend between the computed color of this point on the map and the fog color.
+        color.rgb = lerp(fowFactors.rgb, color.rgb, fowFactors.a);
+#endif
+    color.rgb = ApplyMipColorsVisualization(color.rgb, interpolants.m_Texcoord.xy);
+
+
+
+    FRAGMENT fragment;
+    fragment.m_Color0 = color;
+   
+
+#ifdef MRT_SUPPORTED
+    
+    float bloomAlphaOverride =  1.0f;
+
+    #if defined(FEATURE_BLOOM) && !defined(LOW_QUALITY_MODE)
+        
+        float3 bloomColor =  float3(0,0,0) ;
+        #ifndef DISABLE_DEPTH_FOG
+            bloomColor *=  (1 - RMfogFactor);
+        #endif
+        fragment.m_BloomColor = float4(bloomColor, bloomAlphaOverride);
+    #else
+        fragment.m_BloomColor = float4(0,0,0, bloomAlphaOverride);
+    #endif
+#endif
+
+#ifdef SHOW_LIGHTING
+    fragment.m_Color0.rgb = diffuseReflection + specularReflection + emissiveColor;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    fragment.m_Color0 = baseColor;
+#endif
+
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    fragment.m_DummyColorOutput = float4(0,0,0,0);
+#endif
+#endif
+
+    
+
+    return fragment;
+}

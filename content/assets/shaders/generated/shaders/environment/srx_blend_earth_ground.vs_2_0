@@ -1,0 +1,213 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////////////////////////////
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_MATRIX_INV; // used if particular snippets are used and optimized out if not
+float3 MESH_CENTER;
+
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+    float3 m_Normal         : X3D_VSIN_NORMAL;
+    float2 m_Texcoord       : X3D_VSIN_TEXCOORD0;
+    
+    
+#ifdef FEATURE_TANGENT
+    float4 m_Tangent : X3D_VSIN_TEXCOORD6;
+#endif
+    // if the vertex color is used in either the vertex shader or pixel shader
+    // we need the input
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 m_Color : X3D_VSIN_COLOR0;
+#endif
+#if defined(NEED_ATLAS_UVS) || defined(CAPTURE_DIFFUSE)
+    float2 m_AtlasTexcoord  : X3D_VSIN_TEXCOORD7;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float4 interp_0 : TEXCOORD_INTERP;
+};
+
+float4 Parameter0; // (Decal_Transition_Factor = Parameter0.x,UV_Rotation_Center = Parameter0.yz,UV_Rotation = Parameter0.w) 
+float3 Parameter1; // (Decal_UV_Tile = Parameter1.x,UV_Offset = Parameter1.yz) 
+float2 Parameter2; // (UV_Translate = Parameter2.xy) 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.m_Texcoord;
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float3 worldNormal = normalize(mul(float4(vertex.m_Normal,0), WORLD_MATRIX).xyz);
+
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.m_Color;
+#endif
+
+
+    
+    localPosition.xyz +=  float3(0,0,0) ;
+
+    float3 worldPosition = mul(localPosition, WORLD_MATRIX).xyz;
+    
+    worldPosition.xyz +=  float3(0,0,0) ;
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(worldPosition, 1.0f), VIEW_PROJECTION_MATRIX);
+
+#ifdef FEATURE_SCREENSPACE_UV
+    interpolants.vScreenSpaceUV = interpolants.m_Position.xyzw;
+#endif
+
+    interpolants.m_Texcoord.xy = vertex.m_Texcoord;
+
+#if defined(NEED_ATLAS_UVS)
+    interpolants.m_Texcoord.zw = vertex.m_AtlasTexcoord;
+#endif
+
+    interpolants.m_WorldNormalAndHeight = float4(worldNormal, worldPosition.y);
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    interpolants.m_WorldPositionXZ = worldPosition.xz;
+#endif
+
+#ifdef FEATURE_TANGENT
+    float3 worldTangent = normalize(mul(float4(vertex.m_Tangent.xyz,0), WORLD_MATRIX).xyz);
+    interpolants.m_WorldTangent = float4(worldTangent, vertex.m_Tangent.w);
+#endif
+
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(float4(worldPosition,1), SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+#ifndef DISABLE_FOW
+        // Fog of war texture coordinates
+    #ifdef FOW_FADE_TO_FOGGED
+        // the height value we need for fading to fogged is in w, not z
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyw;
+    #else
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyz;
+    #endif
+#endif
+#ifdef CLOUDS_NEED_UV
+     interpolants.m_Clouds_TC = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+#endif
+
+#ifdef FEATURE_VERTEX_COLOR
+    interpolants.m_VertexColor = vertex.m_Color;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    interpolants.m_Position = float4(vertex.m_AtlasTexcoord * 2.0f - 1.0f, 0.0f, 1.0f);
+    DoDX9HalfPixelAdjust(interpolants.m_Position);
+#endif
+
+    float2 var171 = float2(0.5,0.5); // Float2Literal
+    float2 var172 = float2(-0.5,-0.5); // Float2Literal
+    float2 var173;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var173 = result;
+    }
+    float2 var174 = Parameter0.yz; // UV_Rotation_Center
+    float var175 = Parameter0.w; // UV_Rotation
+    float2 var176;
+    { // (UVRotation)
+    float2 uvInput = var173;
+    float2 uvPivot = var174;
+    float RotAngle = var175 * -1.0;
+    float SinRot = sin(RotAngle);
+    float CosRot = cos(RotAngle);
+    float2 UVCenter = ( uvPivot * -1) + uvInput;
+    float xDot = dot( UVCenter, float2( CosRot, ( SinRot * -1.0 ) ) );
+    float yDot = dot( UVCenter, float2( SinRot, CosRot ) );
+    float2 UVRot = float2( xDot, yDot );
+    float2 result =  uvPivot + UVRot;
+    var176 = result;
+    }
+    float2 var177 = var172 + var176; // Add
+    float var178 = Parameter1.x; // Decal_UV_Tile
+    float2 var179 = var177 * var178; // Multiply
+    float2 var180 = var171 + var179; // Add
+    float2 var181 = Parameter1.yz; // UV_Offset
+    float2 var182 = Parameter2.xy; // UV_Translate
+    float2 var183 = var181 + var182; // Add
+    float2 var184 = var180 + var183; // Add
+    interpolants.interp_0.xy = var184;
+    float2 var185;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var185 = result;
+    }
+    float2 var186 = float2(1,1); // Float2Literal
+    float2 var187 = var185 * var186; // Multiply
+    float4 var188 = TIME; // Time
+    float2 var189 = float2(0.35,0.05); // Float2Literal
+    float2 var190;
+    { // (Panner)
+    float2 uvInput = var187;
+    float time = var188.x;
+    float2 speed = var189;
+    float2 scroll = float2( ( time * speed.x + uvInput.x ), ( time * speed.y + uvInput.y ));
+    float2 result = scroll;
+    var190 = result;
+    }
+    interpolants.interp_0.zw = var190;
+    
+    
+
+    return interpolants;
+}

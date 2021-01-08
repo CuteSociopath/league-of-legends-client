@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sowthewind"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_aery_ally"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_aery_tar"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Sorcery/SummonAery/SummonAeryModelExists.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_aery_hide"}}, 
+}

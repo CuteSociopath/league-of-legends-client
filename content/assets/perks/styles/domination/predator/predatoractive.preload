@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/Predator/PredatorActiveVisualMax.lua"}}, 
+{Function=BBPreloadModule, Params={Name="Global.AdaptiveDamageModule"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/Predator/PredatorSpotted.lua"}}, 
+}

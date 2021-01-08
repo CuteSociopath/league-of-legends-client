@@ -1,0 +1,156 @@
+#include "DATA/Shaders/HLSL/DeathScreen.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+
+#include "DATA/Shaders/HLSL/GAMMA/ApplyBloom.hls"
+#include "DATA/Shaders/HLSL/GAMMA/ApplyGamma.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+////////////////////////////////////////////////////////////////
+
+
+float4 Parameter0; // (Distortion_Intensity = Parameter0.x,Vignette_Size = Parameter0.y,Distortion_Scale = Parameter0.zw) 
+float3 Parameter1; // (Distortion_ScrollRate = Parameter1.xy,Desaturation_Blend = Parameter1.z) 
+float4 Parameter2; // (Inner_Color = Parameter2.xyzw) 
+float4 Parameter3; // (Outer_Color = Parameter3.xyzw) 
+sampler2D Diffuse_Texture;
+
+
+
+struct INTERPOLANTS
+{
+    float4 position   : POSITION;
+    // Input texture coordinate used for back buffer
+    float2 texcoord0  : TEXCOORD_INTERP;
+
+    
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float2 originalUVs = interpolants.texcoord0;
+    float2 defaultUVs = interpolants.texcoord0;
+
+    // allow manipulation of UVs used to look up textures
+    float2 var0 = float2(0,0); // Float2Literal
+    float var1 = Parameter0.x; // Distortion_Intensity
+    float2 var2;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var2 = result;
+    }
+    float2 var3;
+    { // (simpleRemapFloat2)
+    float2 input = var2;
+    float2 result = float2(input.x*2-1, input.y*2-1);
+    var3 = result;
+    }
+    float var4 = length(var3); // length
+    float var5 = Parameter0.y; // Vignette_Size
+    float var6 = pow(var4,var5); // Pow
+    float var7 = var1 * var6; // Multiply
+    float2 var8;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var8 = result;
+    }
+    float2 var9 = Parameter0.zw; // Distortion_Scale
+    float2 var10 = var8 * var9; // Multiply
+    float4 var11 = TIME; // Time
+    float2 var12 = Parameter1.xy; // Distortion_ScrollRate
+    float2 var13;
+    { // (Panner)
+    float2 uvInput = var10;
+    float time = var11.x;
+    float2 speed = var12;
+    float2 scroll = float2( ( time * speed.x + uvInput.x ), ( time * speed.y + uvInput.y ));
+    float2 result = scroll;
+    var13 = result;
+    }
+    float4 var14 = tex2D(Diffuse_Texture, var13); // Diffuse_Texture
+    float2 var15 = var14.xy; // Mask
+    float2 var16 = var7 * var15; // Multiply
+    
+    #ifdef LOW_QUALITY_MODE
+        float2 var17 =  var0;
+    #else
+        float2 var17 =  var16;
+    #endif
+    
+    
+    #if DISTORT // STATIC_SWITCH: DISTORT
+        float2 var18 =  var17;
+    #else
+        float2 var18 =  var0;
+    #endif
+    
+    
+    defaultUVs += var18;
+
+#ifdef BLEND
+    defaultUVs = lerp(originalUVs, defaultUVs, POST_EFFECT_STRENGTH);
+#endif
+    // Read the texel from the back buffer. By default, it just samples the back buffer copy
+    // at the offset UVs, but if we want to do color tweaking or
+    // etc we can
+    float4 var19 = Parameter2.xyzw; // Inner_Color
+    float4 var20 = Parameter3.xyzw; // Outer_Color
+    float var21 = saturate(var6); // saturate
+    float4 var22 = lerp(var19, var20, var21); // Lerp
+    float4 var23;
+    { // (PostProcessBackBuffer)
+    float4 result = tex2D(SAMPLER_BACK_BUFFER_COPY, defaultUVs);
+    var23 = result;
+    }
+    float3 var24;
+    { // (PixelLuminance)
+    float3 input = var23.xyz;
+    float3 lumTable = float3( 0.3, 0.59, 0.11 );
+    float Lum = dot( input, lumTable );
+    float3 result = float3(Lum,Lum,Lum);
+    var24 = result;
+    }
+    float var25 = Parameter1.z; // Desaturation_Blend
+    float4 var26 = lerp(var23, float4(var24, 1.0f), var25); // Lerp
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var27 =  var23;
+    #else
+        float4 var27 =  var26;
+    #endif
+    
+    float4 var28 = var22 * var27; // Multiply
+    
+    float4 texelBackBuffer = var28;
+
+#ifdef BLEND
+    float4 originalBackBuffer = tex2D(SAMPLER_BACK_BUFFER_COPY, originalUVs);
+    texelBackBuffer = lerp(originalBackBuffer, texelBackBuffer, POST_EFFECT_STRENGTH);
+#endif
+    texelBackBuffer.rgb = ApplyBloom(texelBackBuffer.rgb, defaultUVs);
+    texelBackBuffer.rgb = ApplyGamma(texelBackBuffer.rgb);
+
+    float4 ret = texelBackBuffer;
+    // Apply color overrides (e.g. Teemo Stealth)
+    ret.rgb = ret.rgb * (1.0f - COLOR_OVERRIDE_PARAMS.a) + COLOR_OVERRIDE_PARAMS.rgb;
+
+#ifdef DEATH_EFFECT
+    ret.rgb = GetSaturatedColor(ret.rgb);
+#endif
+
+    // Return the converted color    
+    
+    return ret;
+}

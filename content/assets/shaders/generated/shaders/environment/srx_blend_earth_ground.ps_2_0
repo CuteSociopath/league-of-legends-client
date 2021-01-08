@@ -1,0 +1,740 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_PS.hls"
+#include "DATA/Shaders/HLSL/ShadowMap/pcf1.hls"
+#include "DATA/Shaders/HLSL/MipLevels.hls"
+
+// Texture for dynamic shadows
+sampler2D BAKED_SHADOW;
+float4 BAKED_SHADOW_SCALE_AND_BIAS;
+float3 MESH_CENTER;
+
+#ifdef FEATURE_BAKED_PAINT
+float4 BAKED_PAINT_UV_SCALE_BIAS;
+#endif
+
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING)
+#define ENABLE_BAKED_SHADOW
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+
+float4 Parameter0; // (Decal_Transition_Factor = Parameter0.x,UV_Rotation_Center = Parameter0.yz,UV_Rotation = Parameter0.w) 
+sampler2D DiffuseTexture;
+sampler2D Decal_Texture;
+sampler2D Noise_Texture;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants & Structures
+/////////////////////////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float4 interp_0 : TEXCOORD_INTERP;
+};
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    // Dummy slot for unused "CharacterInking". DX9 doesn't like have gaps in the MRT output
+    float4 m_DummyColorOutput: COLOR1;
+#endif
+    float4 m_BloomColor : COLOR2; // the bloom color is always in slot 2 of the MRT. We don't write to slot 1
+#endif
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    float3 screenSpacePerspDivide = interpolants.vScreenSpaceUV.xyz / interpolants.vScreenSpaceUV.w;
+    float2 screenSpaceUV = screenSpacePerspDivide.xy;
+    float screenSpaceDepth = screenSpacePerspDivide.z;
+    screenSpaceUV *= 0.5f;
+    screenSpaceUV += 0.5f;
+#ifndef IS_OPENGL
+    screenSpaceUV.y = 1.0f - screenSpaceUV.y;
+#else
+    // OpenGL clip space is -1 to 1 on Z but we want Z in in the 0-1 range to be
+    // able to sample the depth texture if necessasry
+    screenSpaceDepth = (screenSpaceDepth * 0.5f) + 0.5f;
+#endif
+
+#endif
+
+#ifdef FEATURE_BAKED_PAINT
+    // we set up this variable so node graphs can use the snippet for it
+    float2 bakedTerrainPaintUVs = interpolants.m_Texcoord.zw * BAKED_PAINT_UV_SCALE_BIAS.xy;
+    bakedTerrainPaintUVs += BAKED_PAINT_UV_SCALE_BIAS.zw;
+#endif
+
+    float2 defaultUVs = interpolants.m_Texcoord.xy;
+
+    float3 worldNormalIn = normalize(interpolants.m_WorldNormalAndHeight.xyz);
+    float worldHeight = interpolants.m_WorldNormalAndHeight.w;
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float3 worldPosition = float3(interpolants.m_WorldPositionXZ.x, worldHeight, interpolants.m_WorldPositionXZ.y);
+#endif
+#ifdef FEATURE_VERTEX_COLOR
+     float4 vColorIn0 = interpolants.m_VertexColor;
+#endif
+
+#ifdef FEATURE_TANGENT
+    // plugging something into TANGENT_SPACE_NORMAL defines FEATURE_TANGENT
+    
+    float3 tangentSpaceNormal =  float3(0.0,0.0,1) ;
+
+    float3 worldTangent = normalize(interpolants.m_WorldTangent.xyz);
+    float3 worldBinormal = cross(worldNormalIn, worldTangent) * interpolants.m_WorldTangent.w;
+    float3x3 tangentBasis = float3x3(worldTangent, worldBinormal, worldNormalIn);
+
+    worldNormalIn = mul(tangentSpaceNormal, tangentBasis);
+
+#endif
+    
+    float3 worldNormal =  worldNormalIn;
+
+
+
+#ifndef LOW_QUALITY_MODE
+    float3 viewDirection = normalize(vCamera - worldPosition);
+#endif
+
+    float4 var0 = tex2D(DiffuseTexture, defaultUVs); // DiffuseTexture
+    float2 var1 = interpolants.interp_0.xy; // EvaluateInVertexShader
+    float4 var2 = tex2D(Decal_Texture, var1); // Decal_Texture
+    float4 var3 = lerp(var0, var2, var2.w); // Lerp
+    float2 var4;
+    { // (TransitionFactorAndDirection)
+    #ifdef ENV_TRANSITION
+    float2 result = TransitionFactorAndDirection;
+    #else
+    float2 result = float2(0.0f, 0.0f);
+    #endif
+    
+    var4 = result;
+    }
+    float var5 = var4.x; // Mask
+    float4 var6 = lerp(var0, var3, var5); // Lerp
+    
+    #if ENABLE_GROUND_DECAL // STATIC_SWITCH: ENABLE_GROUND_DECAL
+        float4 var7 =  var6;
+    #else
+        float4 var7 =  var0;
+    #endif
+    
+    float4 var8 = tex2D(DiffuseTexture, defaultUVs); // DiffuseTexture
+    float4 var9 = tex2D(DiffuseTexture, defaultUVs); // DiffuseTexture
+    
+    #if ENABLE_GROUND_DECAL // STATIC_SWITCH: ENABLE_GROUND_DECAL
+        float4 var10 =  var3;
+    #else
+        float4 var10 =  var9;
+    #endif
+    
+    float4 var11 = float4(0.02,0,-0.04,0.3); // Float4Literal
+    float4 var12 = var10 + var11; // Add
+    float4 var13;
+    { // (TerrainBlendMap)
+    float2 uvs = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+    float4 result = tex2D(TERRAIN_BLEND, uvs);
+    
+    var13 = result;
+    }
+    float var14 = var13.x; // Mask
+    float var15 = var11.w * var14; // Multiply
+    float4 var16 = lerp(var10, var12, var15); // Lerp
+    
+    #if DISABLE_GROUND_TINT // STATIC_SWITCH: DISABLE_GROUND_TINT
+        float4 var17 =  var10;
+    #else
+        float4 var17 =  var16;
+    #endif
+    
+    float var18 = Parameter0.x; // Decal_Transition_Factor
+    float var19 = var5 * var18; // Multiply
+    float var20 = saturate(var19); // saturate
+    float4 var21 = lerp(var8, var17, var20); // Lerp
+    
+    #if DISABLE_GROUND_TINT // STATIC_SWITCH: DISABLE_GROUND_TINT
+        float4 var22 =  var8;
+    #else
+        float4 var22 =  var21;
+    #endif
+    
+    float4 var23 = float4(0.85098,0.65098,0.419608,1); // ColorLiteral
+    float2 var24 = float2(0.2,1.25); // Float2Literal
+    float2 var25 = interpolants.interp_0.zw; // EvaluateInVertexShader
+    float4 var26 = tex2D(Noise_Texture, var25); // Noise_Texture
+    float var27 = 15; // FloatLiteral
+    float var28 = 0.2; // FloatLiteral
+    float var29 = 0.001; // FloatLiteral
+    float3 var30;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var30 = result;
+    }
+    float2 var31 = var30.xz; // Mask
+    float2 var32 = var29 * var31; // Multiply
+    float2 var33 = var28 * var32; // Multiply
+    float4 var34 = tex2D(Noise_Texture, var33); // Noise_Texture
+    float4 var35 = TIME; // Time
+    float var36 = -0.2; // FloatLiteral
+    float var37 = var35.x * var36; // Multiply
+    float var38 = var34.y + var37; // Add
+    float var39 = var27 * var38; // Multiply
+    float var40 = sin(var39); // sin
+    float var41;
+    { // (simpleRemap)
+    float input = var40;
+    float result = ( input + 1 ) * 0.5;
+    var41 = result;
+    }
+    float var42 = var26.z * var41; // Multiply
+    float var43 = max(var26.x,var42); // max
+    float var44 = saturate(var43); // saturate
+    float var45 = lerp(var24.x, var24.y, var44); // Lerp
+    float4 var46 = var23 * var45; // Multiply
+    float4 var47;
+    { // (TerrainBlendMap)
+    float2 uvs = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+    float4 result = tex2D(TERRAIN_BLEND, uvs);
+    
+    var47 = result;
+    }
+    float var48 = var47.x; // Mask
+    float2 var49 = float2(0,0.5); // Float2Literal
+    float var50 = 2; // FloatLiteral
+    float2 var51 = float2(-400,150); // Float2Literal
+    float3 var52;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var52 = result;
+    }
+    float3 var53 = float3(7500,0,7500); // Float3Literal
+    float3 var54 = var52 - var53; // Subtract
+    float var55 = length(var54); // length
+    float var56 = smoothstep(var51.x, var55, var51.y); // smoothstep
+    float var57 = var50 * var56; // Multiply
+    float var58 = saturate(var57); // saturate
+    float var59;
+    { // (OneMinus)
+    float input =var58;
+    float result = 1.0f - input;
+    var59 = result;
+    }
+    float2 var60 = float2(0.2,0.5); // Float2Literal
+    float var61 = 0; // FloatLiteral
+    float2 var62 = float2(5,25); // Float2Literal
+    float2 var63;
+    { // (TransitionFactorAndDirection)
+    #ifdef ENV_TRANSITION
+    float2 result = TransitionFactorAndDirection;
+    #else
+    float2 result = float2(0.0f, 0.0f);
+    #endif
+    
+    var63 = result;
+    }
+    float var64 = var63.x; // Mask
+    float var65 = lerp(var62.x, var62.y, var64); // Lerp
+    float3 var66;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var66 = result;
+    }
+    float var67 = var66.x; // Mask
+    float var68 = var66.z; // Mask
+    float var69 = var67 + var68; // Add
+    float var70 = 0.01; // FloatLiteral
+    float var71 = var69 * var70; // Multiply
+    float var72 = sin(var71); // sin
+    float var73 = var65 * var72; // Multiply
+    
+    #ifdef LOW_QUALITY_MODE
+        float var74 =  var61;
+    #else
+        float var74 =  var73;
+    #endif
+    
+    float3 var75;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var75 = result;
+    }
+    float3 var76 = float3(7666,0,3936); // Float3Literal
+    float3 var77 = var75 - var76; // Subtract
+    float var78 = length(var77); // length
+    float var79 = var74 + var78; // Add
+    float var80 = 8500; // FloatLiteral
+    float2 var81;
+    { // (TransitionFactorAndDirection)
+    #ifdef ENV_TRANSITION
+    float2 result = TransitionFactorAndDirection;
+    #else
+    float2 result = float2(0.0f, 0.0f);
+    #endif
+    
+    var81 = result;
+    }
+    float var82 = var81.x; // Mask
+    float var83 = var80 * var82; // Multiply
+    float var84 = step(var79,var83); // step
+    float var85;
+    { // (OneMinus)
+    float input =var84;
+    float result = 1.0f - input;
+    var85 = result;
+    }
+    float var86 = -800; // FloatLiteral
+    float var87 = var86 + var83; // Add
+    float var88 = -400; // FloatLiteral
+    float var89 = var79 + var88; // Add
+    float var90 = smoothstep(var87, var83, var89); // smoothstep
+    float var91 = var90 * var84; // Multiply
+    float var92 = var85 + var91; // Add
+    float var93;
+    { // (OneMinus)
+    float input =var92;
+    float result = 1.0f - input;
+    var93 = result;
+    }
+    float3 var94 = float3(3886,0,8009); // Float3Literal
+    float3 var95 = var75 - var94; // Subtract
+    float var96 = length(var95); // length
+    float var97 = var96 + var74; // Add
+    float var98 = step(var97,var83); // step
+    float var99;
+    { // (OneMinus)
+    float input =var98;
+    float result = 1.0f - input;
+    var99 = result;
+    }
+    float var100 = var97 + var88; // Add
+    float var101 = smoothstep(var87, var83, var100); // smoothstep
+    float var102 = var98 * var101; // Multiply
+    float var103 = var99 + var102; // Add
+    float var104;
+    { // (OneMinus)
+    float input =var103;
+    float result = 1.0f - input;
+    var104 = result;
+    }
+    float var105 = max(var93,var104); // max
+    float3 var106 = float3(7020,0,10820); // Float3Literal
+    float3 var107 = var75 - var106; // Subtract
+    float var108 = length(var107); // length
+    float var109 = var108 + var74; // Add
+    float var110 = step(var109,var83); // step
+    float var111;
+    { // (OneMinus)
+    float input =var110;
+    float result = 1.0f - input;
+    var111 = result;
+    }
+    float var112 = var109 + var88; // Add
+    float var113 = smoothstep(var87, var83, var112); // smoothstep
+    float var114 = var113 * var110; // Multiply
+    float var115 = var111 + var114; // Add
+    float var116;
+    { // (OneMinus)
+    float input =var115;
+    float result = 1.0f - input;
+    var116 = result;
+    }
+    float var117 = max(var105,var116); // max
+    float3 var118;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var118 = result;
+    }
+    float3 var119 = float3(10967,0,6956); // Float3Literal
+    float3 var120 = var118 - var119; // Subtract
+    float var121 = length(var120); // length
+    float var122 = var121 + var74; // Add
+    float var123 = step(var122,var83); // step
+    float var124;
+    { // (OneMinus)
+    float input =var123;
+    float result = 1.0f - input;
+    var124 = result;
+    }
+    float var125 = var122 + var88; // Add
+    float var126 = smoothstep(var87, var83, var125); // smoothstep
+    float var127 = var126 * var123; // Multiply
+    float var128 = var124 + var127; // Add
+    float var129;
+    { // (OneMinus)
+    float input =var128;
+    float result = 1.0f - input;
+    var129 = result;
+    }
+    float var130 = max(var117,var129); // max
+    float3 var131 = float3(9827,-82,4401); // Float3Literal
+    float3 var132 = var118 - var131; // Subtract
+    float var133 = length(var132); // length
+    float var134 = var133 + var74; // Add
+    float var135 = step(var134,var83); // step
+    float var136;
+    { // (OneMinus)
+    float input =var135;
+    float result = 1.0f - input;
+    var136 = result;
+    }
+    float var137 = var134 + var88; // Add
+    float var138 = smoothstep(var87, var83, var137); // smoothstep
+    float var139 = var138 * var135; // Multiply
+    float var140 = var136 + var139; // Add
+    float var141;
+    { // (OneMinus)
+    float input =var140;
+    float result = 1.0f - input;
+    var141 = result;
+    }
+    float var142 = max(var130,var141); // max
+    float var143;
+    { // (OneMinus)
+    float input =var142;
+    float result = 1.0f - input;
+    var143 = result;
+    }
+    float var144 = smoothstep(var60.x, var60.y, var143); // smoothstep
+    float var145;
+    { // (OneMinus)
+    float input =var144;
+    float result = 1.0f - input;
+    var145 = result;
+    }
+    float var146 = var145 * var143; // Multiply
+    float var147 = var59 * var146; // Multiply
+    
+    #if MASK_FX_IN_MAP_CENTER // STATIC_SWITCH: MASK_FX_IN_MAP_CENTER
+        float var148 =  var147;
+    #else
+        float var148 =  var146;
+    #endif
+    
+    float var149 = saturate(var148); // saturate
+    float var150 = smoothstep(var49.x, var49.y, var149); // smoothstep
+    float var151 = var48 * var150; // Multiply
+    float var152;
+    { // (OneMinus)
+    float input =var5;
+    float result = 1.0f - input;
+    var152 = result;
+    }
+    float var153 = var151 * var152; // Multiply
+    float4 var154 = lerp(var22, var46, var153); // Lerp
+    float var155 = 1; // FloatLiteral
+    float4 var156 = float4(var154.xyz,var155); // Combine
+    
+    #ifdef LOW_QUALITY_MODE
+        float4 var157 =  var7;
+    #else
+        float4 var157 =  var156;
+    #endif
+    
+    float4 var158 = tex2D(DiffuseTexture, defaultUVs); // DiffuseTexture
+    float var159 = 15000; // FloatLiteral
+    float var160 = var159 * var82; // Multiply
+    float var161 = step(var134,var160); // step
+    float var162 = max(var84,var98); // max
+    float var163 = max(var162,var110); // max
+    float var164 = max(var163,var123); // max
+    float var165 = max(var164,var135); // max
+    
+    #ifdef LOW_QUALITY_MODE
+        float var166 =  var161;
+    #else
+        float var166 =  var165;
+    #endif
+    
+    float4 var167;
+    { // (TerrainTransition_Step)
+    float4 diffuseColorBlendingIn = var157;
+    float4 diffuseColorBlendingOut = var158;
+    
+    
+    float distanceToSpot = var166;
+    
+    
+    float4 diffuseColor = diffuseColorBlendingIn;
+    
+    #if ENV_TRANSITION
+    // if transitioning in, then if we're outside the circle, discard
+    if (TransitionFactorAndDirection.y == 0)
+    {
+        if( distanceToSpot == 0)
+        {
+            discard;
+        }
+    }
+    else
+    {
+        // if we're transitioning out, if we're inside the circle, discard
+        if( distanceToSpot == 1)
+        {
+            discard;
+        }
+        // use the blending out color
+        diffuseColor = diffuseColorBlendingOut;
+    }
+    #endif
+    
+    float4 result = diffuseColor;
+    
+    var167 = result;
+    }
+    
+    #if ENV_TRANSITION // STATIC_SWITCH: ENV_TRANSITION
+        float4 var168 =  var167;
+    #else
+        float4 var168 =  var17;
+    #endif
+    
+    float3 var169 = var168.xyz; // Mask
+    
+    float4 color = float4(var169, 1.0f);    
+    
+    color.a =  color.a ;
+    float4 baseColor = color;
+
+#ifdef FEATURE_MASKED
+#ifdef DISCARD_ALPHA_TEXELS
+    if (color.a < 1.0f)
+    {
+        discard;
+    }
+#else
+    float var170 = 0.3; // FloatLiteral
+    
+    float alphaMaskValue = var170;
+    if (color.a < alphaMaskValue)
+    {
+        discard;
+    }
+#endif
+#endif
+
+    
+    float3 specularColor =  float3(0,0,0) ;
+    
+    float gloss =  0.0 ;
+    float specPower = exp2(10 * gloss + 1);
+
+    // Dynamic shadow
+#ifndef DISABLE_SHADOWS
+    float sunShadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC);
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+#else
+    float4 bakedShadow = float4(1,1,1,1);
+#endif
+
+    sunShadowMask = min(sunShadowMask, bakedShadow.a);
+
+    // the baked diffuse lighting from all point lights
+    float3 pointLightInfo = bakedShadow.rgb;
+
+#else   
+#ifdef ENABLE_BAKED_SHADOW
+    float2 shdowMapUVs = interpolants.m_Texcoord.zw * BAKED_SHADOW_SCALE_AND_BIAS.xy;
+    shdowMapUVs += BAKED_SHADOW_SCALE_AND_BIAS.zw;
+    float4 bakedShadow = tex2D(BAKED_SHADOW, shdowMapUVs);
+    float sunShadowMask = bakedShadow.a;
+    float3 pointLightInfo = bakedShadow.rgb;
+#else
+    float sunShadowMask = 1.0f;
+    float3 pointLightInfo = float3(1,1,1);
+#endif
+
+#endif
+
+    float3 diffuseReflection = float3(0,0,0);
+    float3 specularReflection = float3(0,0,0);
+    float3 sunLightCol = SUN_LIGHT_COLOR;
+#ifdef CLOUD_SHADOWS
+    #ifdef CLOUDS_NEED_UV
+        float2 tc = interpolants.m_Clouds_TC.xy;
+    #else
+        float2 tc = interpolants.m_FoW_TC.xy;
+    #endif
+
+    float cloudStrengthR = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[0].xy + CloudsScaleBias[0].zw).r;
+    float cloudStrengthG = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[1].xy + CloudsScaleBias[1].zw).g;
+    float cloudStrengthB = tex2D(CLOUDS_TEXTURE, tc * CloudsScaleBias[2].xy + CloudsScaleBias[2].zw).b;
+	float cloudStrength = saturate(cloudStrengthR + cloudStrengthG + cloudStrengthB);
+	    sunLightCol = lerp(sunLightCol, CloudsSunColor, cloudStrength);
+#endif
+    float3 sunColor = sunLightCol * sunShadowMask;
+    float sunDot = dot(worldNormal, SUN_LIGHT_DIRECTION);
+    diffuseReflection += max(sunDot, 0.0f) * sunColor;
+
+    // low quality mode gets no sun spec
+#ifndef LOW_QUALITY_MODE
+    // half vector
+    float3 sunHalfAngle = normalize(SUN_LIGHT_DIRECTION_FOR_SPEC + viewDirection);
+    float sunSpecularTerm = pow(abs(dot(worldNormal, sunHalfAngle)), specPower);
+    sunSpecularTerm *= step(0.0f, sunDot);
+
+    specularReflection += specularColor * sunColor * sunSpecularTerm;
+#endif
+
+    // add the diffuse contribution we baked    
+    diffuseReflection += pointLightInfo * LIGHT_MAP_COLOR_SCALE;
+
+    
+    float3 emissiveColor =  float3(0,0,0) ;
+
+#ifdef NO_BAKED_LIGHTING
+
+    // Dynamic shadow, no baked lighting
+    // using the shadow color complement
+#ifndef DISABLE_SHADOWS
+    float3 shadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC)*SHADOW_COLOR_COMPLEMENT + SHADOW_COLOR; // i.e. lerp(SHADOW_COLOR, white, sampledValue)
+    color.rgb *= shadowMask;
+#endif
+
+#else // NO_BAKED_LIGHTING
+    color.rgb *= diffuseReflection;
+    color.rgb += specularReflection;
+#endif
+
+
+#ifdef DISABLE_DEPTH_FOG
+    // normally we have the fog modulate the emissive somewhat.
+    // But if we turn off fog, we still want the emissive contribution
+    color.rgb += emissiveColor;
+#else
+#ifndef LOW_QUALITY_MODE    
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    // these constants correct for the fact that the exponentional fog calcs don't actually get completely fogged or unfogged
+    float fogFactor = saturate(((1.0f / exp(fDist * 2.0f)) - 0.13533528323) * 1.15651764274);
+    float RMfogFactor = saturate(ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.w * fogFactor - 1.0f);
+    
+    float3 fogColor = lerp(ENV_FOG_COLOR, ENV_FOG_ALT_COLOR, fogFactor);
+    color.rgb = lerp(color.rgb, fogColor.rgb, fogFactor);
+    color.rgb += emissiveColor * (1 - RMfogFactor);
+#else
+    float fStart = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.x;
+    float fEnd = ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.y;
+    float fDist = smoothstep(fEnd, fStart, worldHeight);
+    float RMfogFactor = saturate(fDist*fDist + ENV_FOG_START_END_SCALE_EMISSIVE_REMAP.z);
+
+    float3 fogColor = lerp(ENV_FOG_ALT_COLOR, ENV_FOG_COLOR, fDist);
+    color.rgb = lerp( fogColor.rgb,color.rgb, fDist);
+    color.rgb += emissiveColor * RMfogFactor;
+    //color.rgb += emissiveColor;
+#endif   
+#endif
+
+    // Fog of war
+#ifndef DISABLE_FOW
+    #ifdef FOW_FADE_TO_FOGGED
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardFogged(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #else
+        float4 fowFactors = GetFogOfWarFactorsWithFadeTowardClear(interpolants.m_FoW_TC.xy, interpolants.m_FoW_TC.z);
+    #endif
+
+    #ifdef PREMULTIPLIED_ALPHA
+        // to deal with cases where we are using premultiplied alpha
+        // we need to also multiply the fowFactors by alpha so we don't get
+        // strange brightening on the edges
+        fowFactors.rgb *= color.a;
+    #endif
+        // Blend between the computed color of this point on the map and the fog color.
+        color.rgb = lerp(fowFactors.rgb, color.rgb, fowFactors.a);
+#endif
+    color.rgb = ApplyMipColorsVisualization(color.rgb, interpolants.m_Texcoord.xy);
+
+
+
+    FRAGMENT fragment;
+    fragment.m_Color0 = color;
+   
+
+#ifdef MRT_SUPPORTED
+    
+    float bloomAlphaOverride =  1.0f;
+
+    #if defined(FEATURE_BLOOM) && !defined(LOW_QUALITY_MODE)
+        
+        float3 bloomColor =  float3(0,0,0) ;
+        #ifndef DISABLE_DEPTH_FOG
+            bloomColor *=  (1 - RMfogFactor);
+        #endif
+        fragment.m_BloomColor = float4(bloomColor, bloomAlphaOverride);
+    #else
+        fragment.m_BloomColor = float4(0,0,0, bloomAlphaOverride);
+    #endif
+#endif
+
+#ifdef SHOW_LIGHTING
+    fragment.m_Color0.rgb = diffuseReflection + specularReflection + emissiveColor;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    fragment.m_Color0 = baseColor;
+#endif
+
+#ifdef MRT_SUPPORTED
+#ifdef IS_DX9
+    fragment.m_DummyColorOutput = float4(0,0,0,0);
+#endif
+#endif
+
+    
+
+    return fragment;
+}

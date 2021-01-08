@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="perks_predator_lead-in_red.troy", SkinID="-1"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/Predator/PredatorActive.lua"}}, 
+}

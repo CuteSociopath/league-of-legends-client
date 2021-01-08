@@ -1,0 +1,332 @@
+#include "DATA/Shaders/HLSL/SkinnedMesh/IOParam/IODefine_VS.hls"
+#include "DATA/Shaders/HLSL/Fog/Fog.hls"
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/Lighting/Lighting.hls"
+#include "DATA/Shaders/HLSL/SkinnedMesh/skinning.hls"
+
+#ifdef LOW_QUALITY_MODE
+    #define NO_LIGHTING
+    #define DISABLE_SHADOWS
+    #undef FOG_PIXELSHADER_BLEND
+#endif
+
+#if defined(MRT_SUPPORTED) && !defined(GENERATE_SHADOW_MAP)
+#define WRITE_MRT 1
+#endif
+
+
+float4 Parameter0; // (Wind_Speed_1 = Parameter0.x,Wind_Speed_2 = Parameter0.y,Gradient_Area = Parameter0.z,DissolveWidth = Parameter0.w) 
+float4 Parameter1; // (Wind_Direction = Parameter1.xyz,DissolveBias = Parameter1.w) 
+float4 Parameter3; // (tatto_Pissive = Parameter3.xyz,Fresnel_Range = Parameter3.w) 
+float4 Parameter4; // (tatto_Color = Parameter4.xyz,Fresnel_Intensity = Parameter4.w) 
+float4 Parameter5; // (Fresnel_Pissive = Parameter5.xyz,Flash_Frequcey = Parameter5.w) 
+float4 Parameter6; // (Pissive_Hand = Parameter6.xyz,Flash_Intensity = Parameter6.w) 
+float4 Parameter7; // (Fresnel_Color = Parameter7.xyz,tatto_Stream = Parameter7.w) 
+float3 Parameter8; // (Flash_Color = Parameter8.xyz) 
+
+
+struct VERTEX
+{
+    float3      vPos                : X3D_VSIN_POSITION;
+    float4      vBlendWeight        : X3D_VSIN_BLENDWEIGHT;
+    float3      vNormal             : X3D_VSIN_NORMAL;
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4      vColorIn0           : X3D_VSIN_COLOR0;
+#endif
+    blendindex4 vBlendIndices       : X3D_VSIN_BLENDINDICES;
+    float2      vUV1                : X3D_VSIN_TEXCOORD0;
+#ifdef FEATURE_TANGENT
+   float4      vTangent            : X3D_VSIN_TEXCOORD6;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+#ifndef NO_LIGHTING
+    float4  lightingColor        : COLOR0;
+#endif
+#if defined(FEATURE_VERTEX_COLOR)
+   float4  vertexColor       : TEXCOORD_INTERP;
+#elif defined(FEATURE_TANGENT)
+   float4  worldTanget  : TEXCOORD_INTERP;
+#elif defined(FEATURE_SCREENSPACE_UV)
+   float4  screenSpaceUV : TEXCOORD_INTERP;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+   float4  uv1             : TEXCOORD_INTERP;
+#else
+   float2  uv1             : TEXCOORD_INTERP;
+#endif
+#ifndef GENERATE_SHADOW_MAP
+   float2  worldXZ    : TEXCOORD_INTERP;
+#else
+   float   depth        : TEXCOORD_INTERP;
+#endif
+#if defined(FEATURE_WORLD_NORMAL)
+   float3  worldNormal  : TEXCOORD_INTERP;
+#endif
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+   float3  worldPosition   : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+   float3  shadowMapUV            : TEXCOORD_INTERP;
+#endif
+  float4 interp_0 : TEXCOORD_INTERP;
+float4 interp_1 : TEXCOORD_INTERP;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.vUV1;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(vertex.vBlendWeight, vertex.vNormal, vertex.vUV1);     // unpack fixed point attributes
+#endif
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.vColorIn0;
+#endif
+
+    float4 localPosition = float4(vertex.vPos, 1.0f);
+
+    float3 worldPosition;
+    float3 worldNormal;
+    float3 worldTangent;
+#ifndef NO_SKINNING
+ #if defined(FEATURE_TANGENT)
+    SkinPositionAndTBN(vertex.vPos, vertex.vNormal, vertex.vTangent, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal, worldTangent);
+ #else
+    SkinPositionAndNormal(vertex.vPos, vertex.vNormal, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal);
+ #endif
+#else
+    worldPosition = mul(float4(vertex.vPos, 1.f), BONES[0]);
+    worldNormal = mul(float4(vertex.vNormal, 0.f), BONES[0]);
+ #if defined(FEATURE_TANGENT)
+    worldTangent = mul(float4(vertex.vTangent, 0.f), BONES[0]);
+ #endif
+#endif
+
+    float4 var0;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var0 = result;
+    }
+    float var1 = var0.y; // Mask
+    float var2 = var1 * var1; // Multiply
+    float var3 = 2; // FloatLiteral
+    float var4 = Parameter0.x; // Wind_Speed_1
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float var5 =  var3;
+    #else
+        float var5 =  var4;
+    #endif
+    
+    float4 var6 = TIME; // Time
+    float var7 = var5 * var6.x; // Multiply
+    float var8 = var2 + var7; // Add
+    float var9 = 4; // FloatLiteral
+    float var10 = 8; // FloatLiteral
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float var11 =  var9;
+    #else
+        float var11 =  var10;
+    #endif
+    
+    float var12 = var8 * var11; // Multiply
+    float var13 = cos(var12); // cos
+    float var14 = 4; // FloatLiteral
+    float var15 = Parameter0.y; // Wind_Speed_2
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float var16 =  var14;
+    #else
+        float var16 =  var15;
+    #endif
+    
+    float var17 = var6.x * var16; // Multiply
+    float var18 = var2 + var17; // Add
+    float var19 = var11 * var18; // Multiply
+    float var20 = sin(var19); // sin
+    float var21 = var13 * var20; // Multiply
+    float var22 = var0.x; // Mask
+    float var23 = var22 * var22; // Multiply
+    float3 var24 = float3(4,0,4); // Float3Literal
+    float3 var25 = Parameter1.xyz; // Wind_Direction
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float3 var26 =  var24;
+    #else
+        float3 var26 =  var25;
+    #endif
+    
+    float3 var27 = var23 * var26; // Multiply
+    float3 var28 = var21 * var27; // Multiply
+    float3 var29 = float3(0,0,0); // Float3Literal
+    
+    #if VERTEX_ANIM_SWITCH // STATIC_SWITCH: VERTEX_ANIM_SWITCH
+        float3 var30 =  var28;
+    #else
+        float3 var30 =  var29;
+    #endif
+    
+    
+    worldPosition += var30;
+
+#if defined(FEATURE_WORLD_NORMAL) || defined(FEATURE_TANGENT)
+    interpolants.worldNormal = worldNormal;
+#endif
+#if defined(FEATURE_TANGENT)
+    interpolants.worldTangent = float4(worldTangent, vTangent.w);    // propagate the handedness orientation factor in w so we can correctly orient the TBN frame
+#endif
+
+#if defined(FEATURE_VERTEX_COLOR)
+    interpolants.vertexColor = vertex.vColorIn0;
+#endif
+
+
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+    // Output world position
+    interpolants.worldPosition.xyz = worldPosition.xyz;
+#endif
+
+    // Output homogeneous position
+    interpolants.position = mul(float4(worldPosition.xyz, 1.0f), mProj);
+
+    // Output texture coordinate using texture transform. Optimizes out
+    // if not used
+    
+    float4 uvScaleAndOffset =  float4(1, 1, 0, 0);
+    interpolants.uv1.xy = vertex.vUV1 * uvScaleAndOffset.xy + uvScaleAndOffset.zw;
+
+
+#ifndef DISABLE_SHADOWS
+    // Output shadow position
+    interpolants.shadowMapUV = mul(float4(worldPosition.xyz, 1.0f), mShadowProj).xyz;
+#endif
+
+#ifndef NO_LIGHTING
+    #ifdef USE_LIGHT_GRID
+        float3 lighting = LightingLightGrid(worldNormal);
+    #else
+        float3 lighting = LightingSunLight(worldNormal);
+    #endif
+    interpolants.lightingColor = float4(lighting,0);
+#endif
+
+#ifdef GENERATE_SHADOW_MAP
+    interpolants.depth = interpolants.position.z;
+#ifdef IS_OPENGL
+    // fix the depth into the 0-1 range for OpenGL
+    interpolants.depth = (interpolants.depth * 0.5f) + 0.5f;
+#endif
+
+#else
+    // Fog of war
+    interpolants.worldXZ.xy = FogOfWarTextureCoordinates(worldPosition.xyz).xy;
+#endif
+
+    //Vertex fog.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+    interpolants.uv1.zw = interpolants.worldXZ.xy;
+    interpolants.uv1.w = 1.0f - interpolants.uv1.w;
+    interpolants.lightingColor.a = 1.0f - ComputeFogValue(interpolants.position, worldPosition.xyz);
+#endif
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    interpolants.screenSpaceUV = interpolants.position;
+#endif
+
+    float3 var111 = Parameter5.xyz; // Fresnel_Pissive
+    float3 var112 = Parameter6.xyz; // Pissive_Hand
+    float4 var113;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var113 = result;
+    }
+    float var114 = var113.z; // Mask
+    float3 var115 = lerp(var111, var112, var114); // Lerp
+    float3 var116 = Parameter7.xyz; // Fresnel_Color
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float3 var117 =  var115;
+    #else
+        float3 var117 =  var116;
+    #endif
+    
+    float3 var118;
+    { // (WorldNormal)
+    float3 result = worldNormal;
+    var118 = result;
+    }
+    float3 var119;
+    { // (EyeVector)
+    float3 result = normalize( vCamera - worldPosition );
+    var119 = result;
+    }
+    float var120 = dot(var118,var119); // Dot
+    float var121 = saturate(var120); // saturate
+    float var122;
+    { // (OneMinus)
+    float input =var121;
+    float result = 1.0f - input;
+    var122 = result;
+    }
+    float var123 = Parameter3.w; // Fresnel_Range
+    float var124 = 1; // FloatLiteral
+    float var125 = lerp(var123, var124, var114); // Lerp
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float var126 =  var125;
+    #else
+        float var126 =  var123;
+    #endif
+    
+    float var127 = pow(var122,var126); // Pow
+    float var128 = Parameter4.w; // Fresnel_Intensity
+    float var129 = 4; // FloatLiteral
+    float var130 = lerp(var128, var129, var114); // Lerp
+    
+    #if PASSIVE_SWITCH // STATIC_SWITCH: PASSIVE_SWITCH
+        float var131 =  var130;
+    #else
+        float var131 =  var128;
+    #endif
+    
+    float var132 = var127 * var131; // Multiply
+    float3 var133 = var117 * var132; // Multiply
+    interpolants.interp_0.xyz = var133;
+    float4 var134 = TIME; // Time
+    float var135 = Parameter5.w; // Flash_Frequcey
+    float var136 = var134.x * var135; // Multiply
+    float var137 = sin(var136); // sin
+    float var138 = saturate(var137); // saturate
+    float3 var139 = Parameter8.xyz; // Flash_Color
+    float3 var140 = var138 * var139; // Multiply
+    float var141 = Parameter6.w; // Flash_Intensity
+    float3 var142 = var140 * var141; // Multiply
+    interpolants.interp_1.xyz = var142;
+    float4 var143 = TIME; // Time
+    float var144 = Parameter7.w; // tatto_Stream
+    float var145 = var143.x * var144; // Multiply
+    interpolants.interp_0.w = var145;
+    float var146 = Parameter0.z; // Gradient_Area
+    float var147 = 1; // FloatLiteral
+    float var148 = var146 - var147; // Subtract
+    float var149 = 2; // FloatLiteral
+    float var150 = var148 / var149; // Divide
+    interpolants.interp_1.w = var150;
+    
+    
+
+    return interpolants;
+
+}

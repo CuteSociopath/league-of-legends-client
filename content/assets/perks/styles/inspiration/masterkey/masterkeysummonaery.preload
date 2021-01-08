@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="perks_masterkey_aery_ally"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_masterkey_aery_tar"}}, 
+}

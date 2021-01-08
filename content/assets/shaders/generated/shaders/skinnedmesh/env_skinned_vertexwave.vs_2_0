@@ -1,0 +1,290 @@
+#include "DATA/Shaders/HLSL/SkinnedMesh/IOParam/IODefine_VS.hls"
+#include "DATA/Shaders/HLSL/Fog/Fog.hls"
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/Lighting/Lighting.hls"
+#include "DATA/Shaders/HLSL/SkinnedMesh/skinning.hls"
+
+#ifdef LOW_QUALITY_MODE
+    #define NO_LIGHTING
+    #define DISABLE_SHADOWS
+    #undef FOG_PIXELSHADER_BLEND
+#endif
+
+#if defined(MRT_SUPPORTED) && !defined(GENERATE_SHADOW_MAP)
+#define WRITE_MRT 1
+#endif
+
+
+float4 Parameter0; // (Flutter_Rate = Parameter0.x,Flutter_Frequency = Parameter0.y,Flutter_Amplitude = Parameter0.z,Flutter_Offset = Parameter0.w) 
+float4 Parameter1; // (Anim_Gradient_Sharpness = Parameter1.x,RotationAxis_Normalized = Parameter1.yzw) 
+float3 Parameter2; // (Large_Movement_Rate = Parameter2.x,Large_Movement_Amplitude = Parameter2.y,Large_Movement_Offset = Parameter2.z) 
+float3 Parameter3; // (Large_Movement_Pivot = Parameter3.xyz) 
+
+
+struct VERTEX
+{
+    float3      vPos                : X3D_VSIN_POSITION;
+    float4      vBlendWeight        : X3D_VSIN_BLENDWEIGHT;
+    float3      vNormal             : X3D_VSIN_NORMAL;
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4      vColorIn0           : X3D_VSIN_COLOR0;
+#endif
+    blendindex4 vBlendIndices       : X3D_VSIN_BLENDINDICES;
+    float2      vUV1                : X3D_VSIN_TEXCOORD0;
+#ifdef FEATURE_TANGENT
+   float4      vTangent            : X3D_VSIN_TEXCOORD6;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+#ifndef NO_LIGHTING
+    float4  lightingColor        : COLOR0;
+#endif
+#if defined(FEATURE_VERTEX_COLOR)
+   float4  vertexColor       : TEXCOORD_INTERP;
+#elif defined(FEATURE_TANGENT)
+   float4  worldTanget  : TEXCOORD_INTERP;
+#elif defined(FEATURE_SCREENSPACE_UV)
+   float4  screenSpaceUV : TEXCOORD_INTERP;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+   float4  uv1             : TEXCOORD_INTERP;
+#else
+   float2  uv1             : TEXCOORD_INTERP;
+#endif
+#ifndef GENERATE_SHADOW_MAP
+   float2  worldXZ    : TEXCOORD_INTERP;
+#else
+   float   depth        : TEXCOORD_INTERP;
+#endif
+#if defined(FEATURE_WORLD_NORMAL)
+   float3  worldNormal  : TEXCOORD_INTERP;
+#endif
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+   float3  worldPosition   : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+   float3  shadowMapUV            : TEXCOORD_INTERP;
+#endif
+  
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.vUV1;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(vertex.vBlendWeight, vertex.vNormal, vertex.vUV1);     // unpack fixed point attributes
+#endif
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.vColorIn0;
+#endif
+
+    float4 localPosition = float4(vertex.vPos, 1.0f);
+
+    float3 worldPosition;
+    float3 worldNormal;
+    float3 worldTangent;
+#ifndef NO_SKINNING
+ #if defined(FEATURE_TANGENT)
+    SkinPositionAndTBN(vertex.vPos, vertex.vNormal, vertex.vTangent, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal, worldTangent);
+ #else
+    SkinPositionAndNormal(vertex.vPos, vertex.vNormal, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition, worldNormal);
+ #endif
+#else
+    worldPosition = mul(float4(vertex.vPos, 1.f), BONES[0]);
+    worldNormal = mul(float4(vertex.vNormal, 0.f), BONES[0]);
+ #if defined(FEATURE_TANGENT)
+    worldTangent = mul(float4(vertex.vTangent, 0.f), BONES[0]);
+ #endif
+#endif
+
+    float3 var0;
+    { // (WorldNormal)
+    float3 result = worldNormal;
+    var0 = result;
+    }
+    float2 var1;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var1 = result;
+    }
+    float var2 = var1.x; // Mask
+    float4 var3 = TIME; // Time
+    float var4 = Parameter0.x; // Flutter_Rate
+    float var5 = var3.x * var4; // Multiply
+    float var6 = var2 + var5; // Add
+    float var7 = Parameter0.y; // Flutter_Frequency
+    float var8 = Parameter0.z; // Flutter_Amplitude
+    float var9 = Parameter0.w; // Flutter_Offset
+    float var10;
+    { // (SineFunctionComplete)
+    float Time = var6;
+    float Freq = var7;
+    float Amp = var8;
+    float Offset = var9;
+    float result = sin( Time * Freq ) * Amp + Offset;
+    var10 = result;
+    }
+    float3 var11 = var0 * var10; // Multiply
+    float4 var12;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var12 = result;
+    }
+    float var13 = var12.x; // Mask
+    float2 var14;
+    { // (UVCoord)
+    float2 result = defaultUVs;
+    var14 = result;
+    }
+    float var15 = var14.y; // Mask
+    
+    #if USE_VERTEXCOLOR_ANIMLOCK // STATIC_SWITCH: USE_VERTEXCOLOR_ANIMLOCK
+        float var16 =  var13;
+    #else
+        float var16 =  var15;
+    #endif
+    
+    float var17 = Parameter1.x; // Anim_Gradient_Sharpness
+    float var18 = pow(var16,var17); // Pow
+    float3 var19 = var11 * var18; // Multiply
+    float3 var20 = Parameter1.yzw; // RotationAxis_Normalized
+    float3 var21 = normalize(var20); // normalize
+    float var22 = Parameter2.x; // Large_Movement_Rate
+    float4 var23 = TIME; // Time
+    float var24 = var22 * var23.x; // Multiply
+    float var25 = Parameter2.y; // Large_Movement_Amplitude
+    float var26 = Parameter2.z; // Large_Movement_Offset
+    float var27;
+    { // (SimpleNoise)
+    float x = var24;
+    float amp = var25;
+    float offset = var26;
+    float noise = cos(2*x+1.7)*cos(3.3*x)*sin(.8*x);
+    float result = noise * amp + offset;
+    var27 = result;
+    }
+    float var28 = var18 * var27; // Multiply
+    float3 var29;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var29 = result;
+    }
+    float3 var30 = Parameter3.xyz; // Large_Movement_Pivot
+    float3 var31 = var29 + var30; // Add
+    float3 var32;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var32 = result;
+    }
+    float3 var33;
+    { // (RotateAboutAxis)
+    float PI = 3.14159265f;
+    float3 NormalizedRotationAxis = var21;
+    float Angle = var28;
+    Angle = Angle * (2.0f * PI / 1.0);
+    float4 NormalizedRotationAxisAndAngle = float4( NormalizedRotationAxis, Angle );
+    
+    float3 PositionOnAxis = var31;
+    float3 Position = var32;
+    
+    // Project Position onto the rotation axis and find the closest point on the axis to Position
+    	float3 ClosestPointOnAxis = PositionOnAxis + NormalizedRotationAxisAndAngle.xyz * dot(NormalizedRotationAxisAndAngle.xyz, Position - PositionOnAxis);
+    // Construct orthogonal axes in the plane of the rotation
+    	float3 UAxis = Position - ClosestPointOnAxis;
+    	float3 VAxis = cross(NormalizedRotationAxisAndAngle.xyz, UAxis);
+    	float CosAngle;
+    	float SinAngle;
+    	sincos(NormalizedRotationAxisAndAngle.w, SinAngle, CosAngle);
+    // Rotate using the orthogonal axes
+    	float3 R = UAxis * CosAngle + VAxis * SinAngle;
+    // Reconstruct the rotated world space position
+    	float3 RotatedPosition = ClosestPointOnAxis + R;
+    // Convert from position to a position offset
+    	float3 result = RotatedPosition - Position;
+    var33 = result;
+    }
+    float3 var34 = var19 + var33; // Add
+    
+    worldPosition += var34;
+
+#if defined(FEATURE_WORLD_NORMAL) || defined(FEATURE_TANGENT)
+    interpolants.worldNormal = worldNormal;
+#endif
+#if defined(FEATURE_TANGENT)
+    interpolants.worldTangent = float4(worldTangent, vTangent.w);    // propagate the handedness orientation factor in w so we can correctly orient the TBN frame
+#endif
+
+#if defined(FEATURE_VERTEX_COLOR)
+    interpolants.vertexColor = vertex.vColorIn0;
+#endif
+
+
+#if defined(WRITE_MRT) || defined(FEATURE_WORLD_POSITION)
+    // Output world position
+    interpolants.worldPosition.xyz = worldPosition.xyz;
+#endif
+
+    // Output homogeneous position
+    interpolants.position = mul(float4(worldPosition.xyz, 1.0f), mProj);
+
+    // Output texture coordinate using texture transform. Optimizes out
+    // if not used
+    
+    float4 uvScaleAndOffset =  float4(1, 1, 0, 0);
+    interpolants.uv1.xy = vertex.vUV1 * uvScaleAndOffset.xy + uvScaleAndOffset.zw;
+
+
+#ifndef DISABLE_SHADOWS
+    // Output shadow position
+    interpolants.shadowMapUV = mul(float4(worldPosition.xyz, 1.0f), mShadowProj).xyz;
+#endif
+
+#ifndef NO_LIGHTING
+    #ifdef USE_LIGHT_GRID
+        float3 lighting = LightingLightGrid(worldNormal);
+    #else
+        float3 lighting = LightingSunLight(worldNormal);
+    #endif
+    interpolants.lightingColor = float4(lighting,0);
+#endif
+
+#ifdef GENERATE_SHADOW_MAP
+    interpolants.depth = interpolants.position.z;
+#ifdef IS_OPENGL
+    // fix the depth into the 0-1 range for OpenGL
+    interpolants.depth = (interpolants.depth * 0.5f) + 0.5f;
+#endif
+
+#else
+    // Fog of war
+    interpolants.worldXZ.xy = FogOfWarTextureCoordinates(worldPosition.xyz).xy;
+#endif
+
+    //Vertex fog.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING) && defined(MOD2X_COLORMAP) && !defined(GENERATE_SHADOW_MAP)
+    interpolants.uv1.zw = interpolants.worldXZ.xy;
+    interpolants.uv1.w = 1.0f - interpolants.uv1.w;
+    interpolants.lightingColor.a = 1.0f - ComputeFogValue(interpolants.position, worldPosition.xyz);
+#endif
+
+#if defined(FEATURE_SCREENSPACE_UV)
+    interpolants.screenSpaceUV = interpolants.position;
+#endif
+
+    
+    
+
+    return interpolants;
+
+}

@@ -1,0 +1,221 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////////////////////////////
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_MATRIX_INV; // used if particular snippets are used and optimized out if not
+float3 MESH_CENTER;
+
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+    float3 m_Normal         : X3D_VSIN_NORMAL;
+    float2 m_Texcoord       : X3D_VSIN_TEXCOORD0;
+    
+    
+#ifdef FEATURE_TANGENT
+    float4 m_Tangent : X3D_VSIN_TEXCOORD6;
+#endif
+    // if the vertex color is used in either the vertex shader or pixel shader
+    // we need the input
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 m_Color : X3D_VSIN_COLOR0;
+#endif
+#if defined(NEED_ATLAS_UVS) || defined(CAPTURE_DIFFUSE)
+    float2 m_AtlasTexcoord  : X3D_VSIN_TEXCOORD7;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float2 interp_0 : TEXCOORD_INTERP;
+};
+
+float4 Parameter0; // (LS_XYZ_Offset = Parameter0.xyz,LS_Sin_Frequency = Parameter0.w) 
+float4 Parameter1; // (LS_Sin_Bounds = Parameter1.xy,LS_Sin_Time = Parameter1.z,LS_Offset_Global = Parameter1.w) 
+float4 Parameter2; // (LS_Sin_Vector = Parameter2.xyz,Bend_Time = Parameter2.w) 
+float4 Parameter3; // (Bend_XYZ_Offset = Parameter3.xyz,WS_Offset_Global = Parameter3.w) 
+float3 Parameter4; // (Bend_Mask_Bounds = Parameter4.xy,Opacity_Clip = Parameter4.z) 
+float3 Parameter5; // (Bend_Mask_Vector = Parameter5.xyz) 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.m_Texcoord;
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float3 worldNormal = normalize(mul(float4(vertex.m_Normal,0), WORLD_MATRIX).xyz);
+
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.m_Color;
+#endif
+
+
+    float3 var0 = Parameter0.xyz; // LS_XYZ_Offset
+    float var1 = -1; // FloatLiteral
+    float3 var2 = var0 * var1; // Multiply
+    float var3 = Parameter0.w; // LS_Sin_Frequency
+    float2 var4 = Parameter1.xy; // LS_Sin_Bounds
+    float3 var5;
+    { // (LocalPosition)
+    float3 result = localPosition.xyz;
+    var5 = result;
+    }
+    float3 var6 = Parameter2.xyz; // LS_Sin_Vector
+    float var7 = dot(var5,var6); // Dot
+    float var8 = smoothstep(var4.x, var4.y, var7); // smoothstep
+    float4 var9 = TIME; // Time
+    float var10 = -0.01; // FloatLiteral
+    float var11 = var9.x * var10; // Multiply
+    float var12 = Parameter1.z; // LS_Sin_Time
+    float var13 = var11 * var12; // Multiply
+    float var14 = var8 + var13; // Add
+    float var15 = var3 * var14; // Multiply
+    float var16 = sin(var15); // sin
+    float var17;
+    { // (simpleRemap)
+    float input = var16;
+    float result = ( input + 1 ) * 0.5;
+    var17 = result;
+    }
+    float3 var18 = lerp(var0, var2, var17); // Lerp
+    float var19 = Parameter1.w; // LS_Offset_Global
+    float3 var20 = var18 * var19; // Multiply
+    
+    localPosition.xyz += var20;
+
+    float3 worldPosition = mul(localPosition, WORLD_MATRIX).xyz;
+    float3 var21 = Parameter3.xyz; // Bend_XYZ_Offset
+    float var22 = -1; // FloatLiteral
+    float3 var23 = var21 * var22; // Multiply
+    float var24 = 0.5; // FloatLiteral
+    float var25 = Parameter2.w; // Bend_Time
+    float4 var26 = TIME; // Time
+    float var27 = var25 * var26.x; // Multiply
+    float var28 = cos(var27); // cos
+    float var29 = var24 * var28; // Multiply
+    float var30 = var24 + var29; // Add
+    float3 var31 = lerp(var21, var23, var30); // Lerp
+    float2 var32 = Parameter4.xy; // Bend_Mask_Bounds
+    float3 var33;
+    { // (LocalPosition)
+    float3 result = localPosition.xyz;
+    var33 = result;
+    }
+    float3 var34 = Parameter5.xyz; // Bend_Mask_Vector
+    float var35 = dot(var33,var34); // Dot
+    float var36 = smoothstep(var32.x, var32.y, var35); // smoothstep
+    float var37 = saturate(var36); // saturate
+    float3 var38 = var31 * var37; // Multiply
+    float var39 = Parameter3.w; // WS_Offset_Global
+    float3 var40 = var38 * var39; // Multiply
+    
+    worldPosition.xyz += var40;
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(worldPosition, 1.0f), VIEW_PROJECTION_MATRIX);
+
+#ifdef FEATURE_SCREENSPACE_UV
+    interpolants.vScreenSpaceUV = interpolants.m_Position.xyzw;
+#endif
+
+    interpolants.m_Texcoord.xy = vertex.m_Texcoord;
+
+#if defined(NEED_ATLAS_UVS)
+    interpolants.m_Texcoord.zw = vertex.m_AtlasTexcoord;
+#endif
+
+    interpolants.m_WorldNormalAndHeight = float4(worldNormal, worldPosition.y);
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    interpolants.m_WorldPositionXZ = worldPosition.xz;
+#endif
+
+#ifdef FEATURE_TANGENT
+    float3 worldTangent = normalize(mul(float4(vertex.m_Tangent.xyz,0), WORLD_MATRIX).xyz);
+    interpolants.m_WorldTangent = float4(worldTangent, vertex.m_Tangent.w);
+#endif
+
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(float4(worldPosition,1), SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+#ifndef DISABLE_FOW
+        // Fog of war texture coordinates
+    #ifdef FOW_FADE_TO_FOGGED
+        // the height value we need for fading to fogged is in w, not z
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyw;
+    #else
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyz;
+    #endif
+#endif
+#ifdef CLOUDS_NEED_UV
+     interpolants.m_Clouds_TC = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+#endif
+
+#ifdef FEATURE_VERTEX_COLOR
+    interpolants.m_VertexColor = vertex.m_Color;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    interpolants.m_Position = float4(vertex.m_AtlasTexcoord * 2.0f - 1.0f, 0.0f, 1.0f);
+    DoDX9HalfPixelAdjust(interpolants.m_Position);
+#endif
+
+    interpolants.interp_0.x = var17;
+    interpolants.interp_0.y = var37;
+    
+    
+
+    return interpolants;
+}

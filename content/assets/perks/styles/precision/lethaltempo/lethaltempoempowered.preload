@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Precision/LethalTempo/LethalTempoCooldown.lua"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TimeFormatting"}}, 
+}

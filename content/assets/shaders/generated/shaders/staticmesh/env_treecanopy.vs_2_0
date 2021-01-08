@@ -1,0 +1,262 @@
+#include "DATA/Shaders/HLSL/FogOfWar/FogOfWar_VS.hls"
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+#ifdef LOW_QUALITY_MODE
+#undef CLOUD_SHADOWS
+#endif
+
+#if defined(CLOUD_SHADOWS) && defined(DISABLE_FOW)
+#define CLOUDS_NEED_UV 1
+#endif
+
+#if !defined(NO_BAKED_LIGHTING) || defined(FEATURE_BAKED_PAINT)
+#define NEED_ATLAS_UVS 1
+#endif
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Constants
+/////////////////////////////////////////////////////////////////////////////////////
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_MATRIX_INV; // used if particular snippets are used and optimized out if not
+float3 MESH_CENTER;
+
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+    float3 m_Normal         : X3D_VSIN_NORMAL;
+    float2 m_Texcoord       : X3D_VSIN_TEXCOORD0;
+    
+    
+#ifdef FEATURE_TANGENT
+    float4 m_Tangent : X3D_VSIN_TEXCOORD6;
+#endif
+    // if the vertex color is used in either the vertex shader or pixel shader
+    // we need the input
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 m_Color : X3D_VSIN_COLOR0;
+#endif
+#if defined(NEED_ATLAS_UVS) || defined(CAPTURE_DIFFUSE)
+    float2 m_AtlasTexcoord  : X3D_VSIN_TEXCOORD7;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position      : POSITION;
+    // we only need the interpolant if the vertex color is used in the pixel shader
+#ifdef FEATURE_VERTEX_COLOR
+    float4 m_VertexColor : COLOR0;
+#endif
+    float4 m_WorldNormalAndHeight : TEXCOORD_INTERP;
+#ifdef FEATURE_TANGENT
+    float4 m_WorldTangent  : TEXCOORD_INTERP;
+#endif
+#ifdef NEED_ATLAS_UVS
+    float4 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy, atlas UVs in ZW
+#else
+    float2 m_Texcoord      : TEXCOORD_INTERP; // regular UVs in xy
+#endif
+
+#ifdef CLOUDS_NEED_UV
+    float2 m_Clouds_TC     : TEXCOORD_INTERP;
+#endif
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    float2 m_WorldPositionXZ : TEXCOORD_INTERP;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3 m_ShadowTC      : TEXCOORD_INTERP; //Dynamic shadow map texture coordinates.
+#endif
+#ifndef DISABLE_FOW
+    float3 m_FoW_TC        : TEXCOORD_INTERP; //Fog of War texture coordinates.
+#endif
+#ifdef FEATURE_SCREENSPACE_UV
+    float4 vScreenSpaceUV : TEXCOORD_INTERP;
+#endif
+    float interp_0 : TEXCOORD_INTERP;
+};
+
+float4 Parameter0; // (Movement_Direction = Parameter0.xyz,Movement_Interpolator = Parameter0.w) 
+float4 Parameter1; // (Movement_Offset_Multiplier = Parameter1.x,Frequency = Parameter1.y,Lower_Limit = Parameter1.z,Upper_Limit = Parameter1.w) 
+float4 Parameter2; // (Magnitude = Parameter2.x,Gradient_Softness = Parameter2.y,Gradient_Offset = Parameter2.z,Alpha_Test_Value = Parameter2.w) 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Shader
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+
+    INTERPOLANTS interpolants;
+
+    float2 defaultUVs = vertex.m_Texcoord;
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float3 worldNormal = normalize(mul(float4(vertex.m_Normal,0), WORLD_MATRIX).xyz);
+
+#if defined(FEATURE_VERTEX_COLOR_VS) || defined(FEATURE_VERTEX_COLOR)
+    float4 vColorIn0 = vertex.m_Color;
+#endif
+
+
+    
+    localPosition.xyz +=  float3(0,0,0) ;
+
+    float3 worldPosition = mul(localPosition, WORLD_MATRIX).xyz;
+    float3 var0 = Parameter0.xyz; // Movement_Direction
+    float3 var1 = normalize(var0); // normalize
+    float3 var2;
+    { // (WorldNormal)
+    float3 result = worldNormal;
+    var2 = result;
+    }
+    float var3 = Parameter0.w; // Movement_Interpolator
+    float3 var4 = lerp(var1, var2, var3); // Lerp
+    float4 var5 = TIME; // Time
+    float var6;
+    { // (RandomizeByLocation)
+    float3 mLoc = MESH_CENTER;
+    float result = sin(mLoc.x + mLoc.y + mLoc.z);
+    var6 = result;
+    }
+    float4 var7;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var7 = result;
+    }
+    float var8 = var7.y; // Mask
+    float var9 = var6 + var8; // Add
+    float3 var10;
+    { // (WorldPosition)
+    float3 result = worldPosition;
+    var10 = result;
+    }
+    float3 var11;
+    { // (PositionWorldToLocal)
+    float3 worldPosition = var10;
+    float3 result =  mul(float4(worldPosition, 1.0f), WORLD_MATRIX_INV).xyz;
+    
+    var11 = result;
+    }
+    float var12 = var11.x; // Mask
+    float var13 = var11.y; // Mask
+    float var14 = var12 + var13; // Add
+    float var15 = var11.z; // Mask
+    float var16 = var14 + var15; // Add
+    float var17 = Parameter1.x; // Movement_Offset_Multiplier
+    float var18 = var16 * var17; // Multiply
+    float var19 = var9 + var18; // Add
+    float var20 = 6.283185482; // 2pi
+    float var21 = var19 * var20; // Multiply
+    float var22 = var5.x + var21; // Add
+    float var23 = Parameter1.y; // Frequency
+    float var24;
+    { // (SineFunctionComplete)
+    float Time = var22;
+    float Freq = var23;
+    float Amp =  1 ;
+    float Offset =  0 ;
+    float result = sin( Time * Freq ) * Amp + Offset;
+    var24 = result;
+    }
+    float var25 = -1; // FloatLiteral
+    float var26 = 1; // FloatLiteral
+    float var27 = Parameter1.z; // Lower_Limit
+    float var28 = Parameter1.w; // Upper_Limit
+    float var29 = min(var27,var28); // min
+    float var30 = max(var27,var28); // max
+    float var31;
+    { // (ComplexRemap)
+    float OldValue = var24;
+    float OldMin = var25;
+    float OldMax = var26;
+    float NewMin = var29;
+    float NewMax = var30;
+    float OldRange = ( OldMax - OldMin );
+    float NewRange = ( NewMax - NewMin );
+    float result  = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+    var31 = result;
+    }
+    float var32 = Parameter2.x; // Magnitude
+    float var33 = var31 * var32; // Multiply
+    float3 var34 = var4 * var33; // Multiply
+    float4 var35;
+    { // (VertexColor)
+    float4 result = vColorIn0.VCOLORSWIZZLE;
+    var35 = result;
+    }
+    float var36 = var35.x; // Mask
+    float3 var37 = var34 * var36; // Multiply
+    
+    worldPosition.xyz += var37;
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(worldPosition, 1.0f), VIEW_PROJECTION_MATRIX);
+
+#ifdef FEATURE_SCREENSPACE_UV
+    interpolants.vScreenSpaceUV = interpolants.m_Position.xyzw;
+#endif
+
+    interpolants.m_Texcoord.xy = vertex.m_Texcoord;
+
+#if defined(NEED_ATLAS_UVS)
+    interpolants.m_Texcoord.zw = vertex.m_AtlasTexcoord;
+#endif
+
+    interpolants.m_WorldNormalAndHeight = float4(worldNormal, worldPosition.y);
+#if !defined(LOW_QUALITY_MODE) || defined(FEATURE_WORLD_POSITION)
+    interpolants.m_WorldPositionXZ = worldPosition.xz;
+#endif
+
+#ifdef FEATURE_TANGENT
+    float3 worldTangent = normalize(mul(float4(vertex.m_Tangent.xyz,0), WORLD_MATRIX).xyz);
+    interpolants.m_WorldTangent = float4(worldTangent, vertex.m_Tangent.w);
+#endif
+
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(float4(worldPosition,1), SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+#ifndef DISABLE_FOW
+        // Fog of war texture coordinates
+    #ifdef FOW_FADE_TO_FOGGED
+        // the height value we need for fading to fogged is in w, not z
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyw;
+    #else
+        interpolants.m_FoW_TC = FogOfWarTextureCoordinates( worldPosition ).xyz;
+    #endif
+#endif
+#ifdef CLOUDS_NEED_UV
+     interpolants.m_Clouds_TC = worldPosition.xz * TERRAIN_XFORM.xy + TERRAIN_XFORM.zw;
+#endif
+
+#ifdef FEATURE_VERTEX_COLOR
+    interpolants.m_VertexColor = vertex.m_Color;
+#endif
+
+#ifdef CAPTURE_DIFFUSE
+    interpolants.m_Position = float4(vertex.m_AtlasTexcoord * 2.0f - 1.0f, 0.0f, 1.0f);
+    DoDX9HalfPixelAdjust(interpolants.m_Position);
+#endif
+
+    float var52 = var11.y; // Mask
+    float3 var53;
+    { // (MeshCenter)
+    float3 result = MESH_CENTER;
+    var53 = result;
+    }
+    float3 var54;
+    { // (PositionWorldToLocal)
+    float3 worldPosition = var53;
+    float3 result =  mul(float4(worldPosition, 1.0f), WORLD_MATRIX_INV).xyz;
+    
+    var54 = result;
+    }
+    float var55 = var54.y; // Mask
+    float var56 = var52 - var55; // Subtract
+    interpolants.interp_0 = var56;
+    
+    
+
+    return interpolants;
+}

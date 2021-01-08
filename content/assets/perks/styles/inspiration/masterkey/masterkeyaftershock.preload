@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyAftershockDelay.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyAftershockResistsBuff.lua"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.Veteran"}}, 
+}

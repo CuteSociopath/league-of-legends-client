@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="dragonpedestal_pillar.troy", SkinID="-1"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="perks_masterkey_arcanecomet_mis_arc"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_masterkey_arcanecomet_mis"}}, 
+{Function=BBPreloadModule, Params={Name="Global.AdaptiveDamageModule"}}, 
+}
