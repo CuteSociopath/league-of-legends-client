@@ -1,0 +1,311 @@
+{
+  "champion": "Galio",
+  "title": "GalioSL",
+  "map": "NB",
+  "mode": "NEXUSBLITZ",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4203",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "startingjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4101",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "early",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3010",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1026",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "earlyjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3108",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1027",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3029",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essentialjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "4104",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3029",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "standard",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3285",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3165",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3157",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "situational",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3135",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3194",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3075",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3193",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "2139",
+          "count": 1,
+          "hideCount": true
+        }
+      ]
+    }
+  ]
+}

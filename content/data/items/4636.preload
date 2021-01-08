@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="4636markactive"}}, 
+{Function=BBPreloadSpell, Params={Name="4636timerbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="4636msbuff"}}, 
+}

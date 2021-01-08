@@ -1,0 +1,133 @@
+{
+  "champion": "Singed",
+  "title": "SingedFIRSTBLOOD",
+  "map": "HA",
+  "mode": "FIRSTBLOOD",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1027",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 3,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3111",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3070",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3027",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3116",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3151",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3075",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3361",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2138",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

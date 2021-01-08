@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="galiowpassivedefense"}}, 
+{Function=BBPreloadSpell, Params={Name="galiorshield"}}, 
+{Function=BBPreloadSpell, Params={Name="galiorchannel"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadParticle, Params={Name="galio_base_r_cas_start.troy", SkinID="-1"}}, 
+}

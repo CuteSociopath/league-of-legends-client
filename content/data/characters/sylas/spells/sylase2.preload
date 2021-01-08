@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sylaswdamageandheal"}}, 
+{Function=BBPreloadSpell, Params={Name="sylasw"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadSpell, Params={Name="sylaseanimationtrigger"}}, 
+{Function=BBPreloadSpell, Params={Name="sylaseknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="sylaselockout"}}, 
+}

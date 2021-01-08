@@ -1,0 +1,12 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Yuumi.YuumiWSpellPassive"}}, 
+{Function=BBPreloadModule, Params={Name="Yuumi.YuumiQCast"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiwally"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiwendwrapper"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadModule, Params={Name="Yuumi.YuumiWAttach"}}, 
+{Function=BBPreloadModule, Params={Name="Yuumi.YuumiWAlly"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiw"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiwend"}}, 
+--{Function=BBPreloadModule, Params={Name="Yuumi.YuumiFunctionModule"}}, 
+}

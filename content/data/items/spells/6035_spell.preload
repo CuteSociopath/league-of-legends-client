@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="summoner_cast.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="item6035buff"}}, 
+}

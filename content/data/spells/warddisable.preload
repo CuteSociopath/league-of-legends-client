@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="temp_warddisable.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SharedWardLogic"}}, 
+}

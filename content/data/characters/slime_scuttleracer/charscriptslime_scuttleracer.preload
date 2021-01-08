@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_scuttleracerdashlong"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_scuttleracerdash"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_ScuttleRacing"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_scuttleracer_selfstun"}}, 
+}

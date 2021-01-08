@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_SuddenDeath_TurretPlates"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeathrushdownresist"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeath_stunanimation"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusminion_soul_mis"}}, 
+}

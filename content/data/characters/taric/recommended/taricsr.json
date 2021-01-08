@@ -1,0 +1,128 @@
+{
+  "champion": "Taric",
+  "title": "TaricSR",
+  "map": "SR",
+  "mode": "CLASSIC",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3858",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "early",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3067",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3105",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3190",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3009",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3050",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3109",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3110",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3001",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

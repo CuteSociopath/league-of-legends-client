@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="samiraebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="samiraemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="samiraqebuffer"}}, 
+}

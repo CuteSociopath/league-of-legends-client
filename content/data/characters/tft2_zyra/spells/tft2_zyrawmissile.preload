@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_zyrawhideplant"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_unitbuffsummonersummonedunit"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffSummoner"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_summonedunitmanager"}}, 
+}

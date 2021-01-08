@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_duelistmovement"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_tauntonmoveend"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_GlobalUnitMovement"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_cloakedbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_GlobalUnitBuff"}}, 
+}

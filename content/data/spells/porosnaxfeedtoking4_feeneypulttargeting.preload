@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_feeneypulttraveling"}}, 
+{Function=BBPreloadModule, Params={Name="Global.PoroSnaxFeedToKing4"}}, 
+{Function=BBPreloadModule, Params={Name="AurelionSol.AurelionSolFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="bardrstasis"}}, 
+{Function=BBPreloadSpell, Params={Name="bardr"}}, 
+}

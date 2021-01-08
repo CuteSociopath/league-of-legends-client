@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_veigarr"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

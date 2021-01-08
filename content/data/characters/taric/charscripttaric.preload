@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Taric.TaricPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="taricbasicattack"}}, 
+{Function=BBPreloadSpell, Params={Name="taricbasicattack2"}}, 
+{Function=BBPreloadSpell, Params={Name="taricbasicattack3"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Shaco.HallucinateFull"}}, 
+{Function=BBPreloadModule, Params={Name="Shaco.ShacoFunctionModule"}}, 
+--{Function=BBPreloadModule, Params={Name="Shaco.ShacoPassive"}}, 
+}

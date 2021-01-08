@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="s10_support_quest_display"}}, 
+{Function=BBPreloadParticle, Params={Name="quest_complete.troy", SkinID="-1"}}, 
+}

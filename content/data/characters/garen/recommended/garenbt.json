@@ -1,0 +1,117 @@
+{
+  "champion": "Garen",
+  "title": "GarenBT",
+  "map": "SR",
+  "mode": "TUTORIAL",
+  "type": "riot",
+  "customTag": "",
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3044",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3067",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3053",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3083",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

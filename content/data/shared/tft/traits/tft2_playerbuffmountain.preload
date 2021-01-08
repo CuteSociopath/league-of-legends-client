@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT2_PlayerBuffMountain"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_mountainshield"}}, 
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_teemormissile"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Teemo.TFT3_TeemoR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_teemorslow"}}, 
+}

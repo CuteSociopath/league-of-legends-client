@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="swainpsoultrail"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="swainmapravenenemy"}}, 
+{Function=BBPreloadSpell, Params={Name="swainmapravenenemyremovecheck"}}, 
+{Function=BBPreloadSpell, Params={Name="swainweyetrap"}}, 
+}

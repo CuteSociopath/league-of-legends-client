@@ -1,0 +1,107 @@
+#include "../Depth.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+sampler3D JitterTexture;
+
+float2 JitterScale;
+
+static const int JITTER_SAMPLES = 8;
+static const int NUM_DOF_LOOPS = (JITTER_SAMPLES * JITTER_SAMPLES) / 2;
+static const float Z_INCREMENT = float(1.0f / NUM_DOF_LOOPS);
+
+float4 FocusParams;
+float2 BlurScale;
+
+
+float GetBlurFactor(float depth)
+{
+    float eyeZ = CalcEyeZFromProjectionZ(depth, cDepthConversionParams.xy);
+    float blurFactorFar = saturate((eyeZ - FocusParams.x) * FocusParams.y);
+    float blurFactorNear = saturate((FocusParams.z - eyeZ) * FocusParams.w);
+
+    return max(blurFactorFar, blurFactorNear);
+
+}
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // Read the texel from the back buffer
+    float4 texelBackBuffer = tex2D(SAMPLER_BACK_BUFFER_COPY, interpolants.texcoord0);
+    float centerDepth = tex2D(sDepthTexture, interpolants.texcoord0).x;
+
+    // Start with center sample color
+    float4 colorSum = texelBackBuffer;
+    float numSamples = 1.0f;
+
+    // Depth and blurriness values for center sample
+    float blurStrength = GetBlurFactor(centerDepth);
+
+    float4 jcoord = float4(interpolants.texcoord0 * JitterScale.xy, 0, 0);
+
+    if (blurStrength > 0)
+    {
+        // Compute CoC size based on blurriness
+        float2 blurWidth = blurStrength * BlurScale;
+
+        // Run through all filter taps
+        for (int i = 0; i < NUM_DOF_LOOPS; i++)
+        {
+            float4 jitter = (2 * tex3Dlod(JitterTexture, jcoord) - 1.0);
+            // advance to the next slice
+            jcoord.z += Z_INCREMENT;
+
+            // Compute sample coordinates for first sample
+            float2 samplePos = interpolants.texcoord0 + (jitter.xy * blurWidth);
+
+            // Fetch filter tap sample
+            float4 sampleColor = tex2D(SAMPLER_BACK_BUFFER_COPY, samplePos);
+            float sampleDepth = tex2D(sDepthTexture, samplePos).x;
+            float sampleBlurFactor = GetBlurFactor(sampleDepth);
+
+            // Compute tap contribution based on depth and blurriness
+            float sampleContribution = (sampleDepth > centerDepth) ? 1.0f : sampleBlurFactor;
+
+            // Accumulate color and sample contribution
+            colorSum += sampleColor * sampleContribution;
+            numSamples += sampleContribution;
+
+            // take second sample using jitter.zw
+            samplePos = interpolants.texcoord0 + (jitter.zw * blurWidth);
+            // Fetch filter tap sample
+            sampleColor = tex2D(SAMPLER_BACK_BUFFER_COPY, samplePos);
+            sampleDepth = tex2D(sDepthTexture, samplePos).x;
+            sampleBlurFactor = GetBlurFactor(sampleDepth);
+
+            // Compute tap contribution based on depth and blurriness
+            sampleContribution = (sampleDepth > centerDepth) ? 1.0f : sampleBlurFactor;
+
+            // Accumulate color and sample contribution
+            colorSum += sampleColor * sampleContribution;
+            numSamples += sampleContribution;
+
+        }
+    }
+
+#ifdef DEBUG_DOF_INTENSITY
+    return float4(blurStrength, blurStrength, blurStrength, 1.0f);
+#else
+    // Normalize color sum
+    return colorSum / numSamples;
+#endif
+
+}

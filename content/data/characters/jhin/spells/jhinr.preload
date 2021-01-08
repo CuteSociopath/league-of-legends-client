@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="jhinrshot"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SpellPings"}}, 
+}

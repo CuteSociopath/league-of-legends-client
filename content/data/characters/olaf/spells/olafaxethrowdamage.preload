@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="olafaxetrackerstacks"}}, 
+{Function=BBPreloadSpell, Params={Name="olafaxethrowcast"}}, 
+}

@@ -1,0 +1,128 @@
+{
+  "champion": "Ekko",
+  "title": "EkkoSR",
+  "map": "SR",
+  "mode": "CLASSIC",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1056",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "early",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "4635",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1026",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4633",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "4637",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3089",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3135",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "4629",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

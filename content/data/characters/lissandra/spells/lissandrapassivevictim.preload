@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="testcube"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandrapassiveexplosionaudio"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandraw"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandraslow"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandrapassive"}}, 
+}

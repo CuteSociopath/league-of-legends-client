@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Seraphine.SeraphinePassiveEcho"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinepassiveecholockout"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinepassiveechostage1"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinepassiveechostage2"}}, 
+}

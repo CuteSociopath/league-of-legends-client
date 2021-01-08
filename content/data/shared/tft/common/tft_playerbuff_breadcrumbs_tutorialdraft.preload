@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_SharedDraft"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SharedDraftActive"}}, 
+}

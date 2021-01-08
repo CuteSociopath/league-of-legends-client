@@ -1,0 +1,133 @@
+{
+  "champion": "Ashe",
+  "title": "AsheBT",
+  "map": "SR",
+  "mode": "TUTORIAL",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 3,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1055",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3006",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3031",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3046",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3072",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3035",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3087",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3026",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3139",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

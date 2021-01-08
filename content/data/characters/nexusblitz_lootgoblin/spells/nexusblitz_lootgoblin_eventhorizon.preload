@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="testcube"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_eventhorizoninside"}}, 
+{Function=BBPreloadSpell, Params={Name="veigareventhorizon"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_eventhorizonoutside"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_eventhorizonprevent"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_eventhorizonstun"}}, 
+}

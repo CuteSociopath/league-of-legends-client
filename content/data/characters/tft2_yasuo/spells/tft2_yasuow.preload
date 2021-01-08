@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_yasuowmovingwallenemy"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_yasuowchildmis"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_yasuow_visualmis"}}, 
+}

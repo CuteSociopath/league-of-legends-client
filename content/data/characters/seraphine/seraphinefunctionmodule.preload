@@ -1,0 +1,15 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Seraphine.SeraphineFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineqminionmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinepassivenotesmissiletargetmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinepassive"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineqsecondarymissilemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineq"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinercharm"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphiner"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinerslow"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinew2warning"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinewshield"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinew"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphinewhaste"}}, 
+}

@@ -1,0 +1,41 @@
+float4 params;
+float4 color0;
+float4 color1;
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 col0     : COLOR0;
+    float2 tex0     : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR
+{
+    float2 vec = interpolants.tex0 * 2 - 1;
+    float2 dir = normalize(vec);
+
+    // calculate the angle of this pixel to determine
+    // whether it's part of the remainder or elapsed pie
+    float PI = 3.141592653;
+    float angle = PI + atan2(dir.x, dir.y);
+    float gradAngle = .5; //controls the angle of the gradient 1 - 7
+
+    if ((vec.x * vec.x + vec.y * vec.y) > 1)
+    {
+        return float4(0.0,0.0,0.0,0.0);
+    }
+    // premultiply by alpha
+    float4 preMColor0 = color0;
+    preMColor0.rgb *= color0.a;
+    float4 preMColor1 = color1;
+    preMColor1.rgb *= color1.a;
+
+    // remaining time
+    float4 color;
+    if(angle < params.x)
+        color = preMColor1;
+    else
+        color = (gradAngle - (angle - params.x))+ preMColor0;
+
+    return color*UI_COLOR.a;
+}

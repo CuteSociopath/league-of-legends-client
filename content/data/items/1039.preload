@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="itemjunglespecialxp"}}, 
+{Function=BBPreloadSpell, Params={Name="itemsmitecounterblue"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Smite"}}, 
+{Function=BBPreloadSpell, Params={Name="itemjungletooth"}}, 
+}

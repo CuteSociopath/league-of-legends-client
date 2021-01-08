@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_trait_hextech_mis"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Traits"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+}

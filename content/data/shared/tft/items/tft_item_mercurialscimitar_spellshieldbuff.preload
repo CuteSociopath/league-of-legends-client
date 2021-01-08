@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_MercurialScimitar_SpellShieldBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+}

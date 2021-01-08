@@ -1,0 +1,162 @@
+#include "../ColorPalette.hls"
+#include "../DeathScreen.hls"
+#include "../MipLevels.hls"
+#include "../FogOfWar/FogOfWar_PS.hls"
+#include "../ParticleSystem/ColorRemap.hls"
+#include "../ParticleSystem/AlphaErode.hls"
+#include "../ParticleSystem/navmeshmask_ps.hls"
+#include "../ParticleSystem/AlphaTest_ps.hls"
+
+#ifdef REFLECTIVE
+float4  vReflectionFColor;
+#endif
+
+sampler2D TEXTURE;
+sampler2D PARTICLE_COLOR_TEXTURE;
+
+#ifdef REFLECTIVE
+    samplerCUBE REFLECTION_MAP;
+#endif
+
+#ifdef  MULT_PASS
+sampler2D TEXTUREMULT;
+#endif
+
+float2   COLOR_LOOKUP_UV;
+#if defined(COLORPALETTE_COLORBLIND)
+   float4 APPLY_TEAM_COLOR_CORRECTION;
+#endif
+    
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color0          : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+
+    float3  uv0_positionW   : TEXCOORD1;
+    // xy = uv0
+    // z  = projection W, eye z used to compensate for perspective correction for screen space uv
+
+#ifndef DISABLE_FOW
+    float2  uvFOW           : TEXCOORD2;
+#endif 
+
+    // define TEXCOORD3 according to shader variant to minimize interpolators
+#if defined( SEPARATE_ALPHA_UV ) && defined( MULT_PASS )
+    float4  uvMult_uvAlpha  : TEXCOORD3;
+#elif defined( SEPARATE_ALPHA_UV )
+    float2  uvAlpha         : TEXCOORD3;
+#elif defined( MULT_PASS )
+    float2  uvMult          : TEXCOORD3;
+#endif
+
+#ifdef REFLECTIVE
+    float4  reflectRay      : TEXCOORD4;
+#endif
+
+#ifdef MASKED
+    float2  maskUVs         : TEXCOORD6;
+#endif
+
+    float3  fresnelColor    : COLOR0;       // fresnel based rim effect available even w/o reflection map
+};
+
+float4 main( in INTERPOLANTS input) : COLOR0
+{
+    float2 uv0      = input.uv0_positionW.xy;
+#if defined( SEPARATE_ALPHA_UV ) && defined( MULT_PASS )
+    float2 uvMult   = input.uvMult_uvAlpha.xy;
+    float2 uvAlpha  = input.uvMult_uvAlpha.zw;
+#elif defined( SEPARATE_ALPHA_UV )
+    float2 uvAlpha  = input.uvAlpha.xy;
+#elif defined( MULT_PASS )
+    float2 uvMult   = input.uvMult.xy;
+#endif
+ 
+#ifdef SCREEN_SPACE_UV
+    // correct texture coordinates
+    float projW = input.uv0_positionW.z;
+    float correction = 1/projW;
+    uv0 *= correction;
+    #ifdef SEPARATE_ALPHA_UV
+        uvAlpha *= correction;
+    #endif
+    // mult texture is anchored to the model, so it isn't corrected here
+#endif
+    
+    float4 texel = tex2D(TEXTURE, uv0);
+#ifdef SEPARATE_ALPHA_UV    
+    texel.w = tex2D(TEXTURE, uvAlpha).w;    
+#endif
+
+#ifdef PALETTIZE_TEXTURES
+    // remap textures according to palettization settings
+    texel.rgb = ColorizeMainTexture(texel).rgb;
+#endif
+
+#ifdef MULT_PASS
+    float4 particle_color_texel = tex2D(TEXTUREMULT, uvMult);
+    texel *= particle_color_texel;
+#elif !defined(ALPHA_EROSION)
+    // apply p-rgba colorizing texture (if not using alpha erosion which uses same sampler)
+    // @todo investigate discrepancy with quad shader which also applies color texture when using mult
+    float4 particle_color_texel = tex2D(PARTICLE_COLOR_TEXTURE, COLOR_LOOKUP_UV);
+    texel *= particle_color_texel;
+#endif
+    float4 out_color0 = input.color0 * texel;
+        
+    //**
+    // color palette transforms
+#ifdef COLORPALETTE_COLORBLIND
+    if (APPLY_TEAM_COLOR_CORRECTION.r != 0.0f)
+    {
+        ApplyColorCorrectionColorblind(out_color0);
+    }
+#endif 
+
+    //**
+    // Reflection
+#ifdef REFLECTIVE
+    //This reflection vector is used to look up the Reflection color in the cube map.
+    //This color is scaled by the diffuse alpha (masking) and opacity stored in eyeRay.w (computed in the vertex shader).
+    // @todo Alpha is also used as a reflection mask here, unlike the MESH_PS shader.
+    // Talk to artists about behavior they desire.
+    float3 reflectionColor = texCUBE(REFLECTION_MAP, input.reflectRay.xyz).rgb * input.reflectRay.w * texel.a;
+    
+    //the view dependent reflection color is keyed off the fresnel.
+    float3 reflTint = lerp(1.0f, vReflectionFColor.rgb, input.reflectRay.w);
+
+    //Finally the reflection color is modified by the RGB Reflection Tint (computed in the vertex shader)
+    //and added to the pixel color (finalColor).
+    out_color0.rgb  += reflectionColor*reflTint;
+#endif
+    out_color0.rgb  += input.fresnelColor * texel.a;    // add fresnel rim effect (available even w/o a reflection map)
+
+#ifndef DISABLE_FOW
+    // Fog of War
+    // @todo should this use GetFogOfWarFactorsWithFadeTowardFogged() like MESH_PS
+    float4 fowFactors = GetFogOfWarFactors(input.uvFOW);
+    // NOTE: This ignores the FowOverlay texture tint and assumes the FoW is black
+    out_color0.rgb *= fowFactors.a; 
+#endif
+
+#ifdef ALPHA_EROSION
+    out_color0.a *= CalcAlphaErosionForMesh(uv0);
+#endif
+
+    // @todo pixel fog?
+
+    //**
+    // Finalize output color
+    out_color0.rgb = saturate(out_color0.rgb);
+    out_color0.rgb = ApplyMipColorsVisualization(out_color0.rgb, uv0);
+
+#ifdef MASKED
+    out_color0 = ApplyNavmeshMask(out_color0, input.maskUVs);
+#endif
+
+#ifndef PS_2_0
+    AlphaTest(out_color0);
+#endif
+ 
+    return out_color0;
+}

@@ -1,0 +1,13 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="threshidlelanternvfxfull"}}, 
+{Function=BBPreloadSpell, Params={Name="threshidlelanternvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="expirationtimer"}}, 
+{Function=BBPreloadModule, Params={Name="Thresh.ThreshFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="threshrbroken"}}, 
+{Function=BBPreloadSpell, Params={Name="threshrslow"}}, 
+{Function=BBPreloadSpell, Params={Name="threshrpenta"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="threshpassivesoulsmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="threshpassivesoulsdead"}}, 
+{Function=BBPreloadSpell, Params={Name="threshwshield"}}, 
+}

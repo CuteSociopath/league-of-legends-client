@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="relle_vfxmis"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Ready"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Applicator"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_recent"}}, 
+{Function=BBPreloadSpell, Params={Name="relle"}}, 
+}

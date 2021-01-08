@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Zilean.TFT4_ZileanR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_zileanrrevivebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Combat"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_Item_GuardianAngel_Buff"}}, 
+}

@@ -1,0 +1,40 @@
+#ifdef TRANSITION
+
+sampler2D TransitionDestTexture;
+sampler2D TransitionBlendTexture;
+
+float2 TransitionLimitMinAndOOLimitDelta;
+
+float4 ApplyTransition(float4 srcColor, float3 lighting, float2 tc0)
+{
+    // Calculate the diffuse texture during transition
+    float transitionFactor = tex2D(TransitionBlendTexture, tc0.xy).x;
+    transitionFactor = saturate((transitionFactor - TransitionLimitMinAndOOLimitDelta.x)
+                                * TransitionLimitMinAndOOLimitDelta.y);
+    float4 destColor = tex2D(TransitionDestTexture, tc0);
+    // apply lighting
+    destColor.rgb *= lighting;
+    //return float4(transitionFactor.rrr, 1.0);
+    return lerp(destColor, srcColor, transitionFactor);
+}
+
+float4 ApplyTransitionToColor(float4 srcColor, float4 destColor, float2 tc0)
+{
+    // Lerp to the dest color if transitioning
+    float transitionFactor = tex2D(TransitionBlendTexture, tc0.xy).x;
+    transitionFactor = saturate((transitionFactor - TransitionLimitMinAndOOLimitDelta.x)
+                                * TransitionLimitMinAndOOLimitDelta.y);
+
+    return lerp(destColor, srcColor, transitionFactor);
+}
+#else
+float4 ApplyTransition(float4 srcColor, float3 lighting, float2 tc0)
+{
+    return srcColor;
+}
+float4 ApplyTransitionToColor(float4 srcColor, float4 destColor, float2 tc0)
+{
+    return srcColor;
+}
+
+#endif

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sonadjaudiomanagergenre01"}}, 
+{Function=BBPreloadSpell, Params={Name="sonadjtransitionlockout"}}, 
+{Function=BBPreloadSpell, Params={Name="sonadjdisguisebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sonadjreconnect"}}, 
+{Function=BBPreloadSpell, Params={Name="sonadjaudiomanagergenre02"}}, 
+{Function=BBPreloadSpell, Params={Name="sonadjaudiomanagergenre03"}}, 
+}

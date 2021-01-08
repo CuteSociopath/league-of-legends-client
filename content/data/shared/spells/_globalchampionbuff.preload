@@ -1,0 +1,17 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.Smite"}}, 
+{Function=BBPreloadSpell, Params={Name="globalchampionexclusiontables"}}, 
+{Function=BBPreloadSpell, Params={Name="disconnecttimer"}}, 
+{Function=BBPreloadSpell, Params={Name="contribscoreccdata"}}, 
+{Function=BBPreloadSpell, Params={Name="contribscorewarddata"}}, 
+{Function=BBPreloadSpell, Params={Name="contribscorevisiondata"}}, 
+{Function=BBPreloadSpell, Params={Name="emotecontrollerbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="_globalchampiontrinketcooldownmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulpreviewmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="4641wardplacementcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="uniquenamedeffecttracker"}}, 
+{Function=BBPreloadSpell, Params={Name="globalisinchampioncombat"}}, 
+{Function=BBPreloadSpell, Params={Name="4641insideshopbuff"}}, 
+}

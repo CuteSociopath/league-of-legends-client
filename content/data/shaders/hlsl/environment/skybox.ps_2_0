@@ -1,0 +1,54 @@
+
+
+float4 VirtualPositionAndCTerm;
+float3 CameraPos;
+float4 DepthFogInfo;
+
+float4 HeightFogParams;
+float3 HeightFogColor;
+
+
+// simplified ray-sphere intersection code
+// for the specific skybox use case, starting inside
+// We don't handle the case where ray misses, or the other solution
+// in the opposite direction
+float3 Intersects(float3 rayOrigin, float3 rayDirection)
+{
+    float3 adjustedOrigin = rayOrigin - VirtualPositionAndCTerm.xyz;
+    float b = 2.0f * dot(rayDirection, adjustedOrigin);
+
+    // we pre-calc the C term on the CPU because it's constant
+    //float c = 4 * dot(adjustedOrigin, adjustedOrigin) - (sphereRadius * sphereRadius);
+
+    //Find discriminant
+    const float disc = b * b - VirtualPositionAndCTerm.w;
+    // we assume we intersected
+    float distSqrt = sqrt(disc);
+
+    // compute t1
+    float t1 = 0.5f * ( -b + distSqrt );
+    return rayOrigin + rayDirection * t1;
+
+}
+
+struct INTERPOLANTS
+{
+    float4 position    : POSITION;
+    float3 cameraVec   : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float3 dir = normalize(interpolants.cameraVec);
+    float3 intersectPos = Intersects(CameraPos, dir);
+    float3 sampleDir = intersectPos - VirtualPositionAndCTerm.xyz;
+    float4 cubeColor = texCUBE(ENV_CUBE, sampleDir);
+
+    // we treat the skybox as infinitely far away for the purposes of height fog calculation
+    float height = interpolants.cameraVec.y;
+    float heightFogStrength = min(saturate((height - HeightFogParams.y) * HeightFogParams.z), HeightFogParams.x);
+    cubeColor.rgb = lerp(cubeColor.rgb, HeightFogColor.rgb, heightFogStrength);
+
+    cubeColor.rgb = lerp(cubeColor.rgb, DepthFogInfo.rgb, DepthFogInfo.a);
+    return cubeColor;
+}

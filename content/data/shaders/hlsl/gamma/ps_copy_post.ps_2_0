@@ -1,0 +1,24 @@
+#include "../DeathScreen.hls"
+#include "ApplyBloom.hls"
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 ret = tex2D(SAMPLER_BACK_BUFFER_COPY, interpolants.texcoord0);
+    ret.rgb = ApplyBloom(ret.rgb, interpolants.texcoord0);
+#ifdef DEATH_EFFECT
+    ret.rgb = GetSaturatedColor(ret.rgb);
+#endif
+
+    return ret;
+}

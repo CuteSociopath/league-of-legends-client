@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadSpell, Params={Name="minibaronincombat"}}, 
+{Function=BBPreloadParticle, Params={Name="sru_riftherald_inlane_death.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="sru_riftherald_bloodspurt.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="heraldinhibitorlistener"}}, 
+{Function=BBPreloadSpell, Params={Name="baronnashorlines"}}, 
+{Function=BBPreloadSpell, Params={Name="exaltedwithbaronnashorminion"}}, 
+}

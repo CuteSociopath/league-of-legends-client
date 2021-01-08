@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rancher_buff2"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="3070tearstack"}}, 
+}

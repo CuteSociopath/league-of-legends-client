@@ -1,0 +1,170 @@
+{
+  "champion": "Ornn",
+  "title": "Beginner",
+  "map": "SR",
+  "mode": "INTRO",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "beginner_starter",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_advanced",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1028",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "6660",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_movementspeed",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1029",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_legendary",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "6660",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1028",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1031",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3068",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_morelegendaryitems",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3143",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3083",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3001",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "2138",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2055",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

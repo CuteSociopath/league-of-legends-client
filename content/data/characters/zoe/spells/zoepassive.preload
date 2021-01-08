@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="zoeaatracker"}}, 
+{Function=BBPreloadSpell, Params={Name="zoewpickupspecific"}}, 
+{Function=BBPreloadSpell, Params={Name="zoepassivesheenbuff"}}, 
+}

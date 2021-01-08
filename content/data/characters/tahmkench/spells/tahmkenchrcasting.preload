@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tahmkenchr_eternaltracker"}}, 
+{Function=BBPreloadSpell, Params={Name="tahmkenchrallycamerasnap"}}, 
+}

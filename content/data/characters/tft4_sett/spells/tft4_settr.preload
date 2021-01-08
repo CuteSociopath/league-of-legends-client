@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrfirstdash"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrfaileddash"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrcastbegin"}}, 
+}

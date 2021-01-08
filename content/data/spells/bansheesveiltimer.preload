@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="bansheesveil"}}, 
+{Function=BBPreloadSpell, Params={Name="itemmagekillerveil"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

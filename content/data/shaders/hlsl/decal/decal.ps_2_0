@@ -1,0 +1,19 @@
+struct FRAGMENT
+{
+    float4 mColor0 : COLOR0;
+};
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 Color;
+sampler2D Texture;
+
+FRAGMENT main(in INTERPOLANTS interpolants)
+{
+    FRAGMENT fragment;
+    fragment.mColor0 = tex2D(Texture, interpolants.texcoord0) * Color;
+    return fragment;
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="missfortunershotextra"}}, 
+{Function=BBPreloadSpell, Params={Name="missfortunericochetshotdud"}}, 
+}

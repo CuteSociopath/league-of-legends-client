@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Senna.SennaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaquesttracker"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaincombat"}}, 
+}

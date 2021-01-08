@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="lilliaerollingmissile"}}, 
+{Function=BBPreloadModule, Params={Name="Lillia.LilliaESpellPassive"}}, 
+}

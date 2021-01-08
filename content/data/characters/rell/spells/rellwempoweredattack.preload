@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Rell.RellWEmpoweredAttack"}}, 
+{Function=BBPreloadSpell, Params={Name="rellz_animbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellw_knockup"}}, 
+{Function=BBPreloadSpell, Params={Name="gragase"}}, 
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_apheliosturrethide"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_summon_marker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_apheliosturret"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffHunterCombat"}}, 
+}

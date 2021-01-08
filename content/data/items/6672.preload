@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="6672buff"}}, 
+{Function=BBPreloadModule, Params={Name="Global._GlobalChampionBuff"}}, 
+}

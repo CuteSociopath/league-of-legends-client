@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Yorick.YorickFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="yorickpassivedeathcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="yorickpassivedeathready"}}, 
+{Function=BBPreloadSpell, Params={Name="yorickpassiveaicfh"}}, 
+{Function=BBPreloadSpell, Params={Name="yorickpassiveaicombat"}}, 
+}

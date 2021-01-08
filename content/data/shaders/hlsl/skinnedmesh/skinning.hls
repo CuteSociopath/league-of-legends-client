@@ -1,0 +1,51 @@
+#ifndef NUM_BLEND_WEIGHTS
+    #define NUM_BLEND_WEIGHTS 4
+#endif
+
+void SkinPosition(in float3 position, in blendindex4 blendIndices, in float4 blendWeights, out float3 skinnedPosition)
+{
+    skinnedPosition = float3(0,0,0);
+    for (int i = 0; i < NUM_BLEND_WEIGHTS; ++i)
+    {
+        blendindex boneIndex = blendIndices[i];
+        float weight = blendWeights[i];
+        skinnedPosition += (mul(float4(position, 1.f), BONES[boneIndex]) * weight);
+    }
+}
+
+void SkinPositionAndNormal(in float3 position, in float3 normal, in blendindex4 blendIndices, in float4 blendWeights, out float3 skinnedPosition, out float3 skinnedNormal)
+{
+    skinnedPosition = float3(0,0,0);
+    skinnedNormal = float3(0,0,0);
+    for (int i = 0; i < NUM_BLEND_WEIGHTS; ++i)
+    {
+        blendindex boneIndex = blendIndices[i];
+        float weight = blendWeights[i];
+        skinnedPosition += (mul(float4(position, 1.f), BONES[boneIndex]) * weight);
+        skinnedNormal  += (mul(float4(normal, 0.f), BONES[boneIndex]) * weight);
+    }
+    
+    skinnedNormal = normalize(skinnedNormal.xyz);
+}
+
+// Skin position and tangent space vectors used to generate the TBN coordinate frame in world coords
+void SkinPositionAndTBN(in float3 position, in float3 normal, in float3 tangent,
+                        in blendindex4 blendIndices, in float4 blendWeights,
+                        out float3 skinnedPosition,
+                        out float3 skinnedNormal, out float3 skinnedTangent )
+{
+    skinnedPosition = float3(0,0,0);
+    skinnedNormal = float3(0,0,0);
+    skinnedTangent = float3(0,0,0);
+    for (int i = 0; i < NUM_BLEND_WEIGHTS; ++i)
+    {
+        blendindex boneIndex = blendIndices[i];
+        float weight = blendWeights[i];
+        skinnedPosition += (mul(float4(position, 1.f), BONES[boneIndex]) * weight);
+        skinnedNormal  += (mul(float4(normal, 0.f), BONES[boneIndex]) * weight);
+        skinnedTangent  += (mul(float4(tangent, 0.f), BONES[boneIndex]) * weight);
+    }
+    
+    skinnedNormal = normalize(skinnedNormal);
+    skinnedTangent = normalize(skinnedTangent);
+}

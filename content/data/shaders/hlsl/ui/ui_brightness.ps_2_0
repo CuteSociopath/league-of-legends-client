@@ -1,0 +1,15 @@
+float brightnessParams;
+
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 tex = tex2D(UI_PRIMARY_TEXTURE, interpolants.texcoord0);
+    tex.rgb += float3(brightnessParams, brightnessParams,brightnessParams);
+    return float4(tex.rgb * tex.a, tex.a);
+}

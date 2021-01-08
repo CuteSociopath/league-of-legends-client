@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrjump"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_percenthealthburn"}}, 
+{Function=BBPreloadModule, Params={Name="TFT_Pantheon.TFT_PantheonRHelper"}}, 
+}

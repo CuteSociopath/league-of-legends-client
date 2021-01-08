@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_BardleRoyale"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis_game_isburning"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis_middle_of_map"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_bardleroyale_participant"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

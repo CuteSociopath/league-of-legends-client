@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonPassiveReady"}}, 
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonEDamage"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheoneshieldslam"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheone"}}, 
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="neekowpassiveready"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ClonePet"}}, 
+{Function=BBPreloadSpell, Params={Name="neekowclone"}}, 
+{Function=BBPreloadSpell, Params={Name="globalinvisibility"}}, 
+{Function=BBPreloadSpell, Params={Name="neekowhaste"}}, 
+{Function=BBPreloadSpell, Params={Name="eternals_clonetookhittracker"}}, 
+}

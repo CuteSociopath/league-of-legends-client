@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="zedrdummymark"}}, 
+{Function=BBPreloadSpell, Params={Name="zedr"}}, 
+{Function=BBPreloadParticle, Params={Name="zed_ult_pop_kill_self_sound.troy", SkinID="-1"}}, 
+--{Function=BBPreloadModule, Params={Name="Zed.CharFunctionsZed"}}, 
+}

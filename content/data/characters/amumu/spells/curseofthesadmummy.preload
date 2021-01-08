@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="stun"}}, 
+{Function=BBPreloadModule, Params={Name="Amumu.AmumuP"}}, 
+{Function=BBPreloadSpell, Params={Name="curseofthesadmummycasteffects"}}, 
+}

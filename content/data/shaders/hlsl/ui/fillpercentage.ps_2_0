@@ -1,0 +1,25 @@
+float4 params;
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+    float2 texcoord1 : TEXCOORD1;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 tex = tex2D(UI_PRIMARY_TEXTURE, interpolants.texcoord0);
+    float4 out_color0 = float4(tex.rgb * tex.a, tex.a) * UI_COLOR.a;
+    float4 maskColor = tex2D(UI_PRIMARY_TEXTURE, interpolants.texcoord1);
+
+    // The percentage value is in the B channel
+    clip(params.x - maskColor.b);
+
+    return out_color0;
+}

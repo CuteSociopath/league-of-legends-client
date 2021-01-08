@@ -1,0 +1,29 @@
+float4 params;   // params.x is desaturation amount. 0=gray 1=color
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float x = interpolants.texcoord0.x - 0.5;
+    float y = interpolants.texcoord0.y - 0.5;
+    if ((x * x + y * y) > 0.25)
+    {
+        clip(-1.0f);
+    }
+    float4 tex = tex2D(UI_PRIMARY_TEXTURE, interpolants.texcoord0);
+    float greyscale = dot(tex.rgb, float3(0.30, 0.59, 0.11));
+    float4 out_color0;
+    out_color0.a = tex.a * UI_COLOR.a;
+    out_color0.rgb = lerp(float3(greyscale, greyscale, greyscale), tex.rgb, params.x) * out_color0.a;
+
+    return out_color0;
+}

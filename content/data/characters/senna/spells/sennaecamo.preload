@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="globalcamouflage"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformallyvisuals"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformallyvisualsmissilemanager"}}, 
+}

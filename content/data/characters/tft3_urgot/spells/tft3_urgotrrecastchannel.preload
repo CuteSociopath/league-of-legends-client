@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrreel"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrgrind"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrtargetbodyhide"}}, 
+{Function=BBPreloadSpell, Params={Name="urgotr"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrmanacostreduction"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrcleanup"}}, 
+}

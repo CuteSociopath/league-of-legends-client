@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_DPSRace"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_LootGoblin.NEXUSBLITZ_LootGoblin_TargetDummyBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_lootgoblin"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

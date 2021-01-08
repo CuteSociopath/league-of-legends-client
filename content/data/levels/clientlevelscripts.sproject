@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="ClientLevelScripts">
+  <Namespaces>
+    <Namespace QualifiedName="">
+      <Solutions />
+      <BehaviorTrees />
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+    <Namespace QualifiedName="_Common">
+      <Solutions />
+      <BehaviorTrees>
+        <BehaviorTree QualifiedName="_Common.PlayPeriodicIdleAnimation" />
+        <BehaviorTree QualifiedName="_Common.PlayProximityAnimation" />
+        <BehaviorTree QualifiedName="_Common.PlayProximityAnimation_OneShot" />
+      </BehaviorTrees>
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+    <Namespace QualifiedName="ARAM">
+      <Solutions>
+        <Solution Name="Map12ARAMClient" SolutionType="Quest" />
+      </Solutions>
+      <BehaviorTrees>
+        <BehaviorTree QualifiedName="ARAM.ClientOnRevive" />
+        <BehaviorTree QualifiedName="ARAM.ClientScripts" />
+      </BehaviorTrees>
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+    <Namespace QualifiedName="PROJECTMap">
+      <Solutions>
+        <Solution Name="PROJECTMapClientScripts" SolutionType="Quest" />
+      </Solutions>
+      <BehaviorTrees>
+        <BehaviorTree QualifiedName="PROJECTMap.PROJECTMap_PropIdleAnimations" />
+        <BehaviorTree QualifiedName="PROJECTMap.PROJECTMap_PropProximityAnimations" />
+      </BehaviorTrees>
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+    <Namespace QualifiedName="SummonersRift">
+      <Solutions>
+        <Solution Name="SRScriptsClient" SolutionType="Quest" />
+      </Solutions>
+      <BehaviorTrees>
+        <BehaviorTree QualifiedName="SummonersRift.SnowdownSRUGingerbreadFidget" />
+        <BehaviorTree QualifiedName="SummonersRift.SnowdownSRUPropAnims" />
+        <BehaviorTree QualifiedName="SummonersRift.SRU_PropInitialization" />
+        <BehaviorTree QualifiedName="SummonersRift.SRU_PropRandomization" />
+      </BehaviorTrees>
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+    <Namespace QualifiedName="SummonersRift.Critters">
+      <Solutions />
+      <BehaviorTrees>
+        <BehaviorTree QualifiedName="SummonersRift.Critters.CR_Loop" />
+        <BehaviorTree QualifiedName="SummonersRift.Critters.CR_LoopDetect" />
+        <BehaviorTree QualifiedName="SummonersRift.Critters.CR_Single" />
+        <BehaviorTree QualifiedName="SummonersRift.Critters.CR_SingleDetect" />
+      </BehaviorTrees>
+      <Models />
+      <ModelInstances />
+      <CollectionInstances />
+      <DictionaryInstances />
+      <EnumInstances />
+      <FlagsInstances />
+    </Namespace>
+  </Namespaces>
+</Project>

@@ -1,0 +1,87 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "SiegeDeployables",
+  "map": "SR",
+  "mode": "any",
+  "type": "Deployables",
+  "customTag": "Siege",
+  "customPanel": {
+    "name": "Deployables",
+    "currencyType": "buff",
+    "buffCurrencyName": "SiegeCurrency",
+    "displaySearchBar": false,
+    "sortRank": -1
+  },
+  "blocks": [
+    {
+      "type": "siegeOffense",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3631",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3641",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3647",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3635",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3642",
+          "count": 1,
+          "hideCount": true
+        }
+      ]
+    },
+    {
+      "type": "siegeDefense",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3634",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3640",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3643",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3636",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3642",
+          "count": 1,
+          "hideCount": true
+        }
+      ]
+    }
+  ]
+}

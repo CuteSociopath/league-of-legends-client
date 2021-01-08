@@ -1,0 +1,12 @@
+{"OrnnR;f1":{"link":"bonusattackdamage","coeff":".4"}}
+{"OrnnR;f2":{"link":"bonusattackdamage","coeff":".8"}}
+{"OrnnR;f3":{"link":"","coeff":""}}
+{"OrnnR;f4":{"link":"","coeff":""}}
+{"OrnnQ;f1":{"link":"attackdamage","coeff":".6"}}
+{"OrnnQ;f2":{"link":"attackdamage","coeff":"1.8"}}
+{"OrnnQ;f3":{"link":"","coeff":""}}
+{"OrnnQ;f4":{"link":"","coeff":""}}
+{"OrnnW;f1":{"link":"health","coeff":".1"}}
+{"OrnnW;f2":{"link":"","coeff":""}}
+{"OrnnW;f3":{"link":"","coeff":""}}
+{"OrnnW;f4":{"link":"","coeff":""}}

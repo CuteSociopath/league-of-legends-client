@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_vaynerinvisible"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_vaynerattackready"}}, 
+}

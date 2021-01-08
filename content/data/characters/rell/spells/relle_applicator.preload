@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Applicator"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_buffered"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Buffered"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_ready"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_target"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_allyspellcast"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellP"}}, 
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="item3078triforcespeed"}}, 
+{Function=BBPreloadSpell, Params={Name="3078trinityforcestacks"}}, 
+{Function=BBPreloadSpell, Params={Name="3078trinityforce"}}, 
+{Function=BBPreloadSpell, Params={Name="itemspellbladehit"}}, 
+}

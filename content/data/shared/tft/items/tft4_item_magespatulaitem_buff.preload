@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_checkitemtraitcompatibility"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_checkitemuniquecompatibility"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_item_magespatulaitem_checkformana_buff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_ItemFunctionModule"}}, 
+}

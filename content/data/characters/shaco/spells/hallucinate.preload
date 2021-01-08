@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="hallucinatefull"}}, 
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="shacopassive"}}, 
+{Function=BBPreloadSpell, Params={Name="twoshivpoison"}}, 
+}

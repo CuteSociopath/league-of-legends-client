@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadParticle, Params={Name="designergodray.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_vulnerablemanager"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_monstersingletargetspellvulnerability"}}, 
+{Function=BBPreloadSpell, Params={Name="outofcombatdebuffmanager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

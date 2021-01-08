@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="globalcamouflage"}}, 
+{Function=BBPreloadSpell, Params={Name="eternals_killsafteractiontracker"}}, 
+{Function=BBPreloadSpell, Params={Name="rengarrshred"}}, 
+{Function=BBPreloadSpell, Params={Name="rengarrsecondarytarget"}}, 
+{Function=BBPreloadSpell, Params={Name="rengarrvision"}}, 
+{Function=BBPreloadSpell, Params={Name="rengarrprimarytarget"}}, 
+{Function=BBPreloadSpell, Params={Name="rengarpassivebuff"}}, 
+}

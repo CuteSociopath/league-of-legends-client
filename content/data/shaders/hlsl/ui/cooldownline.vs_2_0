@@ -1,0 +1,33 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+float4 angleParams;
+
+struct VERTEX
+{
+    float2 posIn: X3D_VSIN_POSITION;
+    float4 col0: X3D_VSIN_COLOR0;
+    float2 tex0: X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 col0     : COLOR0;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float x = angleParams.x;
+    float y = angleParams.y;
+    float len = angleParams.z;
+    float2 pos = vertex.posIn + float2(x * vertex.tex0.x * len, y * vertex.tex0.y * len);
+    interpolants.position = mul(float4(pos,0,1), UI_ELEMENT_MATRIX);
+
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    interpolants.col0 = vertex.col0.VCOLORSWIZZLE;
+
+    return interpolants;
+}

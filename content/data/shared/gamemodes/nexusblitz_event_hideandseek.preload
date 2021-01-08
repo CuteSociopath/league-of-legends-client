@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_HideAndSeek"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_HideAndSeek_HiderBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_HideAndSeek_SeekerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_hideandseek_hiderbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_hideandseek_seekerbuff"}}, 
+}

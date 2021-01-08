@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolbehaviormanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_starshipcirclingbehavior"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_unitbuffstarship"}}, 
+}

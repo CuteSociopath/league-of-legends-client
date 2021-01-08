@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="pantheonnoattack"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheone"}}, 
+}

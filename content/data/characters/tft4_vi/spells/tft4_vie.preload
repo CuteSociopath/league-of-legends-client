@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_kassadine"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_unitstatus_armorshred_large"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_unitstatus_armorshred_medium"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_unitstatus_armorshred_small"}}, 
+}

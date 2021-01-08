@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="unstoppableforcemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_virpreroot"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_virknockback"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_virknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_virpart2"}}, 
+}

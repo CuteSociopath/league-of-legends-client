@@ -1,0 +1,65 @@
+#include "IOParam/IODefine_VS.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+#include "unpack.hls"
+#include "../ParticleSystem/navmeshmask_vs.hls"
+
+column_major float3x3 vParticleUVTransform;
+float4   kColorFactor;    // R3D_SHADER_VS_CONSTANT_PARTICLE_COLOR_FACTOR
+    
+struct VERTEX
+{
+    float4      position        : X3D_VSIN_POSITION;
+    float4      blendWeight     : X3D_VSIN_BLENDWEIGHT;
+    float3      normal          : X3D_VSIN_NORMAL;
+    blendindex4 blendIndices    : X3D_VSIN_BLENDINDICES;
+    float2      texcoord0       : X3D_VSIN_TEXCOORD0;
+    // @todo no support for animated mesh vertex colors?
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color0          : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0_uvDistort   : TEXCOORD1;
+
+#ifdef MASKED
+    float2  maskUVs : TEXCOORD2;
+#endif
+};
+
+INTERPOLANTS main(VERTEX input)
+{
+    INTERPOLANTS output;
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(input.blendWeight, input.normal, input.texcoord0);     // unpack fixed point attributes
+#endif
+
+    // Compute skinned local position
+    float3 skinnedPosition = float3(0,0,0);
+    for (int i = 0; i < 4; ++i)
+    {
+        blendindex boneIndex = input.blendIndices[i];
+        float weight = input.blendWeight[i];
+        skinnedPosition += (mul(input.position, BONES[boneIndex]) * weight);
+    }
+
+    // Output homogeneous position
+    output.position = mul(float4(skinnedPosition, 1.0f), mProj ); 
+    output.color0 = kColorFactor;
+    float2 uv0 = mul(float3(input.texcoord0, 1), vParticleUVTransform).xy;
+            
+    // Distortion
+    float2 uvDistort = output.position.xy/output.position.w;    // clip space uv
+    uvDistort   = uvDistort/2 + 0.5;    // convert to distortion buffer tex coords
+    uvDistort.y = 1 - uvDistort.y;
+    
+    output.uv0_uvDistort = float4(uv0, uvDistort);
+    
+    // @todo No Fog of War? Already assumed to be in the distortion buffer screen capture?
+    // @todo no fogging support?
+#ifdef MASKED
+    output.maskUVs = GetNavmeshMaskUVS(skinnedPosition);
+#endif
+
+    return output;
+}

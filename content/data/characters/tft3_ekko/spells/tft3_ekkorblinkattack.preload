@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_PowerGauntlet_ShieldBuff"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Ekko.TFT3_EkkoRDeathPrevention"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Ekko.TFT3_EkkoRBlinkAttack"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ekkorslow"}}, 
+}

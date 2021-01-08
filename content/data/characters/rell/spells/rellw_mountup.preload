@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rellz_animbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellw_dismount"}}, 
+{Function=BBPreloadSpell, Params={Name="rellwempoweredattack"}}, 
+}

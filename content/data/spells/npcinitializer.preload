@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="monsterminiondamageamp"}}, 
+{Function=BBPreloadSpell, Params={Name="_globalmonsterbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="dummypercenthealthresistance"}}, 
+}

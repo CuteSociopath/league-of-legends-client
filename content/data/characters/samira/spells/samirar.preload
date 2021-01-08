@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="samirarlifestealmod"}}, 
+{Function=BBPreloadModule, Params={Name="Samira.SamiraRLifestealMod"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapassivecombo"}}, 
+{Function=BBPreloadSpell, Params={Name="samirarmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="samirarreadybuff"}}, 
+}

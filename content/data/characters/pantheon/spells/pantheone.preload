@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="pantheone2"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonspearglowvfx"}}, 
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheoneshieldbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonedamage"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonefacinglock"}}, 
+}

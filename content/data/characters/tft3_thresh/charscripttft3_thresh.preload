@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_threshw_chosenmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_castspellsuccess"}}, 
+}

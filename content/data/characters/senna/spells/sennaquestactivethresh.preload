@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennaquestthreshvictorymarker"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaquestthreshdefeatmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaquestrecentlydamaged"}}, 
+}

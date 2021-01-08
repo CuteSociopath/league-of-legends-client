@@ -1,0 +1,10 @@
+#ifdef IS_DX9
+void DoDX9HalfPixelAdjust(inout float4 projectionPos)
+{
+    projectionPos.xy += RENDER_TARGET_INV_SIZE.xy * projectionPos.w; // see https://aras-p.info/blog/2016/04/08/solving-dx9-half-pixel-offset/
+}
+#else
+void DoDX9HalfPixelAdjust(float4 projectionPos)
+{
+}
+#endif

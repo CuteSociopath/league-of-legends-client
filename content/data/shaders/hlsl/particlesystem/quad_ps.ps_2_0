@@ -1,0 +1,107 @@
+#include "../ColorPalette.hls"
+#include "../DeathScreen.hls"
+#include "../MipLevels.hls"
+#include "../FogOfWar/FogOfWar_PS.hls"
+#include "SoftParticle.hls"
+#include "ColorRemap.hls"
+#include "AlphaErode.hls"
+#include "navmeshmask_ps.hls"
+#include "AlphaTest_ps.hls"
+
+sampler2D TEXTURE;
+sampler2D PARTICLE_COLOR_TEXTURE;
+
+#ifdef  MULTIPASS
+sampler2D TEXTUREMULT;
+#endif
+
+
+#if defined(COLORPALETTE_COLORBLIND)
+   float4 APPLY_TEAM_COLOR_CORRECTION;
+#endif
+
+
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0_uv1     : TEXCOORD1;
+#ifdef MASKED
+    float4  uvFOW_uvMap : TEXCOORD2;    
+#else
+    float2  uvFOW       : TEXCOORD2;
+#endif
+#ifdef ALPHA_EROSION
+    float   erosion     : TEXCOORD3;
+#endif
+#ifdef SOFT_PARTICLES
+    float4  projPosition: TEXCOORD4;    // clipspace POSITION semantic isn't supplied to pixel shader, need an explicit interpolator
+#endif
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float2 uv0 = interpolants.uv0_uv1.xy;
+    float2 uv1 = interpolants.uv0_uv1.zw;
+    
+    float4 texel = tex2D(TEXTURE, uv0);
+    
+#ifdef PALETTIZE_TEXTURES
+    // remap textures according to palettization settings
+    texel.rgb = ColorizeMainTexture(texel).rgb;
+#endif
+
+#ifdef  MULTIPASS
+    texel = texel * tex2D(TEXTUREMULT, uv1);
+#endif  
+
+#ifndef ALPHA_EROSION
+    // apply p-rgba colorizing texture (if not using alpha erosion which uses same sampler)
+    float4 particle_color_texel = tex2D(PARTICLE_COLOR_TEXTURE, uv1);
+    texel *= particle_color_texel;
+#endif
+
+    float4 out_color0 = interpolants.color0 * texel;
+
+#ifdef COLORPALETTE_COLORBLIND
+    if (APPLY_TEAM_COLOR_CORRECTION.r != 0.0f)
+    {       
+        ApplyColorCorrectionColorblind(out_color0);
+    }
+#endif
+
+#ifndef DISABLE_FOW
+#ifdef MASKED
+    float4 fowFactors = GetFogOfWarFactors(interpolants.uvFOW_uvMap.xy);
+#else
+    float4 fowFactors = GetFogOfWarFactors(interpolants.uvFOW);
+#endif
+    
+    // Apply FOW to final result
+    // NOTE:  This ignores the FowOverlay texture tint and assumes the FoW is black
+    out_color0.rgb *= fowFactors.a;
+#endif // DISABLE_FOW
+
+#ifdef ALPHA_EROSION
+    out_color0.a *= CalcAlphaErosion(interpolants.erosion, uv0);
+#endif
+
+    //**
+    // soft particles
+#ifdef SOFT_PARTICLES
+    out_color0 = CalcSoftParticleColor(interpolants.projPosition,out_color0);
+#endif
+    
+    //**
+    // Finalize output color
+    out_color0.rgb = ApplyMipColorsVisualization(out_color0.rgb, uv0);
+    
+#ifdef MASKED
+    out_color0 = ApplyNavmeshMask(out_color0, interpolants.uvFOW_uvMap.zw);
+#endif
+
+    AlphaTest(out_color0);
+
+    return out_color0;
+}

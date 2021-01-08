@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_nautilusrtracker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_nautilusrtarget"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_nautilusrmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_nautilusrknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_nautilusrhit"}}, 
+{Function=BBPreloadSpell, Params={Name="nautilusgrandline"}}, 
+{Function=BBPreloadSpell, Params={Name="expirationtimer"}}, 
+}

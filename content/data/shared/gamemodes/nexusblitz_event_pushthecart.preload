@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_PushTheCart"}}, 
+{Function=BBPreloadCharacter, Params={Name="slime_pushcart"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_carttracker"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_pushthecart_towerbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

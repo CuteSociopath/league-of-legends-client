@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffWarlord"}}, 
+}

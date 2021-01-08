@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT3_PlayerTraitBuffSuper"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_superpilotcleanup"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_supermech"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT3_UnitBuffDemolitionist"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT3_UnitBuffInfiltrator"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+}

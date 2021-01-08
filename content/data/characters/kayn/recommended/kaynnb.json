@@ -1,0 +1,434 @@
+{
+  "champion": "Kayn",
+  "title": "KaynSL",
+  "map": "NB",
+  "mode": "NEXUSBLITZ",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4201",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "startingjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4101",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "early",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3133",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "earlyjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3133",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essentialjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "4102",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "standard",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        "kaynass",
+        "kaynslay"
+      ],
+      "items": [
+        {
+          "id": "3053",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3812",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3161",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "standard",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynass"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3147",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3142",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3117",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynass"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3139",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3161",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3814",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "aggressive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynass"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3074",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3812",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3033",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "standard",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynslay"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3065",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3748",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3111",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynslay"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3139",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3065",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "aggressive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        "kaynslay"
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3812",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3033",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3005",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2140",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliospswapwarning"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliospreload"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumdebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosGravitumDebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="itemhurricaneattack"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosinfernumsplashmis"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosseverumcountup"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosSeverumCountUp"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosoffhandmanager"}}, 
+}

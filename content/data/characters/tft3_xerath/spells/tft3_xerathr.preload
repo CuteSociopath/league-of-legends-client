@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT3_Xerath.TFT3_XerathR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_xerathrtracker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_xerathrmeteor"}}, 
+}

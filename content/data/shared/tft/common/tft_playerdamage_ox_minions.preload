@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Combat"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerdamage_ox_1star"}}, 
+}

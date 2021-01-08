@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="aphelioscrescendumturretactive"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioslockfacing"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscrescendumturrethelper"}}, 
+{Function=BBPreloadCharacter, Params={Name="apheliosturret"}}, 
+}

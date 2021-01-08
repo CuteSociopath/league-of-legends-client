@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sylaspassiveattack"}}, 
+{Function=BBPreloadSpell, Params={Name="sylaspassiveattacknoanim"}}, 
+{Function=BBPreloadSpell, Params={Name="sylaspattackcheck"}}, 
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_BardleRoyale_Juggernaut"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_BardleRoyale"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_vipmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_onfirebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

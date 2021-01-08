@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_diedafteractiontracker"}}, 
+{Function=BBPreloadSpell, Params={Name="jhinw"}}, 
+{Function=BBPreloadModule, Params={Name="Senna.SennaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sennarwarningmis"}}, 
+{Function=BBPreloadSpell, Params={Name="sennarally"}}, 
+}

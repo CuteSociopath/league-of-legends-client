@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.SpellAttribution"}}, 
+{Function=BBPreloadSpell, Params={Name="item3109mspd"}}, 
+}

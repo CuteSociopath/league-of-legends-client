@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="kaylestatstonetrackerr"}}, 
+{Function=BBPreloadSpell, Params={Name="kaylerselfrangeadjustment"}}, 
+}

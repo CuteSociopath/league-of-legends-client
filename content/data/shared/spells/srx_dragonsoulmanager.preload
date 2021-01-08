@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffmountain"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffcloud"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffocean"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffinfernal"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_buffvfxmanager"}}, 
+}

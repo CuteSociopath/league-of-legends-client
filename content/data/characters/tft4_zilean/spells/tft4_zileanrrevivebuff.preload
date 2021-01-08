@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Zilean.TFT4_ZileanR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_zileanrpostdeathbuff"}}, 
+}

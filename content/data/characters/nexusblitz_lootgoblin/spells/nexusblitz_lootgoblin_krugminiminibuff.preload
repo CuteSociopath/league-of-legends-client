@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_LootGoblin.NEXUSBLITZ_LootGoblin_KrugMiniMiniBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_LootKrug"}}, 
+}

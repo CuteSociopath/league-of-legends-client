@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="rite_of_ruin_proc4.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="itemtowershankcharge"}}, 
+}

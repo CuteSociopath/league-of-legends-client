@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="actionidle"}}, 
+{Function=BBPreloadSpell, Params={Name="actionmovealonglane"}}, 
+{Function=BBPreloadSpell, Params={Name="actionattacktarget"}}, 
+}

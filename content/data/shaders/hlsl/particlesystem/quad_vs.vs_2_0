@@ -1,0 +1,94 @@
+#include "../Fog/Fog.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+#include "common.hls"
+#include "navmeshmask_vs.hls"
+
+// x = num frames along x, y = 1 / num frames along x, z = 1 / num frames along y
+float4 TEXTURE_INFO;
+float4 TEXTURE_INFO_2;
+
+
+struct VERTEX
+{
+    float3  position        : X3D_VSIN_POSITION;
+    float4  color0          : X3D_VSIN_COLOR0;
+    float4  texcoord0       : X3D_VSIN_TEXCOORD0;   // xy = uv0, z = flip book frame, w = erosion
+    float2  texcoord1       : X3D_VSIN_TEXCOORD1;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0_uv1     : TEXCOORD1;
+
+#ifdef MASKED
+    float4  uvFOW_uvMap : TEXCOORD2;    // zw here is being used for navmesh masking if it's enabled
+#else
+    float2  uvFOW       : TEXCOORD2;    
+#endif
+
+#ifdef ALPHA_EROSION
+    float   erosion     : TEXCOORD3;
+#endif
+
+#ifdef SOFT_PARTICLES
+    float4  projPosition: TEXCOORD4;    // clipspace POSITION semantic isn't supplied to pixel shader, need an explicit interpolator
+#endif
+
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Position
+    interpolants.position = mul( float4(vertex.position,1), mProj );
+#ifdef SOFT_PARTICLES
+    interpolants.projPosition = interpolants.position;
+#endif
+
+    // Color
+    interpolants.color0 = vertex.color0.VCOLORSWIZZLE;
+
+    // per particle 'constants' that are supplied as part of the vertex data
+    // since many particle quads are batched up into one draw call (replicated in all 4 verts of quad)
+    // (mesh particles use a draw call for each mesh so they can use shader
+    // constants for per particle data)
+    float frameNumber = vertex.texcoord0.z;          // current flip book frame number for this particle
+    float alphaErosionDrive = vertex.texcoord0.w;    // current alpha erosion anim curve for this particle
+    
+    // UV coordinates
+    interpolants.uv0_uv1.xy = CalculateTexDivUV(vertex.texcoord0.xy, frameNumber, TEXTURE_INFO);
+
+#ifdef MULTIPASS
+    interpolants.uv0_uv1.zw = CalculateTexDivUV(vertex.texcoord1.xy, frameNumber, TEXTURE_INFO_2);
+#else
+    interpolants.uv0_uv1.zw = vertex.texcoord1;
+#endif
+
+    // Fog of war
+#ifndef DISABLE_FOW
+#ifdef MASKED
+    interpolants.uvFOW_uvMap.xy = FogOfWarTextureCoordinates( vertex.position ).xy;
+#else
+    interpolants.uvFOW.xy = FogOfWarTextureCoordinates( vertex.position ).xy;
+#endif
+#else // DISABLE_FOW
+#ifndef MASKED
+    interpolants.uvFOW.xy = 0.0f;
+#else
+    interpolants.uvFOW_uvMap.xy = 0.0f;
+#endif
+#endif
+
+#ifdef ALPHA_EROSION
+    interpolants.erosion = alphaErosionDrive;
+#endif
+
+#ifdef MASKED
+    interpolants.uvFOW_uvMap.zw = GetNavmeshMaskUVS(vertex.position.xyz);
+#endif
+
+    return interpolants;
+}

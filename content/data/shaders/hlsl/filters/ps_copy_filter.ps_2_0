@@ -1,0 +1,31 @@
+#include "../DeathScreen.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+sampler2D SAMPLER; ///< texture to blur
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 ret = tex2D(SAMPLER, interpolants.texcoord0);
+
+#ifdef DEATH_EFFECT
+    ret.rgb = GetSaturatedColor(ret.rgb);
+#endif
+
+    return ret;
+}

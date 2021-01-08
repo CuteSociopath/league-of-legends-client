@@ -1,0 +1,50 @@
+#include "../Fog/Fog.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+#include "common.hls"
+
+// x = num frames along x, y = 1 / num frames along x, z = 1 / num frames along y
+float4 TEXTURE_INFO;
+
+struct VERTEX
+{
+    float4  position        : X3D_VSIN_POSITION;
+    float4  color0          : X3D_VSIN_COLOR0;
+    float3  texcoord0       : X3D_VSIN_TEXCOORD0;   // xy = uv0, z = Frame number (why not a constant?)
+    float2  texcoord1       : X3D_VSIN_TEXCOORD1;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0_uv1     : TEXCOORD1;
+    float2  uvDistort   : TEXCOORD2;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Position
+    interpolants.position = mul( vertex.position, mProj );
+
+    // Color
+    interpolants.color0 = vertex.color0.VCOLORSWIZZLE;
+
+    // UV coordinates
+    float frameNumber = vertex.texcoord0.z; // current flip book frame number @todo why isn't this in a constant?
+    float2 uv0 = CalculateTexDivUV(vertex.texcoord0.xy, frameNumber, TEXTURE_INFO);
+
+    // Particle color texture lookup
+    float2 uv1 = vertex.texcoord1;
+    interpolants.uv0_uv1 = float4(uv0,uv1);
+    
+    // Distortion
+    float2 uvDistort = interpolants.position.xy/interpolants.position.w;    // clip space uv
+    uvDistort   = uvDistort/2 + 0.5;    // convert to distortion buffer tex coords
+    uvDistort.y = 1 - uvDistort.y;
+    interpolants.uvDistort = uvDistort;
+
+    return interpolants;
+    
+}

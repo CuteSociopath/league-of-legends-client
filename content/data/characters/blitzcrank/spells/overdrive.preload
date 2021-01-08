@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_takedownsafteractiontracker"}}, 
+{Function=BBPreloadSpell, Params={Name="slow"}}, 
+}

@@ -1,0 +1,15 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yonebasicattack"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecritattack"}}, 
+{Function=BBPreloadSpell, Params={Name="corkibasicattack"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneisdancing"}}, 
+{Function=BBPreloadModule, Params={Name="Yone.YoneIsDancing"}}, 
+{Function=BBPreloadModule, Params={Name="Yasuo.YasuoIsDancing"}}, 
+{Function=BBPreloadSpell, Params={Name="yonebasicattack2"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecritattack2"}}, 
+{Function=BBPreloadSpell, Params={Name="yonebasicattack3"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecritattack3"}}, 
+{Function=BBPreloadSpell, Params={Name="yonebasicattack4"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecritattack4"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecombat"}}, 
+}

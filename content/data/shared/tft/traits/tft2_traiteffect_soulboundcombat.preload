@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_GuardianAngel_Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_soulboundspiritform"}}, 
+}

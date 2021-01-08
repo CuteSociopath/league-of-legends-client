@@ -1,0 +1,39 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+struct VERTEX
+{
+	float3 m_Position  : X3D_VSIN_POSITION;
+	float4 m_Color0    : X3D_VSIN_COLOR0;
+	float2 m_TexCoord0 : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+    // Pass through
+    interpolants.position = mul(float4(vertex.m_Position.x, vertex.m_Position.y, 0.0f, 1.0f), SCREEN_MATRIX);
+
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    interpolants.color0 = vertex.m_Color0.VCOLORSWIZZLE;
+    interpolants.texcoord0 = vertex.m_TexCoord0;
+    return interpolants;
+}

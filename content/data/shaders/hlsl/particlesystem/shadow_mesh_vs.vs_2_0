@@ -1,0 +1,30 @@
+
+column_major float3x3 vParticleUVTransform;
+float4   kColorFactor;    // R3D_SHADER_VS_CONSTANT_PARTICLE_COLOR_FACTOR
+
+struct VERTEX
+{
+    float4  position    : X3D_VSIN_POSITION;
+    float2  texcoord0   : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : COLOR0;
+    float3  uv0_depth   : TEXCOORD0;    // xy = uv0, z = depth
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float4 worldPos = mul( vertex.position, mWorld );
+    interpolants.position = mul( worldPos, mProj );
+
+    interpolants.color0 = kColorFactor;
+    interpolants.uv0_depth.xy = mul(float3(vertex.texcoord0, 1), vParticleUVTransform).xy;
+    interpolants.uv0_depth.z = interpolants.position.z;   // distance from light view origin
+
+    return interpolants;
+}

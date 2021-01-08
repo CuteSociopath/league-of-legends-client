@@ -1,0 +1,132 @@
+{
+  "champion": "LeeSin",
+  "title": "Beginner",
+  "map": "SR",
+  "mode": "INTRO",
+  "type": "riot",
+  "customTag": "",
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "beginner_starter",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": 5,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_advanced",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1036",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1028",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3044",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_movementspeed",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1029",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_legendaryitem",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3133",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_morelegendaryitems",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3072",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3812",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

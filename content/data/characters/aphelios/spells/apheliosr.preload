@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosP"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosrmis"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioslockfacing"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+}

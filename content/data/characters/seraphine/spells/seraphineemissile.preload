@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="seraphinee"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineestun"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineeroot"}}, 
+{Function=BBPreloadSpell, Params={Name="seraphineeslow"}}, 
+}

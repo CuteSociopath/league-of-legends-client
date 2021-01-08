@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_rangercombat"}}, 
+}

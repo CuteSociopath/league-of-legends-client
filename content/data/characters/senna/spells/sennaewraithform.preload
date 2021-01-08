@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennaeanimations"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformrecentattack"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformhealthbar"}}, 
+{Function=BBPreloadModule, Params={Name="Senna.SennaEWraithForm"}}, 
+{Function=BBPreloadSpell, Params={Name="globalcamouflagewarning"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformselfrevealed"}}, 
+{Function=BBPreloadSpell, Params={Name="globalcamouflageviewer"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformallyvisualsmissilemanager"}}, 
+}

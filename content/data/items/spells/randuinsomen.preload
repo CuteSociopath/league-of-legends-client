@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="randuinsomendebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="slow"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SpellAttribution"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

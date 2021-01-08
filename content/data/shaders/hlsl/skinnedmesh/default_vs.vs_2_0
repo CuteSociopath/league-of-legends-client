@@ -1,0 +1,45 @@
+
+#include "IOParam/IODefine_VS.hls"
+#include "unpack.hls"
+#include "skinning.hls"
+
+struct VERTEX
+{
+    float3		vPos            : X3D_VSIN_POSITION;
+    float4		vBlendWeight    : X3D_VSIN_BLENDWEIGHT;
+    blendindex4	vBlendIndices           : X3D_VSIN_BLENDINDICES;
+    float2		vUV1            : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4	vPosOut         : POSITION;
+    float2	vTexOut1        : TEXCOORD0;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackWeights(vertex.vBlendWeight);     // unpack fixed point attributes
+    UnpackUV(vertex.vUV1);
+#endif
+
+    // Compute skinned local position
+    float3 worldPosition;
+    SkinPosition(vertex.vPos, vertex.vBlendIndices, vertex.vBlendWeight, worldPosition);
+
+    // Output homogeneous position
+    interpolants.vPosOut = mul(float4(worldPosition.xyz, 1.0f), mProj);
+
+    // Output texture coordinate 
+    interpolants.vTexOut1.xy = vertex.vUV1;
+
+    return interpolants;
+}

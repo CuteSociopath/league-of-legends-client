@@ -1,0 +1,137 @@
+{
+  "champion": "Azir",
+  "title": "AhriFIRSTBLOOD",
+  "map": "HA",
+  "mode": "FIRSTBLOOD",
+  "type": "riot",
+  "customTag": "",
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1004",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 3,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3151",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3028",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3089",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3135",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3174",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3191",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3027",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3026",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2004",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2044",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "champion": "Zoe",
+  "title": "ZoePG",
+  "map": "3",
+  "mode": "ARAM",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3303",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 4,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3098",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3165",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3092",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3165",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3151",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3027",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3116",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

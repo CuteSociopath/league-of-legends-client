@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_settrfaileddash"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrseconddashiffail"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrseconddash"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_settrsuppression"}}, 
+}

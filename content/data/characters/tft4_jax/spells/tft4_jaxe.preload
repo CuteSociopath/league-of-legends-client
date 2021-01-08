@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="evadebuffmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_dodgebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="jaxcounterstrike"}}, 
+}

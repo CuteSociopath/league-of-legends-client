@@ -1,0 +1,16 @@
+{"AlphaStrike;f1":{"link":"attackdamage","coeff":"0.6"}}
+{"AlphaStrike;f2":{"link":"","coeff":""}}
+{"AlphaStrike;f3":{"link":"","coeff":""}}
+{"AlphaStrike;f4":{"link":"","coeff":""}}
+{"Meditate;f1":{"link":"","coeff":""}}
+{"Meditate;f2":{"link":"","coeff":""}}
+{"Meditate;f3":{"link":"","coeff":""}}
+{"Meditate;f4":{"link":"","coeff":""}}
+{"Highlander;f1":{"link":"","coeff":""}}
+{"Highlander;f2":{"link":"","coeff":""}}
+{"Highlander;f3":{"link":"","coeff":""}}
+{"Highlander;f4":{"link":"","coeff":""}}
+{"WujuStyle;f1":{"link":"","coeff":""}}
+{"WujuStyle;f2":{"link":"attackdamage","coeff":"0.1/0.125/0.15/0.175/0.20"}}
+{"WujuStyle;f3":{"link":"","coeff":""}}
+{"WujuStyle;f4":{"link":"","coeff":""}}

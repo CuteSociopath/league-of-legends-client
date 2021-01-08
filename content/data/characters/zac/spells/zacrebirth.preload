@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="zacrebirthready"}}, 
+{Function=BBPreloadSpell, Params={Name="zacrebirthstart"}}, 
+}

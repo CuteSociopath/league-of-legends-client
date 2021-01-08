@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="itemblackoutmarker"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/ZombieWard/ZombieWardNoLastHitBuff.lua"}}, 
+{Function=BBPreloadParticle, Params={Name="temp_itemblackout.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="temp_itemblackoutpersist.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SharedWardLogic"}}, 
+{Function=BBPreloadSpell, Params={Name="warddisable"}}, 
+}

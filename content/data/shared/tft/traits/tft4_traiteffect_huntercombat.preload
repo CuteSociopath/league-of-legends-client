@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT4_TraitEffect_HunterCombat"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_warwickrattack"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_huntermissile"}}, 
+}

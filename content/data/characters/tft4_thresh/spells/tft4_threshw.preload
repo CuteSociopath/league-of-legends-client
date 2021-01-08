@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="tft4_threshlantern"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_threshwlanterntimeout"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_threshwshield"}}, 
+{Function=BBPreloadSpell, Params={Name="threshwtetherparticle"}}, 
+}

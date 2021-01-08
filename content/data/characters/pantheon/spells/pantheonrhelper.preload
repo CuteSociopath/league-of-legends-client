@@ -1,0 +1,14 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonRHelper"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrairborn"}}, 
+{Function=BBPreloadSpell, Params={Name="guardianangel"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrdescending"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrmissile3"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrfinalpose"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrjump"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrmarker"}}, 
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonraudio"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrmissile2"}}, 
+}

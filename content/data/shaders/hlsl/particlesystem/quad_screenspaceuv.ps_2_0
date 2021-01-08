@@ -1,0 +1,68 @@
+#include "../ColorPalette.hls"
+#include "../DeathScreen.hls"
+#include "../MipLevels.hls"
+#include "../FogOfWar/FogOfWar_PS.hls"
+#include "ColorRemap.hls"
+#include "AlphaTest_ps.hls"
+
+sampler2D TEXTURE;
+sampler2D PARTICLE_COLOR_TEXTURE;
+
+#if defined(COLORPALETTE_COLORBLIND)
+   float4 APPLY_TEAM_COLOR_CORRECTION;
+#endif
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0         : TEXCOORD1;
+#ifndef DISABLE_FOW
+    float4  uv1_uvFOW   : TEXCOORD2;
+#else
+    float2  uv1_uvFOW   : TEXCOORD2;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND)
+    float   fog         : TEXCOORD3;
+#endif
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // break out values from interpolators
+    float2 uv0 = interpolants.uv0.xy / interpolants.uv0.w;  // project texture coords back to clip/screen space
+    float2 uv1 = interpolants.uv1_uvFOW.xy;
+
+    float4 texel = tex2D(TEXTURE, uv0);
+    
+#ifdef PALETTIZE_TEXTURES
+    // remap textures according to palettization settings
+    texel.rgb = ColorizeMainTexture(texel).rgb;
+#endif
+
+    float4 particle_color_texel = tex2D(PARTICLE_COLOR_TEXTURE, uv1);
+    float4 out_color0 = interpolants.color0 * texel * particle_color_texel;
+
+#ifdef COLORPALETTE_COLORBLIND
+    if (APPLY_TEAM_COLOR_CORRECTION.r != 0.0f)
+    {       
+        ApplyColorCorrectionColorblind(out_color0);
+    }
+#endif
+
+#ifndef DISABLE_FOW
+    float2 uvFOW = interpolants.uv1_uvFOW.zw;
+    float4 fowFactors = GetFogOfWarFactors(uvFOW);
+
+    // Apply FOW to final result
+    // NOTE:  This ignores the FowOverlay texture tint and assumes the FoW is black
+    out_color0.rgb *= fowFactors.a;
+#endif
+
+    out_color0.rgb = ApplyMipColorsVisualization(out_color0.rgb, uv0);
+#ifndef PS_2_0
+    AlphaTest(out_color0);
+#endif
+
+    return out_color0;
+}

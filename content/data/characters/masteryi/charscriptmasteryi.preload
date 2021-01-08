@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="masteryitauntmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="wujustylevisual"}}, 
+{Function=BBPreloadSpell, Params={Name="immortal_masteryi_trail_fx"}}, 
+}

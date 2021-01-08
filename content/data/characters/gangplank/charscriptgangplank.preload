@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="gangplankbilgewatertokenauto"}}, 
+{Function=BBPreloadSpell, Params={Name="gangplankrupgrade2"}}, 
+{Function=BBPreloadSpell, Params={Name="gangplankrupgradetracker"}}, 
+{Function=BBPreloadSpell, Params={Name="gangplankrupgrade3"}}, 
+{Function=BBPreloadSpell, Params={Name="gangplankrupgrade1"}}, 
+}

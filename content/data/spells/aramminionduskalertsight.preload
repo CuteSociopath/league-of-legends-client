@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="aramminionduskalertsightbubble"}}, 
+{Function=BBPreloadSpell, Params={Name="itemblackout"}}, 
+{Function=BBPreloadParticle, Params={Name="item_blackout_trigger.troy", SkinID="-1"}}, 
+}

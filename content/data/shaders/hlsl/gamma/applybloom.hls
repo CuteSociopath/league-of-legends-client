@@ -1,0 +1,17 @@
+#ifdef BLOOM
+
+float3 ApplyBloom(float3 col, float2 uvs)
+{
+    // additive
+    //return col + tex2D(BLOOM_TEXTURE, uvs);
+
+    // Photoshop Screen mode: 1-((1-a)*(1-b))
+    float3 bloom = tex2D(BLOOM_TEXTURE, uvs).rgb;
+    return 1.0 - ((1.0  - col) * (1.0 - bloom));
+}
+#else
+float3 ApplyBloom(float3 col, float2 uvs)
+{
+    return col;
+}
+#endif

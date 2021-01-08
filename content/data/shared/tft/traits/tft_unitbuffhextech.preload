@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_unitbuffhextechplayer"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Units"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffHextech"}}, 
+}

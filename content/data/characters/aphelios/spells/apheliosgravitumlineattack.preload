@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumdebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosGravitumDebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumroot"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumdebuffinternal"}}, 
+}

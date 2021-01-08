@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="actionleashtopoint"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_SorakaBot.NPCScriptNEXUSBLITZ_SorakaBot"}}, 
+}

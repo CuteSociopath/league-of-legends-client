@@ -1,0 +1,12 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="vionthecase"}}, 
+{Function=BBPreloadModule, Params={Name="Vi.Vi_EternalsPunchCounter"}}, 
+{Function=BBPreloadSpell, Params={Name="vi_eternalspunchcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="vicaitagitate"}}, 
+{Function=BBPreloadSpell, Params={Name="viglasseson"}}, 
+{Function=BBPreloadSpell, Params={Name="tahmkenchwdevourimmune"}}, 
+{Function=BBPreloadSpell, Params={Name="vijaycesound"}}, 
+{Function=BBPreloadSpell, Params={Name="vieanimation2"}}, 
+{Function=BBPreloadSpell, Params={Name="vicaittaunt"}}, 
+}

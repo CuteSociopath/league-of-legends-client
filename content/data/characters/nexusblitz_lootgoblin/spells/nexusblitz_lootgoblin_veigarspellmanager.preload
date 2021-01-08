@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_darkmatter"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_eventhorizon"}}, 
+}

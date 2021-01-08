@@ -1,0 +1,83 @@
+#ifdef ALPHA_EROSION
+// Alpha Erosion/Dissolve
+// Common definitions and functions to provide alpha erosion feature
+// (this feature supercedes the legacy 'alpha slice' feature)
+//
+
+#include "../utility.hls"
+
+///////////////////////////////////////////////////////////////////////////////
+// ALPHA EROSION
+///////////////////////////////////////////////////////////////////////////////
+
+// Erosion texture
+// This texture allows the artists to specify on a per pixel basis how quickly
+// a pixel in the final image will erode, or at what point it will appear in the
+// slice window (in that case think of this texture as a height map/contour map).
+// The convention on the erosion texture is that darker areas are the first to
+// erode and lighter areas the last. (assuming you are doing an erode and not
+// running the drive backwards instead for a reveal)
+
+// N.B. Uses the same slot as the PARTICLE_COLOR_TEXTURE, we disallow that
+// to avoid an extra texture lookup
+
+sampler2D sAlphaErosionTexture;
+
+// erosion window params
+float4 cAlphaErosionParams;
+    //          referred to as R3D_SHADER_PS_CONSTANT_PARTICLE_ALPHA_EROSION in engine code
+    // .x   = erosion drive, from animation curve, used to evaluate the per pixel erosion windows
+    //        (for meshes only,quad drive comes from vertex buffer)
+    // .y   = erosion window width, if you want to 'slice' the alpha as the window moves make this < 1
+    // .z   = inverse of erosion step IN feather, how wide to make the transition In
+    // .w   = inverse of erosion step OUT feather, how wide to make the transition Out
+    
+float4  cAlphaErosionTextureMixer;
+    //          referred to as R3D_SHADER_PS_CONSTANT_PARTICLE_ALPHA_EROSION_MIXER in engine code
+    // This mixer is applied as a functional on the texture lookup.
+    // It gives the artists to use the alpha channel of a texture already
+    // used elsewhere or if they are making a new texture to use say just the
+    // red channel and that way they can use a DXT1 texture instead of paying
+    // twice the memory cost to get a texture format with an alpha channel.
+    //
+    // This lets you select individual channels or some convex combination:
+    // For example:
+    //          (0.0, 0.0, 0.0, 1.0) - Use alpha channel for lookups
+    //          (1.0, 0.0, 0.0, 0.0) - Use red channel for lookups
+    //          (0.5, 0.0, 0.5, 0.0) - Use a mixture of red and blue channel
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Since each mesh renders with an individual draw call we can use a GPU constant register to
+// hold the current erosion drive. This is not the case for particle quads where we batch up
+// a lot individual particle quads into a single draw call. In that case the per particle erosion
+//(which is relative to each particles elapsed lifetime) must be included in the vertex stream.
+
+float CalcAlphaErosion( in float driver, in float2 uv )
+{
+    // Sample the erosion map, which is used to selectively adjust
+    // the erosion window location on a per pixel basis.
+    float4 texel = tex2D(sAlphaErosionTexture, uv);
+    float offset = saturate( dot( texel, cAlphaErosionTextureMixer ) );
+        
+    // We have both a transition in and transition out of the erosion window,
+    // this is the window where the image that will remain.
+    
+    // we offset the trailing edge of the window lobe by the erosion map
+    float x0 = offset - cAlphaErosionParams.y; // start of window
+    float x1 = offset;
+    float2 inv_ramp_deltas = cAlphaErosionParams.zw;    // inv width of transition regions (feathers results in transition)
+
+    float factor = linearwindow( float2(x0, x1), inv_ramp_deltas, driver);
+
+    return factor;
+}
+
+// this version gets called by mesh shaders which get the erosion drive from
+// the erosion constant
+float CalcAlphaErosionForMesh( in float2 uv )
+{
+    float driver = cAlphaErosionParams.x;
+    return CalcAlphaErosion(driver,uv);
+}
+#endif

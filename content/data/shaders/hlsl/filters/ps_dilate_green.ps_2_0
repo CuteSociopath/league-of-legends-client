@@ -1,0 +1,20 @@
+sampler2D srcTex;
+
+float4 offsets;
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 result = tex2D(srcTex, interpolants.texcoord0);
+
+    result.g += tex2D(srcTex, interpolants.texcoord0+offsets.xy).g;
+    result.g += tex2D(srcTex, interpolants.texcoord0+offsets.zw).g;
+
+    return result;
+}

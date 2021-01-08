@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="actionidle"}}, 
+{Function=BBPreloadSpell, Params={Name="jungleguardianmissile"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_JungleGuardian.MissionNexusBlitzJungleGuardian"}}, 
+{Function=BBPreloadSpell, Params={Name="actionleashtopoint"}}, 
+{Function=BBPreloadSpell, Params={Name="actionattacktargetignorevision"}}, 
+{Function=BBPreloadParticle, Params={Name="evelynn_redeye.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_jungleguardian_targeted"}}, 
+}

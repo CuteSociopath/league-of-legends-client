@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennawalkvisualbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sennarunvisualbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sennahomeguardvisualbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivestacks"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivefullstacks"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivemarker"}}, 
+{Function=BBPreloadCharacter, Params={Name="sennasoul"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivesoulsmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivesoulsdead"}}, 
+}

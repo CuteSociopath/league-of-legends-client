@@ -1,0 +1,16 @@
+{"RivenFengShuiEngine;f1":{"link":"bonusattackdamage","coeff":"0.6"}}
+{"RivenFengShuiEngine;f2":{"link":"bonusattackdamage","coeff":"1.8"}}
+{"RivenFengShuiEngine;f3":{"link":"bonusattackdamage","coeff":"0.2"}}
+{"RivenFengShuiEngine;f4":{"link":"","coeff":""}}
+{"RivenTriCleave;f1":{"link":"attackdamage","coeff":"0.4/0.45/0.5/0.55/0.6"}}
+{"RivenTriCleave;f2":{"link":"","coeff":""}}
+{"RivenTriCleave;f3":{"link":"","coeff":""}}
+{"RivenTriCleave;f4":{"link":"","coeff":""}}
+{"RivenMartyr;f1":{"link":"bonusattackdamage","coeff":"1.0"}}
+{"RivenMartyr;f2":{"link":"","coeff":""}}
+{"RivenMartyr;f3":{"link":"","coeff":""}}
+{"RivenMartyr;f4":{"link":"","coeff":""}}
+{"RivenFeint;f1":{"link":"bonusattackdamage","coeff":"1.0"}}
+{"RivenFeint;f2":{"link":"","coeff":""}}
+{"RivenFeint;f3":{"link":"","coeff":""}}
+{"RivenFeint;f4":{"link":"","coeff":""}}

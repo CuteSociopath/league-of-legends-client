@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffWoodland"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_unitbuffdruid"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_TraitEffect_OceanRegen"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffOcean"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffWind"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffMystic"}}, 
+}

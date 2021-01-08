@@ -1,0 +1,13 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotconsecrationaura"}}, 
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotpassive"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabot_marker"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_notanactualchampionmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="summonerflash"}}, 
+{Function=BBPreloadSpell, Params={Name="summonerbarrier"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_ProtectTheSoraka"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotrecall"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotpassivemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotpassiveorient"}}, 
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcube"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_coinbuff_dreadnovagamevariation"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_coinvacuum"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT3_PlayerBuff_DreadnovaVariation"}}, 
+}

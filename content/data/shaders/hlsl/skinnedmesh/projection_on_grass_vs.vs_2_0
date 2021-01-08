@@ -1,0 +1,48 @@
+#include "IOParam/IODefine_VS.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+#include "unpack.hls"
+#include "skinning.hls"
+
+column_major float4x4 WORLD_TO_DECAL_UV_MATRIX;
+
+struct VERTEX
+{
+    float3 position             : X3D_VSIN_POSITION;
+    float4 blendWeight          : X3D_VSIN_BLENDWEIGHT;
+    blendindex4 blendIndices    : X3D_VSIN_BLENDINDICES;
+};
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+    float2 texcoord1 : TEXCOORD1;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackWeights(vertex.blendWeight);     // unpack fixed point attributes
+#endif
+
+    // Compute skinned position
+#ifdef NO_SKINNING
+    float3 worldPosition = mul(float4(vertex.position, 1.f), BONES[0]);
+#else
+    float3 worldPosition;
+    SkinPosition(vertex.position, vertex.blendIndices, vertex.blendWeight, worldPosition);
+#endif // NO_SKINNING
+
+    // Output homogeneous position
+    interpolants.position = mul(float4(worldPosition.xyz, 1.0f), mProj);
+
+    interpolants.texcoord0 = mul(float4(worldPosition.xyz, 1.0f), WORLD_TO_DECAL_UV_MATRIX).xz;
+    interpolants.texcoord0.y = 1.f - interpolants.texcoord0.y;
+
+    // Fog of war
+    interpolants.texcoord1 = FogOfWarTextureCoordinates(worldPosition.xyz).xy;
+
+    return interpolants;
+}

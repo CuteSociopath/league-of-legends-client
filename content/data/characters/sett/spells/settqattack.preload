@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="settq"}}, 
+{Function=BBPreloadModule, Params={Name="Sett.SettPassive"}}, 
+{Function=BBPreloadModule, Params={Name="Sett.SettQ"}}, 
+}

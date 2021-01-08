@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_azirrrecentlyhit"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azirrknockback"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azirrknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azirrslow"}}, 
+{Function=BBPreloadModule, Params={Name="TFT4_Azir.TFT4_AzirSoldierManager"}}, 
+}

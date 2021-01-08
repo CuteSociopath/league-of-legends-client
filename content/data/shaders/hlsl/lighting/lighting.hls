@@ -1,0 +1,27 @@
+#ifndef USE_LIGHT_GRID // The "old" system - a single directional and up to 4 pointlights.
+
+float3 LightingSunLight(float3 worldNormal)
+{
+    float NdotL = dot(-vLightVec1.xyz, worldNormal.xyz);
+    return saturate(NdotL) * vLightColor.xyz;
+}
+
+#else // The LightGrid system - all dynamic lighting is replaced with LightGrid lookups.
+
+float3 LightingLightGrid(float3 worldNormal)
+{
+    int3   isNeg = (worldNormal.xyz < 0); // Determine array indices based on normal sign: essentially the same as Index(x,y,z) = N(x,y,z) < 0 ? 0 : 1.
+    float3 NN = worldNormal*worldNormal; // Use (N^2).xyz as weights
+
+    // Compute the final lighting color given the light grid colors and the world space normal.
+    // This handles all lighting in the scene with shadows, including sunlight, multi-color skylight, arbitrary numbers of pointlights 
+    // and indirect/bounced lighting. The quality is somewhere between 2nd and 3rd order SH with less memory and cost then 3rd order
+    // but with quality that is pretty close (i.e. much closer to 3rd order then 2nd in quality).
+    // The advantages include simplicity, easy to understand code, fast/easy to directly generate on the GPU, smooth reconstruction.
+
+    return LIGHTGRID_COLORS[isNeg.x + 0].rgb * NN.x + 
+           LIGHTGRID_COLORS[isNeg.y + 2].rgb * NN.y +
+           LIGHTGRID_COLORS[isNeg.z + 4].rgb * NN.z;
+}
+
+#endif

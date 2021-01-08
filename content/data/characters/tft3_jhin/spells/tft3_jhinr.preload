@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_jhinr_target"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_jhinr_shot"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_jhinr_shot2"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_jhinr_shot3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_jhinr_shotfinal"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+}

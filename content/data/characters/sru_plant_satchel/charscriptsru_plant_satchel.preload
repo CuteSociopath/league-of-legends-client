@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="sru_plant_satchel_roots.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Flora"}}, 
+{Function=BBPreloadSpell, Params={Name="plantsatchelareacheck"}}, 
+{Function=BBPreloadParticle, Params={Name="sru_plant_satchel_death_explosion.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="plantsatchelknockback"}}, 
+{Function=BBPreloadCharacter, Params={Name="sru_plant_satchel"}}, 
+{Function=BBPreloadSpell, Params={Name="plantwithervisibility"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="ivernpcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="ivernparticletimer"}}, 
+{Function=BBPreloadSpell, Params={Name="ivernpmonsterready"}}, 
+}

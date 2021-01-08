@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="crestoftheancientgolemvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="blessingofthelizardeldervfx"}}, 
+{Function=BBPreloadSpell, Params={Name="exaltedwithbaronnashorvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffmountainvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffinfernalvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffcloudvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffoceanvfx"}}, 
+}

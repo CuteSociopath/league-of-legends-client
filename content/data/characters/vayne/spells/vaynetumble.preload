@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_skillshotsdodged"}}, 
+{Function=BBPreloadSpell, Params={Name="vaynetumblebonus"}}, 
+{Function=BBPreloadModule, Params={Name="Global.PlayerTerrian"}}, 
+}

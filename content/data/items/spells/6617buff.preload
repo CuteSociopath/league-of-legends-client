@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.6617Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="6617stackcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="6617healattributionmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="6617healattributionmissilemax"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

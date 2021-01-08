@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="fiddlesticksw"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqpassiveterrify"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqcooldown"}}, 
+{Function=BBPreloadSpell, Params={Name="globaltruesight"}}, 
+}

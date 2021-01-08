@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="hextechgunbladedebuff"}}, 
+{Function=BBPreloadParticle, Params={Name="global_slow.troy", SkinID="-1"}}, 
+}

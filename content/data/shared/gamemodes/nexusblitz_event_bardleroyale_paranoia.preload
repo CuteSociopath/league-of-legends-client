@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_BardleRoyale_Paranoia"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_BardleRoyale"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis_variant_nearsight"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

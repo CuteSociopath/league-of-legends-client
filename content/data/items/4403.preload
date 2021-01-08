@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_onfirebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SLIME_PlayerBuff"}}, 
+}

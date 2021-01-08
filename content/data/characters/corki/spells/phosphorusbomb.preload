@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="testcuberender10vision"}}, 
+{Function=BBPreloadSpell, Params={Name="phosphorusbombmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="phosphorusbombmissilemin"}}, 
+{Function=BBPreloadSpell, Params={Name="expirationtimer"}}, 
+}

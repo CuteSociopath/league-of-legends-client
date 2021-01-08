@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_EnchantedHexes"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Elements"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_EnchantedHex_MountainBuff"}}, 
+}

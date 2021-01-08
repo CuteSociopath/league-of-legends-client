@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="unstoppableforcemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="ufslash"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_yuumiwbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

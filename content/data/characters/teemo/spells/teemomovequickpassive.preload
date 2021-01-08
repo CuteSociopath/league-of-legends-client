@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="teemomovequickdebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="teemomovequickspeed"}}, 
+}

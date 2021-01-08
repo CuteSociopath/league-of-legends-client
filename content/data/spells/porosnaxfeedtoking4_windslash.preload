@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_windslash_center"}}, 
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_windslash_left"}}, 
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_windslash_right"}}, 
+}

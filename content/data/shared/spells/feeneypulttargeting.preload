@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="urf_feeneypulttraveling"}}, 
+{Function=BBPreloadSpell, Params={Name="exitfeeneypult"}}, 
+}

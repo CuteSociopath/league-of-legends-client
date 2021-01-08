@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rellr_damagezone"}}, 
+{Function=BBPreloadSpell, Params={Name="rellr_startpull"}}, 
+{Function=BBPreloadSpell, Params={Name="gragase"}}, 
+}

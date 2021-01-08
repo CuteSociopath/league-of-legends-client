@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="relldisguisebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellw_mountup"}}, 
+{Function=BBPreloadSpell, Params={Name="rellw_dismount"}}, 
+}

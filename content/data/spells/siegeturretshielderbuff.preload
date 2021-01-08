@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="sru_regentowershield_buff.troy", SkinID="-1"}}, 
+}

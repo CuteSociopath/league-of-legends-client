@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="lissandrapassivevictimhide"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandrapassive"}}, 
+{Function=BBPreloadSpell, Params={Name="lissandrapassivevictim"}}, 
+}

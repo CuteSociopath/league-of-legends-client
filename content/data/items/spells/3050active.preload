@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.3050Ally"}}, 
+{Function=BBPreloadModule, Params={Name="Global.3050Self"}}, 
+{Function=BBPreloadSpell, Params={Name="3050ally"}}, 
+{Function=BBPreloadSpell, Params={Name="3050self"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SpellAttribution"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

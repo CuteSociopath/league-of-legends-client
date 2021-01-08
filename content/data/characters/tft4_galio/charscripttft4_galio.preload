@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT4_TraitEffect_GalioBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+}

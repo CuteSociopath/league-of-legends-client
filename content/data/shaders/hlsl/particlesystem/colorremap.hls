@@ -1,0 +1,62 @@
+#ifdef PALETTIZE_TEXTURES
+// Color Palette/Gradient remapping
+// Common definitions and functions to provide palette/gradient remapping in 
+//
+
+///////////////////////////////////////////////////////////////////////////////
+// PALETTE REMAP
+///////////////////////////////////////////////////////////////////////////////
+
+sampler2D sPalettesTexture;
+
+// palette params
+float4  cPaletteSelectMain;
+    // .x   = recolor palette A location, i.e., v coordinate of palette texture
+    // .y   = recolor palette B location, i.e., v coordinate of palette texture, unused
+
+    // the next two values are animation curves evaluated by elapsed emitter lifetime 
+    // for offsetting the U and V values for palette animations. If they are zero, 
+    // the palette will remain static.
+
+    // .z   = controls offset for u 
+    // .w   = controls offset for v
+
+float4  cPaletteSrcMixerMain;
+    // this value is used to mix the texture lookup channels to come up with
+    // value to use in the palette lookup.
+    // The mixing is done with a dot product so the channel weights should be
+    // convex and sum to one.
+    // This lets you select individual channels or some convex combination:
+    // For example:
+    //          (1.0, 0.0, 0.0, 0.0) - Use red channel for lookups
+    //          (0.5, 0.0, 0.5, 0.0) - Use a mixture of red and blue channel
+    
+///////////////////////////////////////////////////////////////////////////////
+// Colorize
+//
+
+float4 ColorizeMainTexture( in float4 texel )
+{
+    // Determine the value we will use to lookup into the
+    // palettes. This could be a single channel or some
+    // combination as controlled by the mixer constant
+    
+    // This gives us our paletre u coordinate [0,1] to lookup
+    // the color within a palette row.
+    float value = saturate( dot( texel, cPaletteSrcMixerMain ) );
+
+    // lookup the palette color for that value
+    float2 uvA      = float2(value,cPaletteSelectMain.x);
+
+    #ifndef PS_2_0
+    // offset uv values enable palette animation lookup for non PS_2_0 mode
+    uvA += float2(cPaletteSelectMain.z, cPaletteSelectMain.w);
+    #endif
+
+    float4 colorA   = tex2D(sPalettesTexture,uvA);
+
+    return colorA;
+}
+
+
+#endif

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_item_guardianangel_postrevive"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_FeatureToggles"}}, 
+}

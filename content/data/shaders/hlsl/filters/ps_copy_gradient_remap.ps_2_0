@@ -1,0 +1,28 @@
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+sampler2D SAMPLER; ///< texture to apply the filter to
+sampler2D Gradient;
+
+float4 REMAP_PARAMS; // (scale_factor, _, _, _)
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 inColor = tex2D(SAMPLER, interpolants.texcoord0);
+    float4 outColor = tex2D(Gradient, float2(inColor.x*REMAP_PARAMS.x, 0.5f) );
+    float4 ret = outColor;
+    ret.a = 0.75f; // Alpha blend this with the framebuffer at 75%
+    return ret;
+}

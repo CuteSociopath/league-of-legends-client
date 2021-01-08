@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Senna.SennaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sennawroot"}}, 
+}

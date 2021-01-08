@@ -1,0 +1,16 @@
+#ifdef USE_LIGHT_GRID
+
+float LightGridTextureScale()
+{
+    // "Texture Scale" scales lighting value when normal textures/materials are applied. This is authored in a [0,4] range.
+    return LIGHTGRID_SCALE.x;
+}
+
+float LightGridFullBrightScale()
+{
+    // "Fullbright Scale" scales the fullbright value. Ideally this will be 0, but this gives the artists and designers control of how 
+    // dark a character or building can get.
+    return LIGHTGRID_SCALE.y;
+}
+
+#endif

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="jinxq"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffSharpshooter"}}, 
+}

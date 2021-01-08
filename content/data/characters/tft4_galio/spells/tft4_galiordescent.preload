@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Galio.TFT4_GalioRDescent"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_TraitEffect_GalioBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_quicksilver_spellshieldbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_galiorknockup"}}, 
+}

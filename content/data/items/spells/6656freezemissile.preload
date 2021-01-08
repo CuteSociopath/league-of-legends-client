@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="6656marker"}}, 
+{Function=BBPreloadSpell, Params={Name="6656root"}}, 
+}

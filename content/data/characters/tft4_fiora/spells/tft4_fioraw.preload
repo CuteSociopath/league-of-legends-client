@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_fiorawpostcastaahalt"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_fiorawmissile"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_fiorawblockhitsound"}}, 
+}

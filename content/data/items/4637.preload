@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="4637selfbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="4637debuff"}}, 
+{Function=BBPreloadSpell, Params={Name="4637resistmarker"}}, 
+}

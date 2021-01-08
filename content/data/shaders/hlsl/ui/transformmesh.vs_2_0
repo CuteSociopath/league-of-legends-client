@@ -1,0 +1,31 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+float4x4 elementTransform;
+
+struct VERTEX
+{
+    float2 pos: X3D_VSIN_POSITION;
+    float4 col0: X3D_VSIN_COLOR0;
+    float2 tex0: X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    interpolants.position = mul(float4(vertex.pos,0.0f,1.0f), elementTransform);
+    interpolants.position = mul(interpolants.position, UI_ELEMENT_MATRIX);
+
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    interpolants.texcoord0 = vertex.tex0;
+
+    return interpolants;
+}

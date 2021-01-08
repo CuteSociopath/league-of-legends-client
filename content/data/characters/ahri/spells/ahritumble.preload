@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="ahritumblekick"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_presenceofmindtracker"}}, 
+}

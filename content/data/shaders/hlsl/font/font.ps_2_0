@@ -1,0 +1,40 @@
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+sampler2D GLYPH_TEXTURE;
+sampler2D FILL_TEXTURE;
+
+////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+////////////////////////////////////////////////////////////////
+float4 FONT_COLOR;
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 position         : POSITION;
+    float4 perGlyphColor    : COLOR0;
+    float2 glyphTexCoord    : TEXCOORD0;
+    float2 fillTexCoord     : TEXCOORD1;
+};
+
+float4 main(in INTERPOLANTS interpolants) : COLOR0
+{
+    // sample textures
+    float4 glyphTexture = tex2D(GLYPH_TEXTURE, interpolants.glyphTexCoord);
+    float4 fillTexture = tex2D(FILL_TEXTURE, interpolants.fillTexCoord);
+
+    float4 outColor;
+    // compose the pixel value
+    outColor.rgb = FONT_COLOR.rgb * interpolants.perGlyphColor.rgb * fillTexture.rgb;
+    outColor.a = glyphTexture.r * FONT_COLOR.a;
+    return outColor;
+}

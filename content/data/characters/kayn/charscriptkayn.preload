@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="odyssey_bosskayn_controller"}}, 
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+}

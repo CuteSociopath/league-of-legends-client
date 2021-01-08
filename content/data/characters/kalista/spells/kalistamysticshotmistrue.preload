@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Kalista.KalistaCoopStrikeSelf"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistamysticshot"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistaexpungemarker"}}, 
+{Function=BBPreloadModule, Params={Name="Kalista.KalistaExpunge"}}, 
+}

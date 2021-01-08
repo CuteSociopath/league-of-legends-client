@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="garenrvomarker"}}, 
+{Function=BBPreloadParticle, Params={Name="global_watched.troy", SkinID="-1"}}, 
+}

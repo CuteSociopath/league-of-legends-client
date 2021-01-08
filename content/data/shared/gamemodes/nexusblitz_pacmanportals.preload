@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_PacManPortals"}}, 
+{Function=BBPreloadCharacter, Params={Name="urf_feeneypult"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender10vision"}}, 
+{Function=BBPreloadSpell, Params={Name="expirationtimer"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_bardedoorclickhandler"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_bardecreatedoor"}}, 
+}

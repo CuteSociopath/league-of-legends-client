@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Evelynn.TFT4_EvelynnR"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

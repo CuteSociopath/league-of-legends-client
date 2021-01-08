@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="relle_stuncast"}}, 
+{Function=BBPreloadSpell, Params={Name="rellz_animbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Ready"}}, 
+{Function=BBPreloadSpell, Params={Name="rellestun"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_ready"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_target"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_allyspellcast"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellE_Applicator"}}, 
+{Function=BBPreloadSpell, Params={Name="relle_vfxmis2"}}, 
+}

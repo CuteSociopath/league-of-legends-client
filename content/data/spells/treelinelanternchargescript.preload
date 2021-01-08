@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="treelinelanternlock"}}, 
+{Function=BBPreloadSpell, Params={Name="treelinelanterncap"}}, 
+{Function=BBPreloadSpell, Params={Name="treelinelanternpostlockchaos"}}, 
+{Function=BBPreloadSpell, Params={Name="treelinelanternpostlockorder"}}, 
+}

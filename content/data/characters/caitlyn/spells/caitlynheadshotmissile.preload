@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemStatikShank"}}, 
+{Function=BBPreloadModule, Params={Name="Caitlyn.CaitlynP"}}, 
+{Function=BBPreloadSpell, Params={Name="caitlynptrappedtarget"}}, 
+}

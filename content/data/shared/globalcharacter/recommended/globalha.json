@@ -1,0 +1,37 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "GlobalHA",
+  "map": "HA",
+  "mode": "ARAM",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": true,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "2047",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

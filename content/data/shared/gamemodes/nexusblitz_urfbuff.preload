@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global._GlobalChampionBuff"}}, 
+--{Function=BBPreloadModule, Params={Name="AurelionSol.AurelionSolPassive"}}, 
+}

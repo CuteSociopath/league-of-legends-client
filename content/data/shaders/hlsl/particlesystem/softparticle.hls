@@ -1,0 +1,61 @@
+#ifdef SOFT_PARTICLES
+// Soft Particle
+// Common functions and definitions used by effects shaders that want to do
+// 'soft' particle effects using the depth buffer to fade in or out particle
+// pixels depending on how far they are from underlying geometry
+//
+#include "DATA/Shaders/HLSL/Depth.hls"
+#include "DATA/Shaders/HLSL/utility.hls"
+
+///////////////////////////////////////////////////////////////////////////////
+// SOFT PARTICLES
+///////////////////////////////////////////////////////////////////////////////
+
+// Depth params
+// referred to as R3D_SHADER_PS_CONSTANT_PARTICLE_SOFT_PARAMS in engine code
+float4  cSoftParticleParams;
+    // .x   = FADE IN BEGIN     game units eye z depth at which to begin transition in
+    // .y   = FADE OUT BEGIN    game units eye z depth at which to begin transition out
+    // .z   = FADE IN 1/WIDTH   in transition scale = 1/d where d = eye z distance in game units over which to fade out soft particles
+    // .w   = FADE OUT 1/WIDTH  out transition scale = 1/d where d = eye z distance in game units over which to fade out soft particles
+
+#ifdef TOOLS
+#define uvScaleAndBias cClipToUVsScaleAndBias
+#else
+static const float4 uvScaleAndBias = float4(0.5f, 0.5f, 0.5f, 0.5f);
+#endif
+///////////////////////////////////////////////////////////////////////////////
+// CalcSoftParticleColor
+//
+// Look up depth at current pixel location and apply depth based soft 
+// fade in/fade out transition parameters
+
+float4 CalcSoftParticleColor( in float4 projPosition, in float4 color )
+{
+    float3 clipCoords = projPosition.xyz/projPosition.w;
+#ifdef IS_OPENGL
+    // On OpenGL, clip space z is -1 to 1. Convert it here
+    // to match the other platforms
+    clipCoords.z = (clipCoords.z * 0.5f) + 0.5f;
+#else
+    // On non-GL platforms we need to flip the UV upside down.
+    // As we're still in clip space -1 to 1 here we can do the flip as a -1 multiply
+    clipCoords.y *= -1.0f;
+#endif
+    // convert from clip space to texture coordinates of depth buffer surface
+    float2 uvSS = clipCoords.xy * uvScaleAndBias.xy + uvScaleAndBias.zw;
+
+    float depth = tex2D(sDepthTexture, uvSS).r;
+    float z_eye_depth   = CalcEyeZFromProjectionZ(depth, cDepthConversionParams.xy);
+    float z_eye_fragment= CalcEyeZFromProjectionZ(clipCoords.z, cDepthConversionParams.xy);
+    float delta_z       = (z_eye_depth - z_eye_fragment);
+    
+    // we have both a transition in and transition out with depth so we calculate
+    // a smoothstep function for each and then subtract to get our overall 'hump' transfer function
+    // (we run both transition calculations in parallel by using float2 args)
+    float2 st = smoothstep_fast( cSoftParticleParams.xy, cSoftParticleParams.zw, delta_z );
+    float h = st.x - st.y;        
+    return h * color;
+}
+
+#endif

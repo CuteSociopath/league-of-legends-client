@@ -1,0 +1,19 @@
+struct VERTEX
+{
+    float3 m_Position       : X3D_VSIN_POSITION;
+};
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float4 worldPosition = mul(float4(vertex.m_Position, 1.0f), mWorld);
+    interpolants.position = mul(worldPosition, mProj);
+
+    return interpolants;
+}

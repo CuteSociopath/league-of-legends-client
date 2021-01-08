@@ -1,0 +1,19 @@
+sampler2D srcTex;
+float4 color;
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 texel = tex2D(srcTex, interpolants.texcoord0);
+    float4 result;
+    result.rgb = color.rgb;     // Just output a given color
+    result.a = texel.g * texel.b;   // Combine dilated/blurred green with masking info in blue as alpha
+
+    return result;
+}

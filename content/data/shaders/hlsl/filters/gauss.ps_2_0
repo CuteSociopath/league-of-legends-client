@@ -1,0 +1,27 @@
+sampler2D s_tex0;
+
+float4 c_weights;
+float4 c_offsets0;
+float4 c_offsets1;
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float2 i_uv     : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+	float2 offsets[4] = {c_offsets0.xy, c_offsets0.zw, c_offsets1.xy, c_offsets1.zw};
+	
+	float4 result = 0;
+
+	for(int i=0; i<4; ++i)
+	{
+                float2 uv = interpolants.i_uv + offsets[i];
+		float4 texel = tex2D(s_tex0, uv);
+		result += c_weights[i] * texel;
+	}
+	
+	return result;
+}

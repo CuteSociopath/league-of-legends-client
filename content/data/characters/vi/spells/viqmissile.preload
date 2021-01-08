@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="viqmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="viq"}}, 
+{Function=BBPreloadSpell, Params={Name="vipassivebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Vi.ViWMarker"}}, 
+{Function=BBPreloadSpell, Params={Name="viqknockback"}}, 
+{Function=BBPreloadModule, Params={Name="Vi.Vi_EternalsPunchCounter"}}, 
+{Function=BBPreloadSpell, Params={Name="vi_eternalspunchcounter"}}, 
+{Function=BBPreloadSpell, Params={Name="viqminionhit"}}, 
+{Function=BBPreloadSpell, Params={Name="viqminion"}}, 
+}

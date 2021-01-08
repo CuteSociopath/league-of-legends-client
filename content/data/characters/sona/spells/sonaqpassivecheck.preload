@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Sona.SonaPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="sonaqattackupgrade"}}, 
+}

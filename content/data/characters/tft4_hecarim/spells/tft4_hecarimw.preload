@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="hecarimw"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_hecarimwleech"}}, 
+}

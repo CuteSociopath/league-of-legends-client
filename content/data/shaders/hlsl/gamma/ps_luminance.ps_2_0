@@ -1,0 +1,42 @@
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+
+#include "ApplyBloom.hls"
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // Read the texel from the back buffer
+    float4 texelBackBuffer = tex2D(SAMPLER_BACK_BUFFER_COPY, interpolants.texcoord0);
+    texelBackBuffer.rgb = ApplyBloom(texelBackBuffer.rgb, interpolants.texcoord0);
+
+    // Luminance conversion
+    float3 LUMINANCE_CONVERSION = float3(0.299f, 0.587f, 0.114f);
+    float luminance = dot(LUMINANCE_CONVERSION, texelBackBuffer.xyz);
+
+    // Out
+//#if defined(COLORPALETTE_DEFAULT)
+    return float4(luminance, luminance, luminance, texelBackBuffer.a);
+//#else
+//  float colorWeight=2; 
+//  float divisor = (1+1/colorWeight);
+//  out_color0 = float4(
+//          (luminance+texelBackBuffer.x/colorWeight)/divisor,
+//          (luminance+texelBackBuffer.y/colorWeight)/divisor,
+//          (luminance+texelBackBuffer.z/colorWeight)/divisor, texelBackBuffer.a);
+//#endif
+}
+

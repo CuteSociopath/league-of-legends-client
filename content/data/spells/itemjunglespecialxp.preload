@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="itemjunglegoldpenalty"}}, 
+{Function=BBPreloadSpell, Params={Name="itemjunglegoldpenaltyinternal"}}, 
+{Function=BBPreloadSpell, Params={Name="itemjunglexppenaltyinternal"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_kassadin_voidstone"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_kassadinbladefx"}}, 
+}

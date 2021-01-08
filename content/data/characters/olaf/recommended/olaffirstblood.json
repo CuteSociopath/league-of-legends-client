@@ -1,0 +1,195 @@
+{
+  "champion": "Olaf",
+  "title": "OlafFIRSTBLOOD",
+  "map": "HA",
+  "mode": "FIRSTBLOOD",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "startingjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1039",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 3,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "SummonerSmite",
+      "items": [
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3065",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essentialjungle",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "SummonerSmite",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1401",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3065",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "offensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3748",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3153",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3053",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3800",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3110",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2138",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3361",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

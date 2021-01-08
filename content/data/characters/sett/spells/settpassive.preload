@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Sett.SettPassive"}}, 
+{Function=BBPreloadModule, Params={Name="Sett.SettPassiveResetTimer"}}, 
+{Function=BBPreloadSpell, Params={Name="settpassiveresettimer"}}, 
+{Function=BBPreloadSpell, Params={Name="settqattack"}}, 
+{Function=BBPreloadSpell, Params={Name="settqattack2"}}, 
+}

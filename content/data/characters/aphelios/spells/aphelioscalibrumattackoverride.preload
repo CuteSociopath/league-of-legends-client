@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosP"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumdebuffinternal"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosCalibrumBonusRangeDebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscrescendumattackminilauncher"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosCrescendumAttackMiniLauncher"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemHurricane"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemStatikShank"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioslockfacing"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+}

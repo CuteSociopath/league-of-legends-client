@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SLIME_NexusMinionMarker"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_ceremonyhold"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_nexusbattledeathtimermanager"}}, 
+{Function=BBPreloadCharacter, Params={Name="urf_feeneypult"}}, 
+}

@@ -1,0 +1,16 @@
+{"HeimerdingerQ;f1":{"link":"@cooldownchampion","coeff":"Effect10"}}
+{"HeimerdingerQ;f2":{"link":"@cooldownchampion","coeff":"Effect6"}}
+{"HeimerdingerQ;f3":{"link":"@text","coeff":"1"}}
+{"HeimerdingerQ;f4":{"link":"@text","coeff":"150/175/200/225/250/275/300/325/350/375/400/425/450/475/500/525/550/575"}}
+{"HeimerdingerR;f1":{"link":"@dynamic.abilitypower","coeff":"Effect6"}}
+{"HeimerdingerR;f2":{"link":"@dynamic.abilitypower","coeff":"1.83"}}
+{"HeimerdingerR;f3":{"link":"","coeff":""}}
+{"HeimerdingerR;f4":{"link":"@dynamic.abilitypower","coeff":"0.6"}}
+{"HeimerdingerE;f1":{"link":"","coeff":""}}
+{"HeimerdingerE;f2":{"link":"","coeff":""}}
+{"HeimerdingerE;f3":{"link":"","coeff":""}}
+{"HeimerdingerE;f4":{"link":"","coeff":""}}
+{"HeimerdingerW;f1":{"link":"","coeff":""}}
+{"HeimerdingerW;f2":{"link":"@dynamic.abilitypower","coeff":"0.93"}}
+{"HeimerdingerW;f3":{"link":"","coeff":""}}
+{"HeimerdingerW;f4":{"link":"","coeff":""}}

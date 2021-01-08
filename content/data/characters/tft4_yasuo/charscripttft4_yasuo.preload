@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_duelistmovement"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_castspellsuccess"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+}

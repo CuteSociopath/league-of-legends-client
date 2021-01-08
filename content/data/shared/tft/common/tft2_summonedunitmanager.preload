@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffInferno"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_unitbuffwind"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffWind"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_unitbuffmystic"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffMystic"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_handofjustice_imperial"}}, 
+}

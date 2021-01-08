@@ -1,0 +1,50 @@
+
+#include "IOParam/IODefine_VS.hls"
+#include "unpack.hls"
+
+#include "skinning.hls"
+
+column_major float3x3 vParticleUVTransform;
+
+float4   kColorFactor;    // R3D_SHADER_VS_CONSTANT_PARTICLE_COLOR_FACTOR
+
+struct VERTEX
+{
+    float4      position        : X3D_VSIN_POSITION;
+    float4      blendWeight     : X3D_VSIN_BLENDWEIGHT;
+    blendindex4 blendIndices    : X3D_VSIN_BLENDINDICES;
+    float2      texcoord0       : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : COLOR0;
+    float3  uv0_depth   : TEXCOORD0;    // xy = uv0, z = depth
+};
+
+INTERPOLANTS main(VERTEX input)
+{
+    INTERPOLANTS output;
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackWeights(input.blendWeight);     // unpack fixed point attributes
+    UnpackUV(input.texcoord0);
+#endif
+
+    // Compute skinned local position
+    float3 skinnedPosition;
+    SkinPosition(input.position.xyz, input.blendIndices, input.blendWeight, skinnedPosition);
+
+    // Output homogeneous position
+    output.position = mul(float4(skinnedPosition, 1.0f), mProj ); 
+
+    output.color0 = kColorFactor;
+
+    // Send the diffuse map texture coordinate so the pixel shader can do per texel
+    // alpha testing    
+    output.uv0_depth.xy = mul(float3(input.texcoord0, 1), vParticleUVTransform).xy;
+    
+    output.uv0_depth.z = output.position.z;   // distance from light view
+
+    return output;
+}

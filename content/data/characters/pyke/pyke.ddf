@@ -1,0 +1,12 @@
+{"PykeShadowAssault;f1":{"link":"bonusattackdamage","coeff":"0.9"}}
+{"PykeShadowAssault;f2":{"link":"","coeff":""}}
+{"PykeShadowAssault;f3":{"link":"","coeff":""}}
+{"PykeShadowAssault;f4":{"link":"","coeff":""}}
+{"PykeNoxianDiplomacy;f1":{"link":"bonusattackdamage","coeff":"0.3"}}
+{"PykeNoxianDiplomacy;f2":{"link":"bonusattackdamage","coeff":"1.2"}}
+{"PykeNoxianDiplomacy;f3":{"link":"","coeff":""}}
+{"PykeNoxianDiplomacy;f4":{"link":"","coeff":""}}
+{"PykeRake;f1":{"link":"bonusattackdamage","coeff":"0.6"}}
+{"PykeRake;f2":{"link":"","coeff":""}}
+{"PykeRake;f3":{"link":"","coeff":""}}
+{"PykeRake;f4":{"link":"","coeff":""}}

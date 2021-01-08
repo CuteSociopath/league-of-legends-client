@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_unitinvisandwait"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playertounitarrivalmissile"}}, 
+}

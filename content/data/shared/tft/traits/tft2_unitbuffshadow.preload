@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_shadowrecentlyhit"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_shadowcombat"}}, 
+}

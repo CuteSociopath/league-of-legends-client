@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_ArmyBuffCultist"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_cultist"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_playertraitbuffcultistmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_galiobuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_cultistrchannel"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_summon_marker"}}, 
+}

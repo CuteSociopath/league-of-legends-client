@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yuumiwcooldowntracker"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiwdash"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiwcastbuffer"}}, 
+}

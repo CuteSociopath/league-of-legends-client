@@ -1,0 +1,14 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="kalistadummyspell"}}, 
+{Function=BBPreloadParticle, Params={Name="temp_kalista_cas.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistaexpungemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistavoehighstack"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistavoenormal"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistaexpungeparticle"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistaeslow"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistaexpungeprotect"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistarecentlyrended"}}, 
+{Function=BBPreloadParticle, Params={Name="kalista_base_e_lethal.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="kalista_base_e_tar_lethal.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Kalista.KalistaExpunge"}}, 
+}

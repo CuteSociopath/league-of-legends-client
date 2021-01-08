@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="qiyanaemoteoveride"}}, 
+{Function=BBPreloadSpell, Params={Name="qiyanawenchantedbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="qiyanar"}}, 
+}

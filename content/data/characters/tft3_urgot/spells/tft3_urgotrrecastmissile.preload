@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrsuppress"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Urgot.TFT3_UrgotRRecastMissile"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_urgotrrecastchannel"}}, 
+}

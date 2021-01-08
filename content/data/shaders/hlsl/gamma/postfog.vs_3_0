@@ -1,0 +1,42 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+struct VERTEX
+{
+	float2 m_Position : X3D_VSIN_POSITION;		
+};
+
+struct INTERPOLANTS
+{
+	float4 m_Position  : POSITION;	
+	float2 m_TexCoord0 : TEXCOORD0;
+    float4 m_HPOS      : TEXCOORD1;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+     INTERPOLANTS interpolants;
+    float4 pos = float4((vertex.m_Position * 2.0f) - 1.0f, 0.0f, 1.0f);
+    interpolants.m_TexCoord0 = vertex.m_Position;
+    interpolants.m_HPOS = pos;
+
+#if !defined(IS_OPENGL) || defined(FLIP)
+    interpolants.m_TexCoord0.y = 1.0f - interpolants.m_TexCoord0.y;
+#endif
+
+    DoDX9HalfPixelAdjust(pos);
+
+    interpolants.m_Position = pos;
+
+    return interpolants;
+}

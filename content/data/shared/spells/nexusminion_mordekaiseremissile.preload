@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusminion_mordekaiserepull"}}, 
+{Function=BBPreloadSpell, Params={Name="mordekaisere"}}, 
+}

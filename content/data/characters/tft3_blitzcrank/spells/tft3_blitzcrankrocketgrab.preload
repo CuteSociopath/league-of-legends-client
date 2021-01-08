@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_blitzcrank_rocketgrab2"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_blitzcrankpowerfist"}}, 
+}

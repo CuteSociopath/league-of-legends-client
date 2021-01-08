@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusminionknockupmissile"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_NexusMinion_Channeling"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeath_stunanimation"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_nexusminionknockup"}}, 
+}

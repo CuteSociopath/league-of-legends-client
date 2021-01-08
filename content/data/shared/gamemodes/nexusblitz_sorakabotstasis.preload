@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="itemzhonya_base_stasis.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotsuppress"}}, 
+{Function=BBPreloadModule, Params={Name="Yuumi.YuumiWAlly"}}, 
+}

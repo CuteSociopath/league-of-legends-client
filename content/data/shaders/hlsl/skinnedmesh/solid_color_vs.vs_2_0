@@ -1,0 +1,49 @@
+
+#include "IOParam/IODefine_VS.hls"
+#include "unpack.hls"
+#include "skinning.hls"
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+struct VERTEX
+{
+    float3 m_Position           : X3D_VSIN_POSITION;
+    float4 m_BlendWeight        : X3D_VSIN_BLENDWEIGHT;
+    float3 m_Normal             : X3D_VSIN_NORMAL;
+    blendindex4 m_BlendIndices  : X3D_VSIN_BLENDINDICES;
+    float2 m_TexCoord           : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4	m_Position : POSITION;
+
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main
+(
+    VERTEX vertex
+)
+{
+    INTERPOLANTS interpolants;
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(vertex.m_BlendWeight, vertex.m_Normal, vertex.m_TexCoord);     // unpack fixed point attributes
+#endif
+
+    float3 skinnedPosition;
+    SkinPosition(vertex.m_Position, vertex.m_BlendIndices, vertex.m_BlendWeight, skinnedPosition);
+
+    // Output homogeneous position
+    interpolants.m_Position = mul(float4(skinnedPosition.xyz, 1.0f), mProj);
+
+    return interpolants;
+}

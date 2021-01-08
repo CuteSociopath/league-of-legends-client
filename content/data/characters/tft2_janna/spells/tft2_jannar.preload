@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_jannarknockback"}}, 
+{Function=BBPreloadSpell, Params={Name="reapthewhirlwind"}}, 
+}

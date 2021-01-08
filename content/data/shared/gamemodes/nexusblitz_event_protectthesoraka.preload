@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_ProtectTheSoraka"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotstasis"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_sorakabot"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ActionNexusBlitzMordekaiserE"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusminion_mordekaiseremissile"}}, 
+}

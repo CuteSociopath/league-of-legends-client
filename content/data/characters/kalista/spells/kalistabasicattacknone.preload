@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="kalistabasicattack"}}, 
+{Function=BBPreloadModule, Params={Name="Kalista.KalistaExpunge"}}, 
+}

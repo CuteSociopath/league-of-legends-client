@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_PrizeFight"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SLIME_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="grievouswound"}}, 
+}

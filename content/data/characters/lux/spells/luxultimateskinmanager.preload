@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="luxultimateskintransformanimation"}}, 
+{Function=BBPreloadSpell, Params={Name="luxultimateskinwardparticle"}}, 
+}

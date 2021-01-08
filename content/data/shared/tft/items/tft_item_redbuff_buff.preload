@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_checkitemuniquecompatibility"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_redbuff_icd_buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_redbuff_missile"}}, 
+}

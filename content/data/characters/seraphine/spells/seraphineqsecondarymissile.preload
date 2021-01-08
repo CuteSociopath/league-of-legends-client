@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="seraphineqminionmarker"}}, 
+{Function=BBPreloadModule, Params={Name="Seraphine.SeraphineFunctionModule"}}, 
+}

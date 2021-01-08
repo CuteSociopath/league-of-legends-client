@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="tft3_jarvanivstandard"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_jarvanivebuff"}}, 
+}

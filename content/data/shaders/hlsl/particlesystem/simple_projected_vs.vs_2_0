@@ -1,0 +1,47 @@
+#include "../FogOfWar/FogOfWar_VS.hls"
+
+float4 OFFSET_AND_SCALE;
+float4 SIN_AND_COS;
+
+struct VERTEX
+{
+    float4  position        : X3D_VSIN_POSITION;
+    float2  texcoord0       : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  uv0_uvFOW   : TEXCOORD0;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Transform position
+    interpolants.position = mul( vertex.position, mProj );
+
+    // Create texture coordinates from uv transform
+    float4 world_position = mul(vertex.position, mWorld);
+
+    float2 temp;
+    temp.x = world_position.x;
+    temp.y = world_position.z;
+    temp = (temp - OFFSET_AND_SCALE.xy) * OFFSET_AND_SCALE.zw;
+    float2 uv0;
+    uv0.x = temp.x * SIN_AND_COS.y - temp.y * SIN_AND_COS.x;
+    uv0.y = temp.x * SIN_AND_COS.x + temp.y * SIN_AND_COS.y;
+
+#ifndef DISABLE_FOW    
+    // Fog of war
+    float2 uvFOW = FogOfWarTextureCoordinates( vertex.position.xyz ).xy;
+#else
+    float2 uvFOW = 0.0f;
+#endif    
+    interpolants.uv0_uvFOW = float4(uv0,uvFOW);
+
+    
+    // @todo no vertex/pixel fog?
+    return interpolants;
+}

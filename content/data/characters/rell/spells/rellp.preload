@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rellw_mountedbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellp_debuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellw_dismount"}}, 
+{Function=BBPreloadSpell, Params={Name="rellz_animoverridebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Rell.RellP_Debuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellp_buff"}}, 
+}

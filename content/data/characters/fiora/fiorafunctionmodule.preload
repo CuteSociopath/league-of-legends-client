@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="fiorapassivespeed"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorapassive"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorar"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorapassivedir3"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorapassivedir4"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorapassivedir1"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorapassivedir2"}}, 
+{Function=BBPreloadSpell, Params={Name="fiorarhitsound"}}, 
+}

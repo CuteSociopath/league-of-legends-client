@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Lillia.LilliaRSpellPassive"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SpellPings"}}, 
+{Function=BBPreloadSpell, Params={Name="lilliapdot"}}, 
+}

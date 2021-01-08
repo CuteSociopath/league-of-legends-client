@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="kindredq_urfwrapper"}}, 
+{Function=BBPreloadSpell, Params={Name="kindreduiincombatbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="kindreddisguisebuff"}}, 
+}

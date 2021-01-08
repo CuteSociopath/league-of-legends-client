@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="renektonunlockanimationcleave"}}, 
+{Function=BBPreloadSpell, Params={Name="renektonbloodsplattertarget"}}, 
+{Function=BBPreloadSpell, Params={Name="renektonstatstonetrackercombos"}}, 
+}

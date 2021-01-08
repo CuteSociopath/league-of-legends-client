@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ireliarmark"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Irelia.TFT3_IreliaR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ireliaq"}}, 
+}

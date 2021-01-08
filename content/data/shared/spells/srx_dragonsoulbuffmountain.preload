@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="srx_dragonsoulbuffmountain_tookdamage"}}, 
+{Function=BBPreloadSpell, Params={Name="malphiteshield"}}, 
+}

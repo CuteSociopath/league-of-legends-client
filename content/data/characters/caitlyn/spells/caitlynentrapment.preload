@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="caitlynentrapmentmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="caitlynptrappedtarget"}}, 
+{Function=BBPreloadSpell, Params={Name="caitlyneqcombomonitor"}}, 
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Gear"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_kayn_assassinform"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_kayn_slayerform"}}, 
+}

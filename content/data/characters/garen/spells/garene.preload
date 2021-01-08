@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Garen.GarenE"}}, 
+{Function=BBPreloadSpell, Params={Name="garenecancel"}}, 
+{Function=BBPreloadSpell, Params={Name="garenestackbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="gareneshred"}}, 
+}

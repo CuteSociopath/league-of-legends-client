@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennaquestactive"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaquestactivethresh"}}, 
+}

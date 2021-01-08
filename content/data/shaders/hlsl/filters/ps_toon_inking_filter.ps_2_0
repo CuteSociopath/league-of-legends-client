@@ -1,0 +1,55 @@
+sampler2D DEPTH_MASK_TEXTURE; // (depth_scaled_mask, on_off_mask, _, _)
+
+float4 OFFSET_PARAMS; // (1/screen_width, 1/screen_height, offset_scale, _)
+
+float4 EDGE_CLIP_PARAMS; // (output_scale_for_interior_edge, output_scale_for_exterior_edge,
+                                          //  mthreshold_squared, max_threshold_squared_for_interior_edge)
+
+float ToonInkingFilter(float2 texcoord)
+{
+    float2 offset = float2(OFFSET_PARAMS.x, OFFSET_PARAMS.y);
+
+    // Sample neighbor pixels
+    float2 s00 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2(-offset.x, -offset.y)).xy;
+    float2 s01 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2(        0, -offset.y)).xy;
+    float2 s02 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2( offset.x, -offset.y)).xy;
+
+    float2 s10 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2(-offset.x,  0)).xy;
+    float2 s12 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2( offset.x,  0)).xy;
+
+    float2 s20 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2(-offset.x,  offset.y)).xy;
+    float2 s21 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2(        0,  offset.y)).xy;
+    float2 s22 = tex2D(DEPTH_MASK_TEXTURE, texcoord + float2( offset.x,  offset.y)).xy;
+
+    // Sobel filter in X direction
+    float2 sobelX = s00 + 2 * s10 + s20 - s02 - 2 * s12 - s22;
+    // Sobel filter in Y direction
+    float2 sobelY = s00 + 2 * s01 + s02 - s20 - 2 * s21 - s22;
+
+    // Find edge, skip sqrt() to improve performance ...
+    float2 edgeSqr = (sobelX * sobelX + sobelY * sobelY);
+
+    // ... and threshold against a squared value instead.
+    // An exterior edge has a higher priority than an interior edge.
+    if(edgeSqr.y > EDGE_CLIP_PARAMS.z) // exterior edge detected
+    {
+        return edgeSqr.y * EDGE_CLIP_PARAMS.y;
+    }
+    else if (edgeSqr.x > EDGE_CLIP_PARAMS.z && edgeSqr.x < EDGE_CLIP_PARAMS.w) // interior edge detected
+    {
+        return edgeSqr.x * EDGE_CLIP_PARAMS.x;
+    }
+
+    return 0.f;
+}
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float v= ToonInkingFilter(interpolants.texcoord0);
+    return float4(0, 0, 0, v);
+}

@@ -1,0 +1,40 @@
+#include "common.hls"
+
+// x = num frames along x, y = 1 / num frames along x, z = 1 / num frames along y
+float4 TEXTURE_INFO;
+
+struct VERTEX
+{
+    float4  position    : X3D_VSIN_POSITION;
+    float4  color0      : X3D_VSIN_COLOR0;
+    float3  texcoord0   : X3D_VSIN_TEXCOORD0;   // xy = uv0, z = Frame number (why not a constant?)
+    float2  texcoord1   : X3D_VSIN_TEXCOORD1;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : COLOR0;
+    float4  uv0_uv1     : TEXCOORD0;
+    float   depth       : TEXCOORD1;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Position
+    interpolants.position = mul( vertex.position, mProj );
+
+    // Color
+    interpolants.color0 = vertex.color0.VCOLORSWIZZLE;
+
+    float frameNumber = vertex.texcoord0.z; // @todo why isn't this in a constant?
+    interpolants.uv0_uv1.xy = CalculateTexDivUV(vertex.texcoord0.xy, frameNumber, TEXTURE_INFO);
+    
+    // Particle color texture lookup
+    interpolants.uv0_uv1.zw = vertex.texcoord1;
+    interpolants.depth = interpolants.position.z;
+
+    return interpolants;
+}

@@ -1,0 +1,12 @@
+#ifdef MASKED
+
+sampler2D NAVMESH_MASK_TEXTURE;
+
+float4 ApplyNavmeshMask(float4 value, float2 uvs)
+{
+    float4 mask = tex2D(NAVMESH_MASK_TEXTURE, uvs);
+    value.a = min(mask.r, value.a);
+    return value;
+}
+
+#endif

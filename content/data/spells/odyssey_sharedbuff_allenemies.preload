@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.Odyssey_AIFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="odyssey_enemyhybridshred"}}, 
+{Function=BBPreloadSpell, Params={Name="odyssey_orablobtracer"}}, 
+}

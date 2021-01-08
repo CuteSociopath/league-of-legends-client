@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.6692TrackingBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="6692shield"}}, 
+{Function=BBPreloadSpell, Params={Name="6692speed"}}, 
+{Function=BBPreloadSpell, Params={Name="6692cooldown"}}, 
+}

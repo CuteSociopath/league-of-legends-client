@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_unitstatus_mrshred"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitStatus_MRShred"}}, 
+}

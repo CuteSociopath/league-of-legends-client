@@ -1,0 +1,156 @@
+{
+  "champion": "MissFortune",
+  "title": "MissFortuneNPE",
+  "map": "SR",
+  "mode": "TUTORIAL_MODULE_2",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": true,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "npe1",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1042",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1051",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3086",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "npe2",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3086",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1042",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "3085",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "npe3",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1042",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3006",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "npe4",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3072",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3031",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3508",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3036",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

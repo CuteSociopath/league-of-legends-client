@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_BrambleVest_Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_critdamagereduction_buff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_ItemFunctionModule"}}, 
+}

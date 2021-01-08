@@ -1,0 +1,11 @@
+struct INTERPOLANTS
+{
+    float4 position       : POSITION;
+    float4 perVertexColor : COLOR0;
+    float2 tex0           : TEXCOORD0;
+};
+float4 main(INTERPOLANTS interpolants) : COLOR
+{
+    float4 texColor = tex2D(UI_PRIMARY_TEXTURE, interpolants.tex0) * interpolants.perVertexColor;
+    return float4(texColor.rgb * texColor.a * UI_COLOR.rgb * UI_COLOR.a, texColor.a * UI_COLOR.a);
+}

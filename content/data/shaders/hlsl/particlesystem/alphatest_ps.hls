@@ -1,0 +1,11 @@
+#ifdef ALPHA_TEST
+float AlphaTestReferenceValue;
+void AlphaTest(float4 col)
+{
+    clip(col.a - AlphaTestReferenceValue);
+}
+#else
+void AlphaTest(float4 col)
+{
+}
+#endif

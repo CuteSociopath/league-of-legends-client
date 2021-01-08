@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="volley"}}, 
+{Function=BBPreloadSpell, Params={Name="volleyrank2"}}, 
+{Function=BBPreloadSpell, Params={Name="volleyrank3"}}, 
+{Function=BBPreloadSpell, Params={Name="volleyrank4"}}, 
+{Function=BBPreloadSpell, Params={Name="volleyrank5"}}, 
+{Function=BBPreloadSpell, Params={Name="ashepassiveneutraldebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="ashepassiveslow"}}, 
+}

@@ -1,0 +1,29 @@
+sampler2D srcTex;
+
+float4 weights; // { weight_for_center_sample, weight_for_samples_at_1, weight_for_samples_at_2, _ }
+float4 offsets0; // { offset_of_-2.x, offset_of_-2.y, offset_of_-1.x, offset_of_-1.y }
+float4 offsets1; // { offset_of_+1.x, offset_of_+1.y, offset_of_+2.x, offset_of_+2.y}
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float w[4] = { weights.z, weights.y, weights.y, weights.z };
+    float2 offsets[4] = { offsets0.xy, offsets0.zw, offsets1.xy, offsets1.zw };
+	
+    float4 result = tex2D(srcTex, interpolants.texcoord0);
+    result.g *= weights.x;
+
+	for(int i=0; i<4; ++i)
+	{
+                result.g += w[i] * tex2D(srcTex, interpolants.texcoord0 + offsets[i]).g;
+	}
+	
+	return result;
+}

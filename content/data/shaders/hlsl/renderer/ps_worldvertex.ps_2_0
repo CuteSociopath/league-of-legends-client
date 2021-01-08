@@ -1,0 +1,24 @@
+sampler2D SAMPLER0; ///< font texture
+
+struct FRAGMENT
+{
+    float4 m_Color0 : COLOR0;
+};
+
+struct INTERPOLANTS
+{
+    float4 m_Position   : POSITION;
+    float4 m_Color0     : COLOR0;
+    float2 m_TexCoord0  : TEXCOORD0;
+};
+
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+    FRAGMENT fragment;
+
+    float4 texel0 = tex2D(SAMPLER0, interpolants.m_TexCoord0);
+
+    fragment.m_Color0 = texel0 * interpolants.m_Color0;
+
+    return fragment;
+}

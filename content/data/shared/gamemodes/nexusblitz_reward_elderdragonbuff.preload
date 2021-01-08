@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Reward_ElderDragonBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonexecutetarget"}}, 
+}

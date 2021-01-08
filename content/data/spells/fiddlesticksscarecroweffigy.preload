@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="fiddlestickseffigy"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksscarecroweffigyvisionscoretracker"}}, 
+{Function=BBPreloadSpell, Params={Name="itemblackout"}}, 
+{Function=BBPreloadSpell, Params={Name="trinketsweeperpersist"}}, 
+{Function=BBPreloadCharacter, Params={Name="dominationscout"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/GhostPoro/GhostPoroPoroAI.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="summonerflash"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqmissilenofear"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqmissilefear"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_damagemitigatedtracker"}}, 
+{Function=BBPreloadModule, Params={Name="Leona.LeonaSunlightPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="leonasolarbarrier2"}}, 
+}

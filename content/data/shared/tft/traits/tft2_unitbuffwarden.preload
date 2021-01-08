@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffDesert"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_LastWhisper_Shred"}}, 
+}

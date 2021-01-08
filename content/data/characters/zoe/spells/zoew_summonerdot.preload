@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="summonerdot"}}, 
+{Function=BBPreloadSpell, Params={Name="internal_50ms"}}, 
+{Function=BBPreloadParticle, Params={Name="global_ss_ignite.troy", SkinID="-1"}}, 
+}

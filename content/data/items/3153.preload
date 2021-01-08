@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="item3153botrkstacks"}}, 
+{Function=BBPreloadParticle, Params={Name="piratecutlass_cas.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="3153slow"}}, 
+{Function=BBPreloadSpell, Params={Name="3153speed"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

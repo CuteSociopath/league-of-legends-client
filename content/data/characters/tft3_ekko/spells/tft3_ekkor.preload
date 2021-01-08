@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcube"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ekkorzonemanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ekkorstun"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_ekkorblinkattack"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+}

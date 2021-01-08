@@ -1,0 +1,43 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+////////////////////////////////////////////////////////////////
+
+struct VERTEX
+{
+    float3 m_Position : X3D_VSIN_POSITION;
+    float4 m_PerGlyphColor: X3D_VSIN_COLOR0;
+    float2 m_TexCoordGlyph : X3D_VSIN_TEXCOORD0;
+    float2 m_TexCoordFill : X3D_VSIN_TEXCOORD1;
+};
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 perGlyphColor: COLOR0;
+    float2 glyphTexCoord : TEXCOORD0;
+    float2 fillTexCoord : TEXCOORD1;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main ( VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+    // Output homogeneous position
+    interpolants.position = mul(float4(vertex.m_Position, 1.0f), FONT_MATRIX);
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    // Pass through all other
+    interpolants.perGlyphColor = vertex.m_PerGlyphColor.VCOLORSWIZZLE;
+    interpolants.glyphTexCoord = vertex.m_TexCoordGlyph;
+    interpolants.fillTexCoord = vertex.m_TexCoordFill;
+
+    return interpolants;
+}

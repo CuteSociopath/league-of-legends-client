@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="globalruncyclemanager"}}, 
+{Function=BBPreloadModule, Params={Name="Soraka.SorakaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sorakarecall"}}, 
+}

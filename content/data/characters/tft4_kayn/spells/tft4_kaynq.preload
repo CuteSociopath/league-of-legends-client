@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_shroud_debuff"}}, 
+}

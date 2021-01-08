@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Pyke.PykeGetSpellData"}}, 
+{Function=BBPreloadSpell, Params={Name="globalcamouflage"}}, 
+{Function=BBPreloadSpell, Params={Name="eternals_distancetraveledtracker"}}, 
+{Function=BBPreloadSpell, Params={Name="pykewwarning"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_jayceq"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_attackspeedslowdebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_maokaiq"}}, 
+}

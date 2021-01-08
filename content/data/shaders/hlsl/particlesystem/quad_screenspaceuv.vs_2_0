@@ -1,0 +1,56 @@
+#include "../Fog/Fog.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+
+column_major float3x3 vParticleUVTransform;
+
+struct VERTEX
+{
+    float4      position     : X3D_VSIN_POSITION;
+    float4      color0       : X3D_VSIN_COLOR0;
+    float3      texcoord0    : X3D_VSIN_TEXCOORD0;
+    float2      texcoord1    : X3D_VSIN_TEXCOORD1;
+};
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+    float4  uv0         : TEXCOORD1;
+#ifndef DISABLE_FOW
+    float4  uv1_uvFOW   : TEXCOORD2;
+#else
+    float2  uv1_uvFOW   : TEXCOORD2;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND)
+    float   fog         : TEXCOORD3;
+#endif
+
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Position
+    interpolants.position = mul( vertex.position, mProj );
+
+    // Color
+    interpolants.color0 = vertex.color0.VCOLORSWIZZLE;
+
+    float2 clip_xy = interpolants.position.xy / interpolants.position.w; // clip space coordinates of vertex
+    float2 uv = mul(float3(clip_xy, 1), vParticleUVTransform).xy;
+    interpolants.uv0 = float4(uv * interpolants.position.w, 0.f, interpolants.position.w);
+    
+    interpolants.uv1_uvFOW.xy = vertex.texcoord1;
+
+#ifndef DISABLE_FOW
+    // Fog of war
+    interpolants.uv1_uvFOW.zw = FogOfWarTextureCoordinates( vertex.position.xyz ).xy;
+#endif
+
+#if defined(FOG_PIXELSHADER_BLEND)
+    interpolants.fog = 1.0f-ComputeFogValue(interpolants.position, vertex.position.xyz);
+#endif
+
+    return interpolants;
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_exileshield"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_exilelifesteal"}}, 
+}

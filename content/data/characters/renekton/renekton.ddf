@@ -1,0 +1,12 @@
+{"RenektonPreExecute;f1":{"link":"attackdamage","coeff":"1.5"}}
+{"RenektonPreExecute;f2":{"link":"attackdamage","coeff":"2.25"}}
+{"RenektonPreExecute;f3":{"link":"","coeff":""}}
+{"RenektonPreExecute;f4":{"link":"","coeff":""}}
+{"RenektonSliceAndDice;f1":{"link":"bonusattackdamage","coeff":"0.9"}}
+{"RenektonSliceAndDice;f2":{"link":"bonusattackdamage","coeff":"1.35"}}
+{"RenektonSliceAndDice;f3":{"link":"","coeff":""}}
+{"RenektonSliceAndDice;f4":{"link":"","coeff":""}}
+{"RenektonCleave;f1":{"link":"bonusattackdamage","coeff":"0.8"}}
+{"RenektonCleave;f2":{"link":"bonusattackdamage","coeff":"1.2"}}
+{"RenektonCleave;f3":{"link":"","coeff":""}}
+{"RenektonCleave;f4":{"link":"","coeff":""}}

@@ -1,0 +1,170 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "GlobalCharacterGMX",
+  "map": "SL",
+  "mode": "GAMEMODEX",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": true,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "slimestartingitems",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "consumables",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+		{
+          "id": "4201",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4202",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4203",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4204",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4301",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4302",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4101",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4102",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4103",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4104",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4105",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+	{
+      "type": "slimenewitems",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "New Starting Items",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+		{
+          "id": "3154",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "3172",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "3131",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4402",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4001",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4003",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4004",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4010",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "3128",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "3161",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "3005",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4401",
+          "count": 1,
+          "hideCount": false
+        },
+		{
+          "id": "4403",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//This shader blurs the shadow mask to smooth out the shadow edges
+//and dilates the depth, so those edges are not cutoff at the mid-point.
+//Obviously this only works if the objects casting shadows are "sparse" and the objects
+//recieving shadows do not also cast shadows (objects casting and recieving shadows will still have
+//hard edges visible).
+////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "../ShadowMap/pcf1.hls"
+
+
+float2 UVStep;
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    //This blur filter is hard coded to 5 taps, it is expected that 2 (or more) passes
+    //will be used with appropriate texture coordinates to generate a 5x5 seperable filter.
+    // NOTE:  In order to explicitly blur the result MORE (to match an art target) we're pulling our tabs from far away.
+    float4 s0 = tex2D(ShadowMapBlurInput, interpolants.texcoord0 - 2 * UVStep);
+    float4 s1 = tex2D(ShadowMapBlurInput, interpolants.texcoord0 - UVStep);
+    float4 s2 = tex2D(ShadowMapBlurInput, interpolants.texcoord0);
+    float4 s3 = tex2D(ShadowMapBlurInput, interpolants.texcoord0 + UVStep);
+    float4 s4 = tex2D(ShadowMapBlurInput, interpolants.texcoord0 + 2 * UVStep);
+
+    //Compute all the depth values, the minimum depth will be written out for this pixel (dilation).
+    float4 depthSet = float4( unpackFloatFromVec3(s0.xyz),
+                                  unpackFloatFromVec3(s1.xyz),
+                                  unpackFloatFromVec3(s2.xyz),
+                                  unpackFloatFromVec3(s3.xyz) );
+    float  minDepth = unpackFloatFromVec3(s4.xyz);
+    float3 smin = s4.xyz;
+
+    if (depthSet.x < minDepth)  { minDepth = depthSet.x; smin = s0.xyz; }
+    if (depthSet.y < minDepth)  { minDepth = depthSet.y; smin = s1.xyz; }
+    if (depthSet.z < minDepth)  { minDepth = depthSet.z; smin = s2.xyz; }
+    if (depthSet.w < minDepth)  { minDepth = depthSet.w; smin = s3.xyz; }
+
+    //The mask is blurred - which generates smooth edges for the shadows.
+    // This uses weights to approximate the look of the 2 passes of 3x3 box filter
+    // we used to use instead of 1 pass of 5x5
+    float filteredWeight =  s0.a * 1/9.0f;
+    filteredWeight       += s1.a * 2/9.0f;
+    filteredWeight       += s2.a * 3/9.0f;
+    filteredWeight       += s3.a * 2/9.0f;
+    filteredWeight       += s4.a * 1/9.0f;
+
+
+    return float4( smin, filteredWeight );
+}

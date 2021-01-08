@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="slime_warthogwalkingtowards"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_warthogpassenger"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_warthogdriving"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_warthogbuff"}}, 
+}

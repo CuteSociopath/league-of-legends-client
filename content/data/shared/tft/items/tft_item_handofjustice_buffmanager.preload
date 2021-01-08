@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_HandOfJustice_BuffManager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_handofjustice_imperial"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_handofjustice_noble"}}, 
+}

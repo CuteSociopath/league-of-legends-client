@@ -1,0 +1,55 @@
+#ifndef LOW_QUALITY_MODE
+
+sampler2D Tex1;
+float2 UVStep;
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // sample color texture
+    float3 s0 = tex2D(Tex1, interpolants.texcoord0 - 7 * UVStep).rgb;
+    float3 s1 = tex2D(Tex1, interpolants.texcoord0 - 6 * UVStep).rgb;
+    float3 s2 = tex2D(Tex1, interpolants.texcoord0 - 5 * UVStep).rgb;
+    float3 s3 = tex2D(Tex1, interpolants.texcoord0 - 4 * UVStep).rgb;
+    float3 s4 = tex2D(Tex1, interpolants.texcoord0 - 3 * UVStep).rgb;
+    float3 s5 = tex2D(Tex1, interpolants.texcoord0 - 2 * UVStep).rgb;
+    float3 s6 = tex2D(Tex1, interpolants.texcoord0 - 1 * UVStep).rgb;
+    float3 s7 = tex2D(Tex1, interpolants.texcoord0).rgb;
+    float3 s8 = tex2D(Tex1, interpolants.texcoord0 + 1 * UVStep).rgb;
+    float3 s9 = tex2D(Tex1, interpolants.texcoord0 + 2 * UVStep).rgb;
+    float3 s10 = tex2D(Tex1, interpolants.texcoord0 + 3 * UVStep).rgb;
+    float3 s11 = tex2D(Tex1, interpolants.texcoord0 + 4 * UVStep).rgb;
+    float3 s12 = tex2D(Tex1, interpolants.texcoord0 + 5 * UVStep).rgb;
+    float3 s13 = tex2D(Tex1, interpolants.texcoord0 + 6 * UVStep).rgb;
+    float3 s14 = tex2D(Tex1, interpolants.texcoord0 + 7 * UVStep).rgb;
+
+    // 1.6 sigma 15 tap guassian blur
+    float3 filteredCol =  s0 * 0.000023;
+    filteredCol       += s1 * 0.000269;
+    filteredCol       += s2 * 0.002164;
+    filteredCol       += s3 * 0.011895;
+    filteredCol       += s4 * 0.044732;
+    filteredCol       += s5 * 0.115166;
+    filteredCol       += s6 * 0.20308;
+    filteredCol       += s7 * 0.24534;
+    filteredCol       += s8 * 0.20308;
+    filteredCol       += s9 * 0.115166;
+    filteredCol       += s10 * 0.044732;
+    filteredCol       += s11 * 0.011895;
+    filteredCol       += s12 * 0.002164;
+    filteredCol       += s13 * 0.000269;
+    filteredCol       += s14 * 0.000023;
+
+
+    return float4(filteredCol, 1.0f);
+}
+#else
+// if you don't support PS2b then we just compile the simpler shader instead.
+// But chances are, you're running in lowest and can't see bloom anyway
+#include "Bloom.ps_2_0"
+#endif

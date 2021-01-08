@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffMystic"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffWind"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_yorickghoulbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_summonedunitmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_lightcombat"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+}

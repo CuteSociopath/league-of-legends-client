@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_LootGoblin.NEXUSBLITZ_LootGoblin_KrugMiniBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_LootKrug"}}, 
+{Function=BBPreloadSpell, Params={Name="tracerbullet"}}, 
+{Function=BBPreloadParticle, Params={Name="krug_spawn_sound_initial.troy", SkinID="-1"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadParticle, Params={Name="krug_spawn_sound_landing.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="sru_krug_spawn_impact.troy", SkinID="-1"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_lootgoblin"}}, 
+}

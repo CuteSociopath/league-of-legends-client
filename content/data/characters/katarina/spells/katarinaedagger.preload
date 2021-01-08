@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="katarinacastbuffer"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinaetrail"}}, 
+{Function=BBPreloadModule, Params={Name="Pantheon.PantheonEShieldBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinae"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinadaggerpickuppbaoe"}}, 
+}

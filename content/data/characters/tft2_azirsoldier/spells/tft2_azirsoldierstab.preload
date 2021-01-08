@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT2_Azir.TFT2_AzirSoldier"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.Item6662Field"}}, 
+{Function=BBPreloadSpell, Params={Name="slow"}}, 
+}

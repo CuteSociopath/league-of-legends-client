@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Sett.SettFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="settslow"}}, 
+{Function=BBPreloadSpell, Params={Name="settewallricochet"}}, 
+{Function=BBPreloadSpell, Params={Name="settnoattack"}}, 
+{Function=BBPreloadSpell, Params={Name="settnomove"}}, 
+}

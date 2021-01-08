@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="6692ready"}}, 
+{Function=BBPreloadSpell, Params={Name="6692trackingbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global._GlobalChampionBuff"}}, 
+}

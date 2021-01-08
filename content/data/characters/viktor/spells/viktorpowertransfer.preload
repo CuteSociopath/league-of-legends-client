@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="viktorwaugdebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="viktorpowertransfer_haste"}}, 
+{Function=BBPreloadSpell, Params={Name="viktorpowertransferreturn"}}, 
+}

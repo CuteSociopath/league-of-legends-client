@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="qiyanarmis"}}, 
+{Function=BBPreloadSpell, Params={Name="qiyanarwallhitmis"}}, 
+{Function=BBPreloadModule, Params={Name="Qiyana.QiyanaR"}}, 
+{Function=BBPreloadSpell, Params={Name="qiyanalockfacing"}}, 
+}

@@ -1,0 +1,13 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT_Pantheon.TFT_PantheonRHelper"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrairborn"}}, 
+{Function=BBPreloadSpell, Params={Name="guardianangel"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrdescending"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrmissile3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrfinalpose"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrjump"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_percenthealthburn"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_pantheonrmissile2"}}, 
+}

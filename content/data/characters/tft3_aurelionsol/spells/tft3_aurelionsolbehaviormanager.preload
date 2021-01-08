@@ -1,0 +1,14 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT3_AurelionSol.TFT3_AurelionSolBehaviorManager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT3_UnitBuffProtector"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_castspellsuccess"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_near1"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_near2"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_near3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_mid1"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_mid2"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile_mid3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_aurelionsolpmissile2"}}, 
+}

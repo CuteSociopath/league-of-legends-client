@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="monkeykingspintowinleave"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingdummyspell"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingspinrecast"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingspinmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingspinknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingreternaltracking"}}, 
+{Function=BBPreloadModule, Params={Name="MonkeyKing.MonkeyKingFunctionModule"}}, 
+}

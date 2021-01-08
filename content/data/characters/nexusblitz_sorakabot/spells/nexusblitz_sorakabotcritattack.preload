@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sorakabotbasicattack"}}, 
+{Function=BBPreloadParticle, Params={Name="nexusblitz_sorakabotbasicattack_tar.troy", SkinID="-1"}}, 
+}

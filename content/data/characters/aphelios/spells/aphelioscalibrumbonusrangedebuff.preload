@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="global_watched.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscalibrumbonusrangedebuffhelper"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscalibrumspotlightmis"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscalibrumattackmischain"}}, 
+}

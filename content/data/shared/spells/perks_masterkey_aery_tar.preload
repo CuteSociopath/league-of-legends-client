@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.AdaptiveDamageModule"}}, 
+{Function=BBPreloadSpell, Params={Name="perks_masterkey_aery_ally"}}, 
+{Function=BBPreloadSpell, Params={Name="sowthewind"}}, 
+}

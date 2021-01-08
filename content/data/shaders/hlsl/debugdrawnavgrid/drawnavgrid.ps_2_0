@@ -1,0 +1,11 @@
+struct INTERPOLANTS
+{
+        float4 position : POSITION;
+        float4 color0   : COLOR0;
+};
+
+// Just pass through the vertex color
+float4 main(INTERPOLANTS interpolants) : COLOR
+{
+        return interpolants.color0;
+}

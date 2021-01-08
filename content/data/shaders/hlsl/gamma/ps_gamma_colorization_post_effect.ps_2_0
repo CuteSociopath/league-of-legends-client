@@ -1,0 +1,39 @@
+#include "../DeathScreen.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+
+#include "ApplyBloom.hls"
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // Read the texel from the back buffer
+    float4 texelBackBuffer = tex2D(SAMPLER_BACK_BUFFER_COPY, interpolants.texcoord0);
+    texelBackBuffer.rgb = ApplyBloom(texelBackBuffer.rgb, interpolants.texcoord0);
+
+    float4 ret = float4(texelBackBuffer.rgb * MAP_COLORIZATION_COLOR.rgb, 1.0f);
+
+    ret.rgb = GetSaturatedColor(ret.rgb, MAP_COLORIZATION_COLOR.a);
+    ret.rgb = ret.rgb * (1.0f - COLOR_OVERRIDE_PARAMS.a) + COLOR_OVERRIDE_PARAMS.rgb;
+
+#ifdef DEATH_EFFECT
+    ret.rgb = GetSaturatedColor(ret.rgb);
+#endif
+
+    // Return the converted color
+    return ret;
+}

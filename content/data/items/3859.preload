@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="s10_support_minion_penalty"}}, 
+{Function=BBPreloadSpell, Params={Name="s10_support_gp10_counter"}}, 
+{Function=BBPreloadSpell, Params={Name="s10_support_spoilsofwar"}}, 
+{Function=BBPreloadSpell, Params={Name="itemghostwardcharge"}}, 
+{Function=BBPreloadSpell, Params={Name="dummywardtracker"}}, 
+{Function=BBPreloadSpell, Params={Name="s10_support_spoils_game_start"}}, 
+}

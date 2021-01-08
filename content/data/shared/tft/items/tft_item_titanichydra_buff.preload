@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_ItemFunctionModule"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_GuardianAngel_Buff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_titanichydrazombiebuff_buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_immunity"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_taunt"}}, 
+}

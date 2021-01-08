@@ -1,0 +1,38 @@
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+sampler2D GLYPH_TEXTURE;
+
+////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+////////////////////////////////////////////////////////////////
+float4 FONT_COLOR;
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+struct INTERPOLANTS
+{
+    float4 position         : POSITION;
+    float4 glyphColor       : COLOR0;
+    float2 glyphTexCoord    : TEXCOORD0;
+    float2 fillTexCoord     : TEXCOORD1;
+};
+
+float4 main(in INTERPOLANTS interpolants) : COLOR0
+{
+    // sample textures
+    float4 glyphTexture = tex2D(GLYPH_TEXTURE, interpolants.glyphTexCoord);
+
+    float4 outColor;
+    // compose the pixel value
+    outColor.rgb = FONT_COLOR.rgb;
+    outColor.a = glyphTexture.b * FONT_COLOR.a;
+    return outColor;
+}

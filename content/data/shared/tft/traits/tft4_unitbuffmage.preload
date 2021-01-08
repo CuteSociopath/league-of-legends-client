@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_unitbuffmagespscalar"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_magelockout"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_mageattacklockout"}}, 
+}

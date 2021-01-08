@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="volibearpstacktracker"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearpapplicator"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearbasicattacktower"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrtowerattack1"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrtowerattack2"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrtransitionattack"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearqpostattack"}}, 
+}

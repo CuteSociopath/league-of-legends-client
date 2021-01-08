@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_NPCs"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_ScriptDataFunctionModule"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Loot"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_DataOverrides"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Loot"}}, 
+}

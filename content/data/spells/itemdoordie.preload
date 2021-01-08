@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemDoOrDie"}}, 
+{Function=BBPreloadSpell, Params={Name="itemglory"}}, 
+}

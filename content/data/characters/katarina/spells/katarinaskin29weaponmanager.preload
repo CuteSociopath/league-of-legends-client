@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Katarina.KatarinaSkin29WeaponManager"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinaskin29weaponcooldownbuff"}}, 
+}

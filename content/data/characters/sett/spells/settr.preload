@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="settrselflock"}}, 
+{Function=BBPreloadSpell, Params={Name="settrgrabanim"}}, 
+{Function=BBPreloadSpell, Params={Name="settrgrabbed"}}, 
+{Function=BBPreloadModule, Params={Name="Sett.SettRGrabbed"}}, 
+{Function=BBPreloadSpell, Params={Name="unstoppableforcemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="settrsuppression"}}, 
+}

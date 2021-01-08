@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="3053stackingbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.3053StackingBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="lifelinebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="3053shield"}}, 
+{Function=BBPreloadSpell, Params={Name="lifelinecooldown"}}, 
+}

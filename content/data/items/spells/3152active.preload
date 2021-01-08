@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="globalcannotclickobjects"}}, 
+{Function=BBPreloadSpell, Params={Name="3152missile"}}, 
+{Function=BBPreloadModule, Params={Name="Global.PlayerTerrian"}}, 
+}

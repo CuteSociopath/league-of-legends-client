@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="globalcamouflage"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_HideAndSeek"}}, 
+}

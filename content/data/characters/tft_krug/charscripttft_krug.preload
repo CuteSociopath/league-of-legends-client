@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_krughealmis"}}, 
+--{Function=BBPreloadModule, Params={Name="TFT_Krug.CharScriptTFT_Krug"}}, 
+}

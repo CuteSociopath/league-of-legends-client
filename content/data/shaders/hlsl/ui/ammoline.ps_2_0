@@ -1,0 +1,10 @@
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+};
+
+float4 main(INTERPOLANTS interpolants): COLOR
+{
+    return float4(1.0, 1.0, 1.0, 1.0);
+}
+

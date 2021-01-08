@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_PrizeFight"}}, 
+{Function=BBPreloadSpell, Params={Name="disconnecttimer"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_prizefight_spectator"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_PrizeFight_Participant"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_PrizeFight_ParticipantTracker"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_prizefight_participant"}}, 
+}

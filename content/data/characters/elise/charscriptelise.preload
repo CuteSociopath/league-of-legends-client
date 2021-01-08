@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="elisespiderlingsready"}}, 
+{Function=BBPreloadSpell, Params={Name="elisespiderlingdanceoverride"}}, 
+{Function=BBPreloadSpell, Params={Name="elisespiderespiderling"}}, 
+}

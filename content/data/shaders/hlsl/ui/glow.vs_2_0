@@ -1,0 +1,32 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+float4 glowVSParams;
+
+struct VERTEX
+{
+    float2 pos: X3D_VSIN_POSITION;
+    float2 tex0: X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float2 tex0     : TEXCOORD0;
+};
+
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    float2 center = glowVSParams.xy;
+    float scale = glowVSParams.z;
+    float2 scaledPos = (vertex.pos - center) * scale + center;
+    interpolants.position = mul(float4(scaledPos, 0, 1), UI_ELEMENT_MATRIX);
+
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    interpolants.tex0 = vertex.tex0;
+
+    return interpolants;
+}
+

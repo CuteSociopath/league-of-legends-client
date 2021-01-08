@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="testcuberender"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis_middle_of_map"}}, 
+{Function=BBPreloadModule, Params={Name="Global.FirstBloodBattleRoyaleManager"}}, 
+{Function=BBPreloadSpell, Params={Name="firstblood_suddendeathburning"}}, 
+}

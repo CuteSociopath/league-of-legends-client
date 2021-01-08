@@ -1,0 +1,29 @@
+void ApplyGreenToBlueColorCorrection(inout float4 color)
+{
+	// green channel dominates, do green --> blue and then reduce red so things look less purple
+	color.b += color.g * 3.0f;
+	color.g *= 0.3f;
+	color.r = 0;
+	color.a *= 1.75f;
+}
+
+void ApplyRedToOrangeColorCorrection(inout float4 color)
+{
+	//we're dealing with red-dominant color, add a little to the green channel to make it orange and increase visibility
+	color.g += color.r *0.3;	
+	color.a *= 2.0f;
+}
+
+void ApplyColorCorrectionColorblind(inout float4 color)
+{
+	float kColorDeltaThreshold = 0.001f;
+	float greenRedDelta = color.g - color.r;
+	if (greenRedDelta > kColorDeltaThreshold)
+	{
+		ApplyGreenToBlueColorCorrection(color);
+	} 
+	else if (greenRedDelta < -kColorDeltaThreshold)
+	{
+		ApplyRedToOrangeColorCorrection(color);
+	}
+}

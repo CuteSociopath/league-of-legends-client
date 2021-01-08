@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ElderDragonBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonburn"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonhealthbartickmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="elderdragonexecutetarget"}}, 
+}

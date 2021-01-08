@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="kalistaspearmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistawbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Kalista.KalistaPassiveBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistavoassistally"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistapaltarallyroot"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistapbondingrootally"}}, 
+{Function=BBPreloadSpell, Params={Name="kalistapinvocation"}}, 
+}

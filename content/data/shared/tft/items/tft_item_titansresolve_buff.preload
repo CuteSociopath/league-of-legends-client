@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_item_titansresolvemanager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_TitansResolveManager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_TitansResolve_Buff"}}, 
+}

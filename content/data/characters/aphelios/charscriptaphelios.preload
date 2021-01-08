@@ -1,0 +1,12 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliose"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscannotmove"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliospreload"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioseternalkilllistener"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosEternalKillListener"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosdisguisebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosgravitumdebuffinternal"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosP"}}, 
+}

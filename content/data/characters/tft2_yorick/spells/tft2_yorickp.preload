@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffSummoner"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffLight"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_yorickallybuff"}}, 
+}

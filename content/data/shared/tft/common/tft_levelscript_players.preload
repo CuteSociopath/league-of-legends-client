@@ -1,0 +1,13 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="tftitem"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_emotemanager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Players"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_ExpandedLLReactions"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Sound"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_ArenaEvents"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+}

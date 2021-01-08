@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sonaw_urf"}}, 
+{Function=BBPreloadSpell, Params={Name="sonaambientqsound"}}, 
+{Function=BBPreloadSpell, Params={Name="odysseyaugments_sonamanager"}}, 
+{Function=BBPreloadModule, Params={Name="Sona.SonaPassive"}}, 
+}

@@ -1,0 +1,16 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="slime_sharedminionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_sharedmonsterbuff"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_shopkeeper"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_turretbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_nexusturret"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_innerturret"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_nexusrooted"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_jungleguardian"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EndGameCeremony"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_suddendeath_nexusblitz"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_antisnowballgp10"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_fountainlazordamage"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_sealedspellslots"}}, 
+}

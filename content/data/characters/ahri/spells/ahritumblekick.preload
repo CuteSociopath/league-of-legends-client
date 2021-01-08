@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_distancetraveledtracker"}}, 
+{Function=BBPreloadSpell, Params={Name="ahritumblemissile"}}, 
+}

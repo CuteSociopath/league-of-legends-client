@@ -1,0 +1,90 @@
+#include "../ColorPalette.hls"
+#include "../FogOfWar/FogOfWar_PS.hls"
+#include "../ShadowMap/pcf1.hls"
+#include "../ParticleSystem/AlphaTest_ps.hls"
+
+sampler2D DIFFUSE_MAP;
+sampler2D PARTICLE_COLOR_TEXTURE;
+
+#ifdef MASKED_DECAL
+sampler2D NAVMESH_MASK_TEXTURE;
+#endif
+
+float4	COLOR_UV;
+
+#if defined(COLORPALETTE_COLORBLIND)
+        float4 APPLY_TEAM_COLOR_CORRECTION;
+#endif
+
+struct FRAGMENT
+{
+	float4 m_Color0 : COLOR0;
+};
+
+
+
+struct INTERPOLANTS
+{
+        float4 m_Position  : POSITION;
+        float4 m_TexCoord0 : TEXCOORD0;
+#ifdef MASKED_DECAL
+        float4 m_TexCoord1 : TEXCOORD1;  // .zw here is being used for map uvs if masked decals are enabled
+#else
+        float2 m_TexCoord1 : TEXCOORD1;
+#endif
+        float2 m_TexCoord2 : TEXCOORD2;
+#ifdef MASKED_DECAL
+#ifndef DISABLE_SHADOWS
+        float3 m_ShadowTC  : TEXCOORD4; //Dynamic shadow map texture coordinates.
+#endif
+#endif
+};
+
+FRAGMENT 
+	main
+	(
+		INTERPOLANTS interpolants
+	)
+{
+	FRAGMENT fragment;
+
+	// Read the diffuse texture
+	float4 texelDiffuse = tex2D(DIFFUSE_MAP, interpolants.m_TexCoord0.xz);
+
+	// Read the color texture
+	float4 texelColor = tex2D(PARTICLE_COLOR_TEXTURE, COLOR_UV.xy);
+
+	float4 finalColor = texelDiffuse * texelColor;
+	finalColor.a *= max(interpolants.m_TexCoord1.x, 0.0f);
+	
+#ifndef DISABLE_FOW
+    float4 fowFactors = GetFogOfWarFactors(interpolants.m_TexCoord2.xy);
+	finalColor.rgb *= fowFactors.a;
+#endif
+
+#ifdef COLORPALETTE_COLORBLIND
+	if (APPLY_TEAM_COLOR_CORRECTION.r != 0.0f)
+	{
+		ApplyColorCorrectionColorblind(finalColor);
+	}	
+#endif
+
+#ifdef MASKED_DECAL
+    // Dynamic shadow
+#ifndef DISABLE_SHADOWS
+    //shadows do not need to "fade out" since only dynamic objects are casting shadows when using 
+    //virtual textures. This saves a little bit of GPU time but also alleviates unwanted dark areas.
+    float3 shadowMask = SampleShadowMap(SHADOW_MAP, interpolants.m_ShadowTC)*SHADOW_COLOR_COMPLEMENT + SHADOW_COLOR; // i.e. lerp(SHADOW_COLOR, white, sampledValue)
+    finalColor.rgb *= shadowMask;
+#endif
+
+    float4 mask = tex2D(NAVMESH_MASK_TEXTURE, interpolants.m_TexCoord1.zw);
+    finalColor.a *= mask.r;
+#endif
+
+    AlphaTest(finalColor);
+    
+	// Output
+	fragment.m_Color0 = finalColor;
+	return fragment;
+}

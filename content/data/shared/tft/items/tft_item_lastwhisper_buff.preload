@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_checkitemuniquecompatibility"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_unitstatus_armorshred_large"}}, 
+}

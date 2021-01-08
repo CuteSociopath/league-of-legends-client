@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_khazixrattack"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_GlobalUnitMovement"}}, 
+}

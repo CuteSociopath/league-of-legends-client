@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="sru_riftherald_summon_channel.troy", SkinID="-1"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="4005protectionmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="4005hastemarker"}}, 
+}

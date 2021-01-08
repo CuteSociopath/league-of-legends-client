@@ -1,0 +1,44 @@
+// This module is intended for us by PIXEL SHADERS
+
+float4 GetFogOfWarFactors(float2 uv)
+{
+    float4  fowOverlay = tex2D(FOW_MAP, uv).rgba;
+
+#ifdef FOW_IGNORE_VISIBILITY
+    fowOverlay.a = 0.0f;
+#endif
+
+    return fowOverlay;
+}
+
+// Lower fadeInByHeight values drive visiblity down (more fog), but computed visibility never goes up
+float4 GetFogOfWarFactorsWithFadeTowardFogged(float2 uv, float fadeInByHeight)
+{
+    float4  fowOverlay = tex2D(FOW_MAP, uv).rgba;
+
+#ifdef FOW_IGNORE_VISIBILITY
+    fowOverlay.a = 0.0f;
+#endif
+
+    // To fade to fogged, we need to know what fogged looks like
+    // so we use FOW_EDGE_CONTROL.w
+    fowOverlay.a = lerp(FOW_EDGE_CONTROL.w, fowOverlay.a, fadeInByHeight);
+
+    return fowOverlay;
+}
+
+// Higher fadeOutByHeight values drive visibility up (less fog), but computed visibility never goes down
+float4 GetFogOfWarFactorsWithFadeTowardClear(float2 uv, float fadeOutByHeight)
+{
+    float4  fowOverlay = tex2D(FOW_MAP, uv).rgba;
+
+#ifdef FOW_IGNORE_VISIBILITY
+    fowOverlay.a = 0.0f;
+#endif
+
+    // Fog density goes from the texture suggested opacity to 1.0 (clear) based on our fog control interpolater
+    fowOverlay.a = lerp(fowOverlay.a, 1.0f, fadeOutByHeight);
+
+    return fowOverlay;
+}
+

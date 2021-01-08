@@ -1,0 +1,27 @@
+float GetLuminance(float3 inputColor)
+{
+	float3 LUMINANCE_CONVERSION = float3(0.299f, 0.587f, 0.114f);
+	return dot(LUMINANCE_CONVERSION, inputColor.rgb);
+}
+
+float3 GetSaturatedColor(float3 inputColor)
+{
+	// Luminance conversion
+ 	float luminance = GetLuminance(inputColor);
+
+	const float saturation = 0.2f;
+	const float saturationRampPower = 1.0f;
+	return (1.0f - saturation) * pow(luminance, saturationRampPower) + (inputColor.xyz * saturation);
+}
+
+float3 GetSaturatedColor(float3 inputColor, float saturation)
+{
+	// Luminance conversion
+ 	float luminance = GetLuminance(inputColor);
+	return (1.0f - saturation) * pow(luminance, 1.25)+ (inputColor.xyz * saturation);
+}
+
+float3 GetDeathScreenPartialDesaturationHealthBars(float3 inputColor)
+{
+	return GetSaturatedColor(inputColor, 0.5f);
+}

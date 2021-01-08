@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Traits"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_GuardianAngel_Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_immunity"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_cloakedbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_mechpilotlandingtrailvfx"}}, 
+}

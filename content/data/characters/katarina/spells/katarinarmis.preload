@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="katarinar"}}, 
+{Function=BBPreloadModule, Params={Name="Global.GrievousWound"}}, 
+{Function=BBPreloadSpell, Params={Name="grievouswound"}}, 
+}

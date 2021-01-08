@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_leesinrcollisionmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_leesinrringout"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_DuelistMovementCombatActive"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_leesinrknockback"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_leesinrstun"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_leesinrwinddown"}}, 
+}

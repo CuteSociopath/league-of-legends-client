@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT2_Nasus.TFT2_NasusR"}}, 
+{Function=BBPreloadSpell, Params={Name="nasusr"}}, 
+}

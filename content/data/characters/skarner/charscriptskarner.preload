@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="skarnerresurrection"}}, 
+{Function=BBPreloadSpell, Params={Name="skarnerturretattack"}}, 
+{Function=BBPreloadSpell, Params={Name="skarnerturretattack2"}}, 
+{Function=BBPreloadSpell, Params={Name="skarnerimpaleflashlock"}}, 
+{Function=BBPreloadSpell, Params={Name="skarnerbrushcheck"}}, 
+}

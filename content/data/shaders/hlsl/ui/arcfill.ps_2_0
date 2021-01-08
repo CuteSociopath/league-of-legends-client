@@ -1,0 +1,39 @@
+float4 params;
+float4 dims;
+float4 color0;
+
+// --------- SOME CONSTANTS ---------
+static float PI = 3.14159265359;
+// --------- END CONSTANTS ---------
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 perVertexColor : COLOR0;
+    float2 tex0 : TEXCOORD0;
+};
+float4 main(INTERPOLANTS interpolants) : COLOR
+{
+    float4 texColor = tex2D(UI_PRIMARY_TEXTURE, interpolants.tex0) * interpolants.perVertexColor;
+    float4 colorOut = float4(texColor.rgb * texColor.a * UI_COLOR.rgb * UI_COLOR.a, texColor.a * UI_COLOR.a);
+
+    float2 vec = float2(interpolants.tex0.x - dims.x, interpolants.tex0.y - dims.y);
+    vec.xy /= dims.zw;
+    vec = vec * 2 - 1; // vec now normalized to [-1, 1] range
+    vec = vec * float2(1, -1); // vec now in the standard mathy orientation
+    //   II  |   I
+    //   ---------
+    //   III |  IV
+
+    // calculate the theta of this pixel to determine
+    // whether it's in the wedge or not
+    float arcStart  = params.x;
+    float arcLength = params.y;
+    float rotOffset = params.z;
+
+    float theta = atan2(vec.y, vec.x) - rotOffset;
+    theta += (2*PI) * step(theta, 0.);
+
+    // test to see if the final pixel position is within the arc sweep
+    return colorOut * step(arcStart, theta) * step(theta, arcStart + arcLength);
+}

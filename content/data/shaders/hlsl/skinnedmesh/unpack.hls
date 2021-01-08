@@ -1,0 +1,36 @@
+// Common functions to unpack fixed point vertex attributes
+///////////////////////////////////////////////////////////////////////////////
+
+#if EXPERIMENTAL_UNPACK_VERTS
+
+// (we would probably use a variable constant register for the scales in a real implementation)
+
+#define kFixedPointScale_0_8    1.0f/255.0f
+#define kFixedPointScale_0_16   1.0f/32767.0f
+#define kFixedPointScale_5_11   32.0f/32767.0f
+
+// unpack fixed point vertex input attributes
+
+void UnpackWeights( inout float4 weights )
+{
+    weights *= kFixedPointScale_0_8;                            // weights: fixed point 0.8
+}
+
+void UnpackNormal( inout float3 normal )
+{
+    normal *= kFixedPointScale_0_16;                            // normal: fixed point 0.16
+}
+
+void UnpackUV( inout float2 uv )
+{
+    uv *= kFixedPointScale_5_11;                               // uv:      fixed point 5.11 (32 max repeat)
+}
+
+void UnpackAttributes( inout float4 weights, inout float3 normal, inout float2 uv )
+{
+    UnpackWeights( weights );
+    UnpackNormal( normal );
+    UnpackUV( uv );
+}
+
+#endif  // EXPERIMENTAL_UNPACK_VERTS

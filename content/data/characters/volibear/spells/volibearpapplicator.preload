@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.CastInstance"}}, 
+{Function=BBPreloadModule, Params={Name="Volibear.VolibearPApplicator"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearpchain"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearr"}}, 
+}

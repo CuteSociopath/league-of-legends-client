@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="pykewpassive"}}, 
+{Function=BBPreloadModule, Params={Name="Pyke.PykeGetSpellData"}}, 
+}

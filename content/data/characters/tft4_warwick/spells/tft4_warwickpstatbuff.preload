@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_warwickptakedownmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_warwickphowl"}}, 
+}

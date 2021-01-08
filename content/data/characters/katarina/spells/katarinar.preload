@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="katarinarsound"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinaronhitmanager"}}, 
+{Function=BBPreloadModule, Params={Name="Katarina.KatarinaROnHitManager"}}, 
+{Function=BBPreloadSpell, Params={Name="katarinarmis"}}, 
+}

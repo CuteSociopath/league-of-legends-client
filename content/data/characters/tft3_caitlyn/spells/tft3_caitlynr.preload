@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT3_Caitlyn.TFT3_CaitlynR_ManaReturn"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_caitlynr_manareturn"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Tutorial"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Tutorial"}}, 
+}

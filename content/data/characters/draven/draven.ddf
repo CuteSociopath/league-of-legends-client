@@ -1,0 +1,16 @@
+{"DravenSpinning;f1":{"link":"attackdamage","coeff":"0.45/0.55/0.65/0.75/0.85"}}
+{"DravenSpinning;f2":{"link":"","coeff":""}}
+{"DravenSpinning;f3":{"link":"","coeff":""}}
+{"DravenSpinning;f4":{"link":"","coeff":""}}
+{"DravenFury;f1":{"link":"","coeff":""}}
+{"DravenFury;f2":{"link":"","coeff":""}}
+{"DravenFury;f3":{"link":"","coeff":""}}
+{"DravenFury;f4":{"link":"","coeff":""}}
+{"DravenDoubleShot;f1":{"link":"bonusattackdamage","coeff":"0.5"}}
+{"DravenDoubleShot;f2":{"link":"","coeff":""}}
+{"DravenDoubleShot;f3":{"link":"","coeff":""}}
+{"DravenDoubleShot;f4":{"link":"","coeff":""}}
+{"DravenRCast;f1":{"link":"bonusattackdamage","coeff":"1.1"}}
+{"DravenRCast;f2":{"link":"","coeff":""}}
+{"DravenRCast;f3":{"link":"","coeff":""}}
+{"DravenRCast;f4":{"link":"","coeff":""}}

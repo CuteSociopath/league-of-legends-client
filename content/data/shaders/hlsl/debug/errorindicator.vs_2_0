@@ -1,0 +1,54 @@
+
+column_major float4x4 WORLD_MATRIX;
+
+struct VERTEX
+{
+    float4  position    : X3D_VSIN_POSITION;
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color           : TEXCOORD0;
+    float4  position_ws     : TEXCOORD1;    // world space position
+    float4  position_clip   : TEXCOORD2;    // clip space position in lieu of VPOS
+};
+
+float random(float3 pt, float3 axis)
+{
+    return frac(sin(dot(pt, axis))*43758.5453);
+}
+
+float3 random_color(float3 pt)
+{
+   float3 color;
+   color.r = random(pt, float3(78.233, 12.9898, 471.169));
+   color.g = random(pt, float3(78.233, 471.169, 12.9898));
+   color.b = random(pt, float3(471.169, 12.9898, 78.233));
+   return color;
+}
+
+INTERPOLANTS main( in VERTEX input)
+{
+    INTERPOLANTS output;
+    float3 world_pt = mul(input.position, WORLD_MATRIX).xyz;
+    output.position = mul(float4(world_pt, 1.0f), VIEW_PROJECTION_MATRIX );
+        
+    output.position_ws = float4(world_pt, 1.0f);
+
+    // If we compile for SM 3 we can use VPOS in pixel shader
+    output.position_clip = output.position;
+    
+    // Error indication will be primarily red, but we mix in
+    // a random color based on our world position to give some
+    // color variation to the triangles to make the error indication
+    // better show the mesh...especially when several meshes overlap
+    
+    float3 mixer = random_color(world_pt);
+    float3 color = mixer*float3(0.5,0.15,0.35) + float3(0.5,0,0);
+    
+    output.color.rgb = color;
+    output.color.a = 1.0f;
+
+    return output;
+}

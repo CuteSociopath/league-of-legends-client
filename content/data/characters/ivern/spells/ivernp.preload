@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="ivernpcollection"}}, 
+{Function=BBPreloadModule, Params={Name="Ivern.IvernFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="ivernpapplication"}}, 
+{Function=BBPreloadParticle, Params={Name="ivern_base_p_link_tar_ally.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="ivern_base_p_link_success.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="ivernpselfbufftracker"}}, 
+}

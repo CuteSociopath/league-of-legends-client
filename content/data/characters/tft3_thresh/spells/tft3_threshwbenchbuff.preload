@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_disallowitemdrops"}}, 
+{Function=BBPreloadCharacter, Params={Name="tft3_threshlantern"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_threshwlanterntimeout"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+}

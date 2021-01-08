@@ -1,0 +1,35 @@
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+struct VERTEX
+{
+	float3 m_Position : X3D_VSIN_POSITION;
+	float4 m_Color0   : X3D_VSIN_COLOR0;
+};
+
+struct INTERPOLANTS
+{
+        float4 position : POSITION;
+        float4 color0   : COLOR0;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+    // Output homogeneous position
+    interpolants.position = mul(float4(vertex.m_Position, 1.0f), VIEW_PROJECTION_MATRIX );
+
+    // Pass through all other
+    interpolants.color0 = vertex.m_Color0.VCOLORSWIZZLE;
+
+    return interpolants;
+}

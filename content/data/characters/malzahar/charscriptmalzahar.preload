@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="malzaharw"}}, 
+{Function=BBPreloadSpell, Params={Name="nightmarebotmalzaharbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="malzaharvoidlingdanceoverride"}}, 
+{Function=BBPreloadSpell, Params={Name="malzahardeathparticle"}}, 
+}

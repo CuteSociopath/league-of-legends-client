@@ -1,0 +1,25 @@
+#include "ComputeShadowMapValue.hls"
+
+sampler2D TEXTURE;
+sampler2D PARTICLE_COLOR_TEXTURE;
+
+float2   COLOR_LOOKUP_UV;
+
+struct INTERPOLANTS
+{
+    float4  position    : POSITION;
+    float4  color0      : COLOR0;
+    float3  uv0_depth   : TEXCOORD0;    // xy = uv0, z = depth
+};
+
+float4  main(INTERPOLANTS interpolants) : COLOR0
+{
+    float2 uv0 = interpolants.uv0_depth.xy;
+    float4 texel = tex2D(TEXTURE, uv0);
+    float4 particle_color_texel = tex2D(PARTICLE_COLOR_TEXTURE, COLOR_LOOKUP_UV);
+    float4 color = interpolants.color0 * texel * particle_color_texel;
+    
+    clip(color.a - ALPHA_THRESHOLD);
+    
+    return float4(packDepthToVec3(interpolants.uv0_depth.z), 0.0f);
+}

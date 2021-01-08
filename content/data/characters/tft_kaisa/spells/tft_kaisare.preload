@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_kaisare_attackspeedbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_kaisare_shieldbuff"}}, 
+}

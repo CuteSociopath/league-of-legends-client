@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_SuddenDeath_TurretPlates"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

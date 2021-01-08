@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="summonerodysseyrevive"}}, 
+{Function=BBPreloadSpell, Params={Name="summonerodysseyrevivetargetvfx"}}, 
+}

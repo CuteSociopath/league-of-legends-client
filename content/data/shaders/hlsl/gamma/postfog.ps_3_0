@@ -1,0 +1,58 @@
+#include "../Depth.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+
+float3 CameraPos;
+column_major float4x4 WorldViewProjInverse;
+
+float4 DepthFogParams;
+float3 DepthFogColor;
+
+float4 HeightFogParams;
+float3 HeightFogColor;
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+    float4 hpos         : TEXCOORD1;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // Read the texel from the back buffer
+    float4 texelBackBuffer = tex2D(SAMPLER_BACK_BUFFER_COPY, interpolants.texcoord0);
+    float depth = tex2D(sDepthTexture, interpolants.texcoord0).x;
+    // if we're at the far plane, the skybox has already calculated the fog color
+    if (depth == 1.0f)
+    {
+        return texelBackBuffer;
+    }
+    else
+    {
+        float4 hpos = interpolants.hpos;
+        hpos.z = depth;
+        // grab the world space position
+        float4 worldPos = mul(hpos, WorldViewProjInverse);
+        worldPos /= worldPos.w;
+
+        float height = worldPos.y;
+        float heightFogStrength = min(saturate((height - HeightFogParams.y) * HeightFogParams.z), HeightFogParams.x);
+        float3 heightFogColor = lerp(texelBackBuffer.rgb, HeightFogColor.rgb, heightFogStrength);
+
+        float eyeDistance = length(CameraPos - worldPos.xyz);
+        float depthFogStrength = min(saturate((eyeDistance - DepthFogParams.y) * DepthFogParams.z), DepthFogParams.x);
+        float3 depthFogColor = lerp(heightFogColor.rgb, DepthFogColor.rgb, depthFogStrength);
+
+        return float4(depthFogColor, texelBackBuffer.a);
+    }
+}

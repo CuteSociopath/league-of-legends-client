@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="sru_riftherald_spawnportal.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="sru_riftherald_buff_isolation.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_exaltedwithminibaronnashor"}}, 
+}

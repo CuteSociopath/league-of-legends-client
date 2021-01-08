@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="s10_support_tribute"}}, 
+{Function=BBPreloadSpell, Params={Name="s10_support_minion_penalty"}}, 
+{Function=BBPreloadSpell, Params={Name="s10_support_gp10_counter"}}, 
+}

@@ -1,0 +1,33 @@
+sampler2D Tex1;
+
+float2 UVStep;
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{    
+
+    // sample color texture
+    float3 s0 = tex2D(Tex1, interpolants.texcoord0 - 3 * UVStep).rgb;
+    float3 s1 = tex2D(Tex1, interpolants.texcoord0 - 2 * UVStep).rgb;
+    float3 s2 = tex2D(Tex1, interpolants.texcoord0 - UVStep).rgb;
+    float3 s3 = tex2D(Tex1, interpolants.texcoord0).rgb;
+    float3 s4 = tex2D(Tex1, interpolants.texcoord0 + UVStep).rgb;
+    float3 s5 = tex2D(Tex1, interpolants.texcoord0 + 2 * UVStep).rgb;
+    float3 s6 = tex2D(Tex1, interpolants.texcoord0 + 3 * UVStep).rgb;
+
+    // 1 sigma 7 tap guassian blur
+    float3 filteredCol =  s0 * 0.00598f;
+    filteredCol       += s1 * 0.060626f;
+    filteredCol       += s2 * 0.241843f;
+    filteredCol       += s3 * 0.383103f;
+    filteredCol       += s4 * 0.241843f;
+    filteredCol       += s5 * 0.060626f;
+    filteredCol       += s6 * 0.005980f;
+
+    return float4(filteredCol, 1.0f);
+}

@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="fiddlesticksesilence"}}, 
+{Function=BBPreloadSpell, Params={Name="silence"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlestickseslowvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="slow"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqpassiveterrify"}}, 
+{Function=BBPreloadSpell, Params={Name="fiddlesticksqcooldown"}}, 
+}

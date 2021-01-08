@@ -1,0 +1,6 @@
+
+#define blendindex uint
+#define blendindex2 uint2
+#define blendindex3 uint3
+#define blendindex4 uint4
+

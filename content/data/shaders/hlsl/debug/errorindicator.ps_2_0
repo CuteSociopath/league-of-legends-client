@@ -1,0 +1,35 @@
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color           : TEXCOORD0;
+    float4  position_ws     : TEXCOORD1;    // world space position
+    float4  position_clip   : TEXCOORD2;    // clip space position in lieu of VPOS
+};
+
+float checker(float2 pt)
+{
+    float w = fmod(floor(pt.x) + floor(pt.y), 2);
+    return (w < 1) ? 0.0f : 1.0f;
+}
+
+float4  main(INTERPOLANTS input) : COLOR0
+{
+    float4 color_final;
+    
+    float2 pt_clipspace = input.position_clip.xy/input.position_clip.w; // screen space anchored
+    
+    color_final = input.color;
+
+    // make the indicator more obvious with a checker patern
+    float2 pt_check = input.position_ws.xz/100; // checker every 1m of game space (which is in cm)
+    
+    float checked = checker(pt_check);
+    if (checked > 0.0f )
+    {
+        float luma = dot(input.color.rgb,float3(0.2f,0.7f,0.1f));
+        color_final.rgb = luma;   // white
+    }
+
+    return color_final;
+}

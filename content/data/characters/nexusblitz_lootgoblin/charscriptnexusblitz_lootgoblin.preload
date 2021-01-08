@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_teemobuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_veigarbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_krugbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_krugminibuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_krugminiminibuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_lootgoblin_targetdummybuff"}}, 
+}

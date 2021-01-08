@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_qiyanar"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_QiyanaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_qiyanamoveblock"}}, 
+}

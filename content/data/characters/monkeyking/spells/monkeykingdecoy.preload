@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="monkeykingpassivestack"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingnimbusas"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingdoubleattack"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingspintowin"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingspinrecast"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingdecoyclone"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingdecoystealth"}}, 
+{Function=BBPreloadSpell, Params={Name="eternals_clonetookhittracker"}}, 
+}

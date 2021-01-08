@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Graves.GravesFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="gravesautoattackrecoilcastedummy"}}, 
+{Function=BBPreloadSpell, Params={Name="gravesegrit"}}, 
+}

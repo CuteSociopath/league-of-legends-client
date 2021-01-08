@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yonespellbuffer"}}, 
+{Function=BBPreloadSpell, Params={Name="unstoppableforcemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneefakedeath"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender10vision"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneedeathspiritreturn"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

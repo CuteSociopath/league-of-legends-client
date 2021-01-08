@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Set3"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_playerbuff_mercenarymanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_playerbuff_spacepiratemanager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_SharedDraft"}}, 
+}

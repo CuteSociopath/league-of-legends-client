@@ -1,0 +1,76 @@
+#include "DATA/Shaders/HLSL/DX9HalfPixelAdjust.hls"
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+float4 position_offset_scale;
+float4 texcoord_offset_scale;
+float4 vertColor;
+float4 rotationMatrixData;
+
+struct VERTEX
+{
+	float2 m_Position  : X3D_VSIN_POSITION;
+	float2 m_TexCoord0 : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+    // Pass through
+    const float xOffset = position_offset_scale.x;
+    const float yOffset = position_offset_scale.y;
+    const float posWidth = position_offset_scale.z;
+    const float posHeight = position_offset_scale.w;
+
+#ifdef IS_METAL
+    // metal matrix construction wants its args around the other way
+    // This fixed an issue with path lines on the minimap appearing at right angles
+    float2x2 rotationMatrix = float2x2(
+            float2(rotationMatrixData.x, rotationMatrixData.y),
+            float2(rotationMatrixData.z, rotationMatrixData.w)
+    );
+#else
+    float2x2 rotationMatrix = float2x2(
+            float2(rotationMatrixData.w, rotationMatrixData.z),
+            float2(rotationMatrixData.y, rotationMatrixData.x)
+    );
+#endif
+
+    const float2 inPos = float2(vertex.m_Position.x * posWidth + xOffset, vertex.m_Position.y * posHeight + yOffset);
+    const float2 originOffsetVec = float2(posWidth * 0.5f + xOffset, posHeight * 0.5f + yOffset);
+    const float2 originPos = inPos - originOffsetVec;
+    const float2 rotatedPos = mul(rotationMatrix, originPos);
+    const float2 rotatedRestoredPos = rotatedPos + originOffsetVec;
+
+    interpolants.position = mul(float4(rotatedRestoredPos.x, rotatedRestoredPos.y, 0.0f, 1.0f), SCREEN_MATRIX);
+
+    DoDX9HalfPixelAdjust(interpolants.position);
+
+    // We don't use VCOLORSWIZZLE here, because shader constants get passed in the same way between D3D9 and OGL [Tested on Mac and PC]
+    interpolants.color0 = vertColor;
+
+    const float txOffset = texcoord_offset_scale.x;
+    const float tyOffset = texcoord_offset_scale.y;
+    const float texCoordWidth = texcoord_offset_scale.z;
+    const float texCoordHeight = texcoord_offset_scale.w;
+    interpolants.texcoord0 = float2(vertex.m_TexCoord0.x * texCoordWidth + txOffset, vertex.m_TexCoord0.y * texCoordHeight + tyOffset);
+
+    return interpolants;
+}

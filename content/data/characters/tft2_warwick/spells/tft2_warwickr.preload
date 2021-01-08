@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="unstoppableforcemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_stun"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_warwickrchannel"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_warwickrmiss"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_warwickrmanager"}}, 
+}

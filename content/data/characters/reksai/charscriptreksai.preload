@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="reksaieready"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadSpell, Params={Name="reksaijetskimanager"}}, 
+}

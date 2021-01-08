@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="6693trail"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="6693targetmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="6693amp"}}, 
+}

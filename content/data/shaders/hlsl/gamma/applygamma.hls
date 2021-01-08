@@ -1,0 +1,21 @@
+////////////////////////////////////////////////////////////////
+///
+/// ApplyGamma
+///
+////////////////////////////////////////////////////////////////
+float3 ApplyGamma(float3 col)
+{
+	// Convert to the look-up texture coordinate
+	float2 uvRed = float2(col.r, 0.f);
+	float4 texelRed = tex2D(SAMPLER_GAMMA_LOOK_UP, uvRed);
+	
+	// Convert to the look-up texture coordinate
+	float2 uvGreen = float2(col.g, 0.f);
+	float4 texelGreen = tex2D(SAMPLER_GAMMA_LOOK_UP, uvGreen);
+
+	// Convert to the look-up texture coordinate
+	float2 uvBlue = float2(col.b, 0.f);
+	float4 texelBlue = tex2D(SAMPLER_GAMMA_LOOK_UP, uvBlue);
+	
+	return float3(texelRed.r, texelGreen.r, texelBlue.r);
+}

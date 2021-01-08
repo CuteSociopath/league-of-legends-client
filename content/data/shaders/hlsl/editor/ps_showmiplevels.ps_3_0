@@ -1,0 +1,15 @@
+sampler2D SAMPLER;
+float4 MIP_COUNT;
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 color    : COLOR0;
+    float2 texcoord : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 tc = float4(interpolants.texcoord.x, interpolants.texcoord.y, 0, interpolants.texcoord.x*MIP_COUNT.x);
+    return tex2Dlod(SAMPLER, tc);
+}

@@ -1,0 +1,148 @@
+/* General Tooltip Structure */
+p { font-size: 17pt; }
+titleLeft { color: #e6ddc9; font-size: 22pt; }
+titleRight { color: #e6ddc9; font-size: 22pt; }
+subtitleLeft { color: #d9d9d9; }
+subtitleRight { color: #d9d9d9; }
+mainText { color: #999999; }
+postScriptTitle { color: #999999; }
+postScriptLeft { color: #e6ddc9; }
+postScriptRight { color: #e6ddc9; }
+infoArea { color: #d9d9d9; }
+activeRank { color: #EEEE55; }
+inactiveRank { color: #555555; }
+spellTag { color: #CFBF84; font-weight: bold; }
+passiveCooldown { font-size: 18pt; color: #BABABA; }
+
+/* Numbers */
+healing { color: #c4ffbf; }
+magicDamage { color: #09E5E5; }
+physicalDamage { color: #995527; } /* Previously #B55C28; }*/
+trueDamage { color: #ffffff; }
+
+/* Styling Tools */
+rules { font-style: italic; font-size: 15pt; color:#888888; }
+attention { color: #DDDD77; }
+spellPassive { color:#FFFF88; }
+spellActive { color:#FFFF88; } 
+specialRules { color: #CFBF84; font-weight: bold; }
+del { color: #990011; font-style: italic; }
+emphasis, totalValue { color: #FFFFFF; }
+
+/* Keywords */
+keywordName { color: #e6ddc9; }
+keywordCost { font-style: italic; color: #d9d9d9; }
+keywordMajor, keyword { color:#FFF673; }
+keywordCaution, caution { color:#FFFF00; }
+keywordDanger, danger { color:#FF0000; }
+keywordStacks { color: #907AFF; }
+keywordWard { color: #BBFFFF; }
+keywordStealth { color: #CD90EE; }
+
+/* Factions */
+factionIonia1 { color: #6655CC; }
+factionIonia2 { color: #FFE699; }
+
+/* Scaling */
+scaleLevel { color: #D8D8D8; }
+scaleCDR { color:#F0E6D2; }
+scaleArmor { color:#F4715D; }
+scaleMR { color: #CE8FD3; }
+scaleMana { color:#3B98CE; }
+scaleBonus { color: #CECECE; }
+scaleAP { color: #99FFF9; }
+scaleAD { color:#BC7E4B; }
+scaleOverTime { color:#CECECE; }
+scaleHealth { color: #1f995c; }
+scaleCrit { color: #CE3B45; }
+scaleAS { color: #F2C354; }
+
+/* Color Testing */
+scaleLS { color: #b52234; }
+scaleMPen { color: #A54AA8; }
+scaleLethality { color: #DB523D; }
+scaleHealShield { color: #60e08f; }
+scaleSV { color: #2277B5;}
+
+
+/* Items */
+stats { color:#99FF99; }
+passive { color: #d9d9d9; }
+unlockedPassive { text-decoration: underline; color:#FF8811; }
+unique { color:#FFDD22; }
+active { color:#FFDD22; }
+aura { color:#FFDD22; }
+consumable { color:#FF8811; }
+flavor { font-style: italic; font-size: 15pt; }
+flavorText { color:#FDD017; font-style: italic; font-size: 15pt; text-align: center;}
+warning { font-weight: bold; color: #FF3333; }
+gold { color: #FFCC00; }
+goldGain { color:#FFFF00; }
+
+/* Item Shop Generated Tags */
+simpleDescription { color: #DDFFDD; }
+failureHead { color: #FF3333; font-size: 19pt; }
+failureBody { font-size: 18pt; }
+groupLimit { color: #99FF99; }
+groupLimitActive { color: #FF3333; }
+levelLimit { color: #99FF99; }
+levelLimitActive { color: #FF3333; }
+
+/* Item Shop Specialized Stat Tags */
+mana { }
+manaRegen { }
+healthRegen { }
+manaDisabled { color: #666666; }
+statDisabled { color: #666666; }
+statPoor { color: #227722; }
+statGood { color: #44FF44; }
+
+/* Item Shop Hover Tips */
+header { font-weight: inherit; color: #d9d9d9; text-decoration: none; }
+a { text-decoration: underline; }
+uniqueLink { text-decoration: none; color:#FFDD22; }
+activeLink { text-decoration: none; color:#FFDD22; }
+auraLink { text-decoration: none; color:#FFDD22; }
+
+/* Shinies */
+metalRank0 { color:#804000; }
+metalRank1 { color:#DCF9FF; }
+metalRank2 { color:#FFD700; }
+metalRank3 { color:#05FDEA; }
+metalRank4 { color:#FF69B4; }
+
+/* Perks */
+pathBonus { color:#FFFFFF; }
+pathDomination { color:#990011; }
+pathResolve { color:#00CC00; }
+pathSorcery { color:#BB22CC; }
+pathPrecision { color:#E0D030; }
+pathInspiration { color:#90B0E0; }
+
+/* Variable Stylizing */
+/* Disabled */
+if0is0,
+if0is1,       if2is1, if3is1, if4is1, if5is1, if6is1,
+if0is2, if1is2,       if3is2, if4is2, if5is2, if6is2,
+if0is3, if1is3, if2is3,       if4is3, if5is3, if6is3,
+if0is4, if1is4, if2is4, if3is4,       if5is4, if6is4,
+if0is5, if1is5, if2is5, if3is5, if4is5,       if6is5,
+if0is6, if1is5, if2is5, if3is6, if4is5, if5is5
+{ color:#555555; }
+
+if1is1, if2is2, if3is3, if4is4, if5is5, if6is6
+{ color:#FFFF55; }
+
+if0isnot0
+{ color:#999999; }
+
+if1isnot0, if2isnot0, if3isnot0
+{ color:#FFFF55; }
+
+dormantText0 { color:#888888; }
+
+kaisaLWActive0
+{ color:#FFFFFF; }
+
+kaisaLWActive1
+{ color:#FFFF55; }

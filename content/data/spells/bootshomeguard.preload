@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="bootshomeguardcounter"}}, 
+{Function=BBPreloadModule, Params={Name="Global.CustomTables"}}, 
+{Function=BBPreloadSpell, Params={Name="bootshomeguardheal"}}, 
+{Function=BBPreloadSpell, Params={Name="bootshomeguardspeed"}}, 
+}

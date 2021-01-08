@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rengarupdatetrophycharges"}}, 
+{Function=BBPreloadSpell, Params={Name="rengartrophyblue"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="kalistaarrowvfx"}}, 
+{Function=BBPreloadParticle, Params={Name="warwick_w_cone.troy", SkinID="-1"}}, 
+}

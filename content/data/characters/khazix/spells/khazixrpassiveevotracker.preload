@@ -1,0 +1,12 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="khazixqevo"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixqlong"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixwevo"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixwlong"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixeevo"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixelong"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixrevochartexturebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixrevo"}}, 
+{Function=BBPreloadModule, Params={Name="Khazix.KhazixRPassiveEvoTracker"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixevolve"}}, 
+}

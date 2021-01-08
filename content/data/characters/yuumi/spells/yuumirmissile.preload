@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yuumircc"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumircclockout"}}, 
+}

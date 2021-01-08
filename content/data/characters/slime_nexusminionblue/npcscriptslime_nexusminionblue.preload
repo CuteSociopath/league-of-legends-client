@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="missionslimestationarynexus"}}, 
+{Function=BBPreloadSpell, Params={Name="missionslimemovingnexus"}}, 
+}

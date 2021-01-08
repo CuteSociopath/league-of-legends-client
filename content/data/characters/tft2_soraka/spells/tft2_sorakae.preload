@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_unitbuff_manalock"}}, 
+{Function=BBPreloadSpell, Params={Name="sorakae"}}, 
+}

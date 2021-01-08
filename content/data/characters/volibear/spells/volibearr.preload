@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="volibearrleaptimer"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearq"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrshrinkmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearpstacktracker"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearpapplicator"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrimpactslow"}}, 
+{Function=BBPreloadSpell, Params={Name="volibearrtowerdisable"}}, 
+}

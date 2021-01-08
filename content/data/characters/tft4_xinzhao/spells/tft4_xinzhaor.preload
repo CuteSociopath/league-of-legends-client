@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+--{Function=BBPreloadModule, Params={Name="TFT4_XinZhao.TFT4_XinZhaoR"}}, 
+}

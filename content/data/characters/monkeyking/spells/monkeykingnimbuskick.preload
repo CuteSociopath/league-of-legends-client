@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="monkeykingnimbusas"}}, 
+{Function=BBPreloadSpell, Params={Name="monkeykingnimbus"}}, 
+{Function=BBPreloadModule, Params={Name="MonkeyKing.MonkeyKingFunctionModule"}}, 
+}

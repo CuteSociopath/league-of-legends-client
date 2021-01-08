@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="lilliaprancestack"}}, 
+{Function=BBPreloadSpell, Params={Name="lilliaprancefxone"}}, 
+{Function=BBPreloadSpell, Params={Name="lilliaprancefxtwo"}}, 
+{Function=BBPreloadSpell, Params={Name="lilliaprancefxthree"}}, 
+}

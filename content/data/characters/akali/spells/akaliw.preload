@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="akaliwsmokeparent"}}, 
+{Function=BBPreloadSpell, Params={Name="akaliwhaste"}}, 
+{Function=BBPreloadSpell, Params={Name="akaliwesmoke"}}, 
+{Function=BBPreloadSpell, Params={Name="akaliwsmokeparentriver"}}, 
+}

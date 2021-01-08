@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Players"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_avatarwinstreaksizebuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_ExpandedLLReactions"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_ArenaEvents"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Streaks"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Missions"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+}

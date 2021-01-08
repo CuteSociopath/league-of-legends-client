@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="hecarimrampspeed"}}, 
+{Function=BBPreloadSpell, Params={Name="hecarimrampattack"}}, 
+}

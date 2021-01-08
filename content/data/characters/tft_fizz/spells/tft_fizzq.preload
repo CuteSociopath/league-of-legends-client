@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_fizzqprotect"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+--{Function=BBPreloadModule, Params={Name="TFT_Fizz.TFT_FizzFunctions"}}, 
+}

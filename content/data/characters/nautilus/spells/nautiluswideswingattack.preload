@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Nautilus.NautilusPiercingGazeShield"}}, 
+{Function=BBPreloadSpell, Params={Name="nautilusbackswing"}}, 
+}

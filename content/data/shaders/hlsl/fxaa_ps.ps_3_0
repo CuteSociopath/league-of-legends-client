@@ -1,0 +1,22 @@
+
+#define FXAA_TEX2DLOD_OK 1
+
+#define FXAA_HLSL_3 1
+#include "FXAA.hls"
+
+sampler2D tex;
+
+float2 fxaaQualityRcpFrame;
+float4 fxaaQualityOptions; // (subpix, edgeThreshold, edgeThresholdMin, _)
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    return FxaaPixelShader(interpolants.texcoord0, tex, fxaaQualityRcpFrame, float4(0,0,0,0),
+                                 fxaaQualityOptions.x, fxaaQualityOptions.y, fxaaQualityOptions.z);
+}

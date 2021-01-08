@@ -1,0 +1,64 @@
+float4 params;
+float4 params2;
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float rightSlicePercentage = params.y; // [0,1]
+    float atlas_u_start = params.z; // where the line element starts in the larger texture
+    float atlas_u_end = params.w;   // and where it ends
+    float texWidth = params2.x;     // width of the entire atlas texture
+    float lineLengthPixels = params2.y;
+    float repeatTexture = params2.z;
+
+    // the length of the entire element in atlas space
+    float lineAtlasUWidth = atlas_u_end - atlas_u_start;
+
+    // distance along the line that this point is at
+    float lineX = (interpolants.texcoord0.x * texWidth) - atlas_u_start;
+    lineX = lineX * (lineLengthPixels / lineAtlasUWidth); // scale to the size of the line on screen
+
+    // size of the fixed segment (usually the arrowhead)
+    float fixedPartLength = (1 - rightSlicePercentage) * lineAtlasUWidth;
+    float lineFixedBegin = lineLengthPixels - fixedPartLength;
+
+    float u = 0;
+
+    // size of "expanding" slice in the texture (in pixels)
+    float sliceSize = rightSlicePercentage * lineAtlasUWidth;
+
+    if (lineX < lineFixedBegin)
+    {
+        // drawing in the repeating part of the line
+
+        if (repeatTexture > 0)
+        {
+            float x = fmod(lineX, sliceSize); // how far into the repeating part of the texture
+            x += atlas_u_start;
+            u = x / texWidth;
+        }
+        else
+        {
+            // stretch the expanding segment
+            float x = lineX * (sliceSize / lineFixedBegin);
+            u = (atlas_u_start + x) / texWidth;
+        }
+    }
+    else
+    {
+        // fixed segment
+
+        // distance into the fixed segment (in pixels)
+        float x = lineX - lineFixedBegin;
+        u = (atlas_u_start + sliceSize + x) / texWidth;
+    }
+
+    float4 tex = tex2D(UI_PRIMARY_TEXTURE, float2(u, interpolants.texcoord0.y));
+    // pre-multiply alpha
+    return float4(tex.rgb * tex.a, tex.a);
+}

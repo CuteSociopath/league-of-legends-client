@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_sheneshield"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_taunt"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+}

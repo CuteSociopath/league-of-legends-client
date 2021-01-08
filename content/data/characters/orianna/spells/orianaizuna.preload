@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="orianaizunadamage"}}, 
+{Function=BBPreloadSpell, Params={Name="orianaizunacommand"}}, 
+{Function=BBPreloadCharacter, Params={Name="oriannaball"}}, 
+}

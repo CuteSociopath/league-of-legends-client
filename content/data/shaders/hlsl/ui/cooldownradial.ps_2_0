@@ -1,0 +1,50 @@
+float4 params;
+float4 dims;
+float4 color0;
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float4 color = tex2D(UI_PRIMARY_TEXTURE, interpolants.texcoord0);
+
+    float2 vec = float2(interpolants.texcoord0.x - dims.x, interpolants.texcoord0.y - dims.y);
+    vec.x /= dims.z;
+    vec.y /= dims.w;
+    vec = vec*2-1;
+
+    // calculate the angle of this pixel to determine
+    // whether it's part of the remainder or elapsed pie
+    float PI = 3.141592653;
+    float angle = PI + atan2(vec.x, vec.y);
+    // cheat forward a bit to make the fade look a little better
+    angle += 0.05;
+    
+    // angle over which to fade out
+    float fadeOutAngle = params.y;
+
+    float4 out_color0;
+
+    // default to the passed in color blended by params.z to color0
+    out_color0 = color * (1 - params.z) + color0 * params.z;
+    // pre-multipy the alpha before doing fade out
+    out_color0.rgb *= color.a;
+    out_color0.a = color.a;
+
+    // if we've passed the target angle
+    if (angle > params.x)
+    {
+        // then do a non-hue-preserving fade out (because it looks kind of cool to have the color get more extreme as it fades)
+        out_color0 -= (angle - params.x) / fadeOutAngle;
+    }
+    
+    // apply HUD alpha
+    out_color0 *= UI_COLOR.a;
+
+    return out_color0;
+
+}

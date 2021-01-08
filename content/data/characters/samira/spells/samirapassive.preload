@@ -1,0 +1,14 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="samirapassivecombo"}}, 
+{Function=BBPreloadSpell, Params={Name="samiraincombat"}}, 
+{Function=BBPreloadSpell, Params={Name="samirabasicattackmelee"}}, 
+{Function=BBPreloadSpell, Params={Name="samiracritattackmelee"}}, 
+{Function=BBPreloadSpell, Params={Name="samirabasicattackmelee2"}}, 
+{Function=BBPreloadModule, Params={Name="Samira.SamiraPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="samiraptracker"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapdash"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapcooldown"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapswordjuggle"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapjuggle"}}, 
+{Function=BBPreloadSpell, Params={Name="samirapknockup"}}, 
+}

@@ -1,0 +1,31 @@
+// DEPTH TOOLS
+// Common functions and definitions used by pixel shaders that want to access the
+// scene depth buffer
+//
+// DIRECT X
+// Note that currently depth access is direct to the depth buffer through the
+// INTZ DX9 driver extension.
+// THIS FEATURE IS NOT AVAILABLE ON LOW END HARDWARE
+// You will generally get corruption if you try to read from and write to the
+// depth buffer at the same time.
+    
+///////////////////////////////////////////////////////////////////////////////
+// CalcEyeZFromProjectionZ
+//
+// Given a z-buffer or post projection depth value use the near and far clip
+// plane derived constants to invert the projection and calculate the distance
+// from the camera in eye space.
+//
+// params.xy should be the conversion constants supplied to the runtime
+//      params.x = 1.0f / nearClip;
+//      params.y = -(farClip - nearClip) / (farClip*nearClip);
+//
+// This is nothing more than a z coordinate projection matrix inversion with 
+// the constants chosen so that we can perform it in two operations,
+// a madd and an invert
+float CalcEyeZFromProjectionZ(float depth, float2 params)
+{
+    float z_eye = 1.0f/(params.x + depth*params.y);
+    return z_eye;
+}
+

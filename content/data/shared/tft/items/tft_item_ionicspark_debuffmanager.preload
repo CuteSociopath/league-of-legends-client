@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_item_ionicsparkenemy_buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_ionicsparkenemy_shredmanager"}}, 
+}

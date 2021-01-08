@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_cassiopeiarstun"}}, 
+{Function=BBPreloadSpell, Params={Name="cassiopeiar"}}, 
+}

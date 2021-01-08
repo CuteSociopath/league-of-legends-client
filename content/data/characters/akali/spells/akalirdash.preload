@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="akalirdashlength"}}, 
+{Function=BBPreloadModule, Params={Name="Akali.AkaliP"}}, 
+{Function=BBPreloadSpell, Params={Name="akaliweapontrailvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="akaliselfroot"}}, 
+{Function=BBPreloadSpell, Params={Name="akalir"}}, 
+}

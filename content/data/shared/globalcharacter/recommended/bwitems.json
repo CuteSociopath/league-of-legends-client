@@ -1,0 +1,174 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "BlackMarket",
+  "map": "SR",
+  "mode": "any",
+  "type": "BlackMarket",
+  "customTag": "Bilgewater",
+  "customPanel": {
+    "name": "BlackMarket",
+    "sortRank": -1
+  },
+  "blocks": [
+    {
+      "type": "bw_physical",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3652",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3924",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3150",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "bw_magical",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3433",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3431",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3430",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3434",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3744",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3829",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "bw_defense",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3911",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "bw_utility",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3745",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3844",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3841",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3840",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "bw_teleport_boot_enchants",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1335",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1336",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1337",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1338",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1339",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1340",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1341",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

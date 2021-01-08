@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="jaxrelentlessattack"}}, 
+{Function=BBPreloadSpell, Params={Name="jaxrelentlessassault"}}, 
+}

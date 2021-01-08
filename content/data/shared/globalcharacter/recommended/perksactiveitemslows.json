@@ -1,0 +1,67 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "PerksActiveItemSlows",
+  "map": "any",
+  "mode": "any",
+  "type": "riot",
+  "customTag": "",
+  "requiredPerk": "KSGlacialAugment",
+  "sortrank": 0,
+  "extensionPage": true,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "active slows",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "consumables",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3143",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3144",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3800",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3153",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3146",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3030",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3905",
+          "count": 1,
+          "hideCount": true
+        }
+      ]
+    }
+  ]
+}

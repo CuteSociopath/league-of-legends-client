@@ -1,0 +1,34 @@
+sampler2D srcTex;
+sampler2D fowOverlay;
+
+// This function introduces a "tint" color to the transition zone between fully visible and fully fogged.
+// This is used at present to give a colored edge to Fog Of War on SRU.
+// It has no effect if the oneOverTintPoint term is zero.
+float3 FogEdgeColorizer(float3 fowColor, float vis)
+{
+    // Fog target color goes from texture suggested color to the tinted edge color in the fogged (0) to partically clear (tintPoint) range.
+    // TODO:  I _think_ if we make this a 4 wide vector, we could allow the edge tint to also control the fog intensity at the edge for "free".
+    float3 edgeColor = float3(0.2f, 0.07f, 0.06f);    // Reddish for now.  TODO:  Use FOW_EDGE_COLOR instead once it is available from the engine!
+    float oneOverTintPoint = FOW_EDGE_CONTROL.z;
+
+    return lerp(fowColor, edgeColor, saturate(vis*oneOverTintPoint));
+}
+
+struct INTERPOLANTS
+{
+    float4        position     : POSITION;
+    float2        texcoord0    : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{ 
+    float fowVis = tex2D(srcTex, interpolants.texcoord0).r;
+
+    // Fetches the artist drawn color/density map and the machine generated visibility
+    // fowVis interpolates between clear (1.0) and the artist authored fog density (0.0 is MIN visibility, so MAX fog)
+    float4 overlay = tex2D(fowOverlay, interpolants.texcoord0 * FOG_OVERLAY_UV_ANIMATE.xy + FOG_OVERLAY_UV_ANIMATE.zw);
+
+    float alphaOut = lerp(overlay.a, 1.0f, fowVis);
+
+    return float4(FogEdgeColorizer(overlay.rgb, fowVis), alphaOut);
+}

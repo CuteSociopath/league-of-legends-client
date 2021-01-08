@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yuumiqslow"}}, 
+{Function=BBPreloadSpell, Params={Name="yuumiqrelease"}}, 
+}

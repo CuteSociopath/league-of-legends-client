@@ -1,0 +1,106 @@
+#include "../ColorPalette.hls"
+#include "../DeathScreen.hls"
+#include "../MipLevels.hls"
+#include "navmeshmask_ps.hls"
+#include "AlphaTest_ps.hls"
+
+// NOTE:
+// The 'Alpha Erosion' feature should generally be preferred over this legacy
+// alpha slice feature since it works in conjunction with other effects features
+// and is more flexible (e.g., uses an independent erosion map)
+
+sampler2D TEXTURE;
+sampler2D PARTICLE_COLOR_TEXTURE;
+sampler2D SAMPLER_FOW;
+
+float2  COLOR_LOOKUP_UV;
+float2  SLICE_RANGE;
+
+#if defined(COLORPALETTE_COLORBLIND)
+   float4 APPLY_TEAM_COLOR_CORRECTION;
+#endif
+
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color0          : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+
+    float3  uv0_positionW   : TEXCOORD1;
+    // xy = uv0
+    // z  = projection W, compensates for perspective correction in screen space uv
+
+#ifndef DISABLE_FOW
+    float3  uvFOW_fadeFOW   : TEXCOORD2;    // FOW: xy = uv, z = height based fade in
+#endif
+
+    // define TEXCOORD3 according to shader variant to minimize interpolators
+#if defined( SEPARATE_ALPHA_UV ) && defined( MULT_PASS )
+    float4  uvMult_uvAlpha  : TEXCOORD3;
+#elif defined( SEPARATE_ALPHA_UV )
+    float2  uvAlpha         : TEXCOORD3;
+#elif defined( MULT_PASS )
+    float2  uvMult          : TEXCOORD3;
+#endif
+
+#ifdef REFLECTIVE
+    float4  reflectRay      : TEXCOORD4;
+#endif
+
+#ifdef SOFT_PARTICLES
+    float3  projPositionXYZ : TEXCOORD7;
+#endif
+    
+#ifdef MASKED
+    float2  maskUVs         : TEXCOORD5;
+#endif
+
+    float3  fresnelColor    : TEXCOORD6;    // fresnel based rim effect available even w/o reflection map
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // extract inputs from interpolators (variant dependent)
+    float2 uv0  = interpolants.uv0_positionW.xy;
+    
+    float4 colorization = tex2D(PARTICLE_COLOR_TEXTURE, COLOR_LOOKUP_UV);
+    float timeAlpha = colorization.a;
+    float4 out_color0 = interpolants.color0 * colorization;
+
+    // This is essentially a 1-X^2 windowing function offset with the slice sample
+    // and the width controlled by the p-alphaslicerange key
+    //     ^
+    //  1  |           o
+    //     |        o    o 
+    //     |       o      o
+    // 0  +-oooooo---------oooooo---->
+    float4 sliceSample = tex2D(TEXTURE, uv0);
+    float sliceAlpha = (sliceSample.r - timeAlpha);
+    sliceAlpha = (sliceAlpha + SLICE_RANGE.x) * (SLICE_RANGE.x - sliceAlpha) * SLICE_RANGE.y;
+    out_color0.a = saturate(sliceSample.a * sliceAlpha);
+    // Note inconsistent behavior between quad and mesh primitives with slice:
+    // quad primitives tint with the green channel of the slice texture, mesh primitives do not?
+
+#ifdef COLORPALETTE_COLORBLIND
+    if (APPLY_TEAM_COLOR_CORRECTION.r != 0.0f)
+    {
+        ApplyColorCorrectionColorblind(out_color0);
+    }
+#endif 
+ 
+#ifndef DISABLE_FOW 
+    // @todo this currently does not honor the FowOverlay texture
+    float4 texelFOW = tex2D(SAMPLER_FOW, interpolants.uvFOW_fadeFOW.xy);
+    out_color0.xyz *= texelFOW.aaa;
+#endif
+
+    out_color0.rgb = ApplyMipColorsVisualization(out_color0.rgb, uv0);
+    
+#ifdef MASKED
+    out_color0 = ApplyNavmeshMask(out_color0, interpolants.maskUVs);
+#endif
+
+    AlphaTest(out_color0);
+
+    return out_color0;
+}

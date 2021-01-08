@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="camillew"}}, 
+{Function=BBPreloadSpell, Params={Name="camillewconeslashslow"}}, 
+}

@@ -1,0 +1,16 @@
+{"XenZhaoBattleCry;f1":{"link":"","coeff":""}}
+{"XenZhaoBattleCry;f2":{"link":"","coeff":""}}
+{"XenZhaoBattleCry;f3":{"link":"","coeff":""}}
+{"XenZhaoBattleCry;f4":{"link":"","coeff":""}}
+{"XenZhaoSweep;f1":{"link":"","coeff":""}}
+{"XenZhaoSweep;f2":{"link":"","coeff":""}}
+{"XenZhaoSweep;f3":{"link":"","coeff":""}}
+{"XenZhaoSweep;f4":{"link":"","coeff":""}}
+{"XenZhaoParry;f1":{"link":"bonusattackdamage","coeff":"1.0"}}
+{"XenZhaoParry;f2":{"link":"","coeff":""}}
+{"XenZhaoParry;f3":{"link":"","coeff":""}}
+{"XenZhaoParry;f4":{"link":"","coeff":""}}
+{"XenZhaoComboTarget;f1":{"link":"attackdamage","coeff":"1.25"}}
+{"XenZhaoComboTarget;f2":{"link":"","coeff":""}}
+{"XenZhaoComboTarget;f3":{"link":"","coeff":""}}
+{"XenZhaoComboTarget;f4":{"link":"","coeff":""}}

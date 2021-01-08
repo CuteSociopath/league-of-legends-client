@@ -1,0 +1,11 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azir_playerbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_castspellsuccess"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="TFT4_Azir.TFT4_AzirFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azirwsoldier"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_azirsoldiermanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_summon_marker"}}, 
+}

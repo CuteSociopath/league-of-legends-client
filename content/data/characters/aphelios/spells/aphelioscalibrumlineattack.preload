@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscalibrumbonusrangedebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="apheliosr"}}, 
+{Function=BBPreloadSpell, Params={Name="aphelioscalibrumbonusrangebuff"}}, 
+}

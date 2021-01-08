@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="rellp_debuff"}}, 
+{Function=BBPreloadSpell, Params={Name="rellq_vfxmis"}}, 
+{Function=BBPreloadSpell, Params={Name="rellz_animoverridebuff"}}, 
+}

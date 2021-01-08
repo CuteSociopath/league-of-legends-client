@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_bardmeepcounter"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Bard.TFT3_BardMeep"}}, 
+}

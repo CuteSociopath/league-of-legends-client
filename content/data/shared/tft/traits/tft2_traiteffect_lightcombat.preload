@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_traitlighthealmis"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_traiteffect_lightbuff"}}, 
+}

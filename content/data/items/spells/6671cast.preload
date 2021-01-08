@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="luciane"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadModule, Params={Name="Global.Marker"}}, 
+{Function=BBPreloadSpell, Params={Name="6671missile1"}}, 
+{Function=BBPreloadSpell, Params={Name="6671missile2"}}, 
+{Function=BBPreloadSpell, Params={Name="6671missile3"}}, 
+}

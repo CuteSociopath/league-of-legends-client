@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuff_Star0"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_GlobalUnitBuff"}}, 
+}

@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT2_Azir.TFT2_AzirW"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffSummoner"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_summonedunitmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_azirsoldier"}}, 
+{Function=BBPreloadCharacter, Params={Name="tft2_azirsoldier"}}, 
+{Function=BBPreloadModule, Params={Name="TFT2_Azir.TFT2_AzirSoldier"}}, 
+}

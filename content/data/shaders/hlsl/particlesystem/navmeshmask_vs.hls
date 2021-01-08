@@ -1,0 +1,6 @@
+#ifdef MASKED    
+    float2 GetNavmeshMaskUVS(float3 worldPosition)
+    {
+        return TERRAIN_XFORM.xy * worldPosition.xz + TERRAIN_XFORM.zw;
+    }
+#endif

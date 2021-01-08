@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_lulur"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_lulurknockup"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_GlobalUnitBuff_DamageAmpHandler"}}, 
+}

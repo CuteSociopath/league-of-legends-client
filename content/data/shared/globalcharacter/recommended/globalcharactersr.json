@@ -1,0 +1,13 @@
+{
+  "champion": "GlobalCharacter",
+  "title": "GlobalCharacterSR",
+  "map": "SR",
+  "mode": "CLASSIC",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": true,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": []
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="slime_rewardblitzturret"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_LootTeemo"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_LootVeigar"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_LootKrug"}}, 
+}

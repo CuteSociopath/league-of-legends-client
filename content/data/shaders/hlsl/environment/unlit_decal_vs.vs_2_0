@@ -1,0 +1,83 @@
+#include "../FogOfWar/FogOfWar_VS.hls"
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Constants
+///
+/////////////////////////////////////////////////////////////////////////////////////
+
+column_major float4x4 WORLD_MATRIX;
+column_major float4x4 WORLD_TO_DECAL_UV_MATRIX;
+
+float3	              PROJECTION_Y_RANGE;		// x == center, y == range, z == fading
+
+struct VERTEX
+{
+	float3 m_Position : X3D_VSIN_POSITION;
+};
+
+struct INTERPOLANTS
+{
+	float4 m_Position : POSITION;
+	float4 m_TexCoord0 : TEXCOORD0;
+#ifdef MASKED_DECAL
+	float4 m_TexCoord1 : TEXCOORD1;  // .zw here is being used for map uvs if masked decals are enabled    
+#else
+        float2 m_TexCoord1 : TEXCOORD1;
+#endif
+	float2 m_TexCoord2 : TEXCOORD2;
+#ifdef MASKED_DECAL
+#ifndef DISABLE_SHADOWS
+	float3 m_ShadowTC  : TEXCOORD4; //Dynamic shadow map texture coordinates.
+#endif
+#endif
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+///
+/// Shader
+///
+/////////////////////////////////////////////////////////////////////////////////////
+INTERPOLANTS main(VERTEX vertex)
+{
+    INTERPOLANTS interpolants;
+
+    // Output homogeneous position
+    float4 localPosition = float4(vertex.m_Position, 1.0f);
+    float4 worldPosition = mul(localPosition, WORLD_MATRIX );
+
+    interpolants.m_Position = mul(worldPosition, VIEW_PROJECTION_MATRIX );
+
+    interpolants.m_TexCoord0 = mul(worldPosition, WORLD_TO_DECAL_UV_MATRIX );
+    interpolants.m_TexCoord0.z = 1.f - interpolants.m_TexCoord0.z;
+
+    // Fog of war
+    interpolants.m_TexCoord2 =  FogOfWarTextureCoordinates( worldPosition.xyz ).xy;
+
+    // Projection Y Range cut
+    float yDifference = abs(vertex.m_Position.y - PROJECTION_Y_RANGE.x);
+    if (yDifference <= PROJECTION_Y_RANGE.y)
+    {
+            interpolants.m_TexCoord1.x = 1.0f;
+    }
+    else
+    {
+            interpolants.m_TexCoord1.x = 1.0f - (yDifference - PROJECTION_Y_RANGE.y) / PROJECTION_Y_RANGE.z;
+    }
+
+    interpolants.m_TexCoord1.y = 0.0;
+
+#ifdef MASKED_DECAL
+    // Shadow position
+#ifndef DISABLE_SHADOWS
+    interpolants.m_ShadowTC = mul(worldPosition, SHADOW_PROJECTION_MATRIX).xyz;
+#endif
+
+    // we need texture coordinates that give us our relative location on the entire map
+    interpolants.m_TexCoord1.zw = TERRAIN_XFORM.xy * worldPosition.xz + TERRAIN_XFORM.zw;
+#endif
+
+    return interpolants;
+
+}

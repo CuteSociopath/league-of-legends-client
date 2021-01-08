@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_PlayerBuff_KaynManager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+}

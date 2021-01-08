@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="jhine"}}, 
+{Function=BBPreloadSpell, Params={Name="jhinrsight"}}, 
+{Function=BBPreloadSpell, Params={Name="jhinespotteddebuff"}}, 
+}

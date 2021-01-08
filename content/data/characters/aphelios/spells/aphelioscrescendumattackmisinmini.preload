@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="aphelioscrescendumorbitmanager"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosCrescendumOrbitManager"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosCrescendumAttackMiniLauncher"}}, 
+{Function=BBPreloadModule, Params={Name="Aphelios.ApheliosFunctionModule"}}, 
+}

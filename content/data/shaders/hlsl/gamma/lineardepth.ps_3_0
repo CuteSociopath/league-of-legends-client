@@ -1,0 +1,28 @@
+#include "../Depth.hls"
+
+////////////////////////////////////////////////////////////////
+///
+/// Samplers
+///
+////////////////////////////////////////////////////////////////
+
+struct INTERPOLANTS
+{
+    float4 position     : POSITION;
+    float2 texcoord0    : TEXCOORD0;
+};
+
+////////////////////////////////////////////////////////////////
+///
+/// main
+///
+////////////////////////////////////////////////////////////////
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    // Read the texel from the back buffer
+    float depth = tex2D(sDepthTexture, interpolants.texcoord0).x;
+    float eyeZ = CalcEyeZFromProjectionZ(depth, cDepthConversionParams.xy);
+    // scale zero to 1
+    float scaled = eyeZ * cDepthConversionParams.z;
+    return float4(scaled, scaled, scaled, scaled);
+}

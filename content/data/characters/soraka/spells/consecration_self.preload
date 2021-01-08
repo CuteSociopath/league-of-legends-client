@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sorakapassivemarker"}}, 
+{Function=BBPreloadSpell, Params={Name="sorakapassiveorient"}}, 
+{Function=BBPreloadSpell, Params={Name="sorakapassive"}}, 
+}

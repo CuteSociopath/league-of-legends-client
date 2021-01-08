@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="npcinitializer"}}, 
+{Function=BBPreloadModule, Params={Name="Global.JungleCampSpawn"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitzbuff_red"}}, 
+{Function=BBPreloadSpell, Params={Name="blessingofthelizardelder"}}, 
+{Function=BBPreloadSpell, Params={Name="blessingofthelizardelderlines"}}, 
+{Function=BBPreloadModule, Params={Name="Global._GlobalMonsterBuff"}}, 
+}

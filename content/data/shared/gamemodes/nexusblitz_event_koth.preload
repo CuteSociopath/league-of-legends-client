@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_KOTH"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadCharacter, Params={Name="npc_groundprogressindicator"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_kothcontroller"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_kotharrow"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+}

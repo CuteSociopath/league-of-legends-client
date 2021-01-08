@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_attackspeedslowdebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_attackspeedslowpersist"}}, 
+}

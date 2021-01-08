@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_bossreturn"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_bossattackspeed"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_traiteffect_bosspumpedup"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffBoss"}}, 
+}

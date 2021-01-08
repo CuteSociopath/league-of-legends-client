@@ -1,0 +1,166 @@
+{
+  "champion": "Yasuo",
+  "title": "YasuoODYSSEY",
+  "map": "Odyssey",
+  "mode": "ODYSSEY",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "odyyasuo1",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3087",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3006",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3031",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3149",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "odyyasuo2",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3813",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3230",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "odyyasuo3",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3115",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3148",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3100",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "situational",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3026",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3163",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3161",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3005",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

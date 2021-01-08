@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_masteryiqmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_masteryiquntargetability"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_masteryiqfadein"}}, 
+{Function=BBPreloadSpell, Params={Name="alphastrike"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

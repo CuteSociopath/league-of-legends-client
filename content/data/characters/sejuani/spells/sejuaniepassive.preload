@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Sejuani.SejuaniFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sejuaniepassivebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="sejuaniepassiveparticlecd"}}, 
+{Function=BBPreloadSpell, Params={Name="sejuanifreeze"}}, 
+}

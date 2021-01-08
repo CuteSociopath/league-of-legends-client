@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennaewraithform"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaewraithformmovespeed"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaefadetracker"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaecamo"}}, 
+{Function=BBPreloadSpell, Params={Name="sennaeanimations"}}, 
+}

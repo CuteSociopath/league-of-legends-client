@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="turretshield"}}, 
+{Function=BBPreloadSpell, Params={Name="structuredamagereduction"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_nexusminionmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="turretpackage"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EndGameCeremony"}}, 
+{Function=BBPreloadParticle, Params={Name="feelnopain_eff.troy", SkinID="-1"}}, 
+}

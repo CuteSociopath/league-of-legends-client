@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Lillia.LilliaP"}}, 
+{Function=BBPreloadSpell, Params={Name="lilliapdot"}}, 
+}

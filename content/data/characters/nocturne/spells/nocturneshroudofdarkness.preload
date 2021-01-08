@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.Status"}}, 
+{Function=BBPreloadSpell, Params={Name="nocturneshroudofdarknessbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="spellshieldspellimmunity"}}, 
+}

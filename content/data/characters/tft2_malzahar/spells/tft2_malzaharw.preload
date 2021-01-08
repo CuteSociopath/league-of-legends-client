@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffMystic"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT2_UnitBuffWind"}}, 
+{Function=BBPreloadModule, Params={Name="TFT2_Malzahar.TFT2_MalzaharW"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_unitbuffshadow"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_UnitBuffSummoner"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_malzaharwminionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_summonedunitmanager"}}, 
+}

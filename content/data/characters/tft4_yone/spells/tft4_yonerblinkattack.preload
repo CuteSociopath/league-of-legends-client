@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Yone.TFT4_YoneRExecutionerMode"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

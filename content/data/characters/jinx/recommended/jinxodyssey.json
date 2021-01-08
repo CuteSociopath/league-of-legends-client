@@ -1,0 +1,166 @@
+{
+  "champion": "Jinx",
+  "title": "JinxODYSSEY",
+  "map": "Odyssey",
+  "mode": "ODYSSEY",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "useObviousCheckmark": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "odyjinx1",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3149",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3006",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3124",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3091",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "odyjinx2",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3508",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3173",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3813",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3080",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "odyjinx3",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3071",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3047",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3161",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3005",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "situational",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3163",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3026",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3087",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3031",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

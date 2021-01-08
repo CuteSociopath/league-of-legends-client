@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EndGameCeremony"}}, 
+{Function=BBPreloadParticle, Params={Name="feelnopain_eff.troy", SkinID="-1"}}, 
+}

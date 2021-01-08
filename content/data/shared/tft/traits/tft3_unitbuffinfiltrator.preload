@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_infiltratorrecentlyhit"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_infiltratorasincrease"}}, 
+}

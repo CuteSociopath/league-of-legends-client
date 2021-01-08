@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_singedrccmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_singedr"}}, 
+{Function=BBPreloadSpell, Params={Name="tft2_singedq"}}, 
+}

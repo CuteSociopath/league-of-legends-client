@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="itemserrateddirkproccd"}}, 
+{Function=BBPreloadSpell, Params={Name="itemserrateddirkprocbuff"}}, 
+}

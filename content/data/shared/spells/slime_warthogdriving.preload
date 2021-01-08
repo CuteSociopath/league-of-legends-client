@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EndGameCeremony"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcube"}}, 
+{Function=BBPreloadSpell, Params={Name="itemfrozenfistfield"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_warthogexplosionknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_warthogpassengercooldown"}}, 
+{Function=BBPreloadModule, Params={Name="Global.PlayerTerrian"}}, 
+}

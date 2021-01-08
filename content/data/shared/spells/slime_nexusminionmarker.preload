@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_rootednexusfacinglock"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeathstandupanimation"}}, 
+{Function=BBPreloadCharacter, Params={Name="nexusblitz_nexuswalking"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_NexusWalking.NPCScriptNEXUSBLITZ_NexusWalking"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeathstatemanager"}}, 
+}

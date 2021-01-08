@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yonerhit"}}, 
+{Function=BBPreloadSpell, Params={Name="yonerstun"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadModule, Params={Name="Yone.YoneE"}}, 
+{Function=BBPreloadSpell, Params={Name="yonerknockback"}}, 
+{Function=BBPreloadSpell, Params={Name="yonespellbuffer"}}, 
+}

@@ -1,0 +1,31 @@
+/**************************
+ ** TERRAIN BLENDING *******
+ **************************/
+float4 ApplyTerrainBlend(float4 weight_scale, float4 texel_color0, float4 texel_color1, float4 texel_color2, float4 texel_color3, float half_blend_area)
+{
+        //Compute the weights for each layer at this pixel.
+        float4 layerWeights;
+	
+        layerWeights.x = texel_color0.a;
+        layerWeights.y = texel_color1.a;
+        layerWeights.z = texel_color2.a;
+        layerWeights.w = texel_color3.a;
+        layerWeights *= weight_scale;
+	
+	//Compute the maximum height of all the layers at this pixel.
+        float maxWeight = max( layerWeights.x, max(layerWeights.y, max(layerWeights.z, layerWeights.w)) );
+
+	//Compute the weights for all the layers. Only layers that have a height > maxHeight-half_blend_area will be visible.
+        float4 weights = saturate( layerWeights - maxWeight + half_blend_area ) * saturate(maxWeight*32);
+	//Normalize the weights so the sum is 1.0
+	weights /= dot(weights, 1.0f);
+
+	//The final texel color is simply a weighted sum of all the layers with the weights computed above.
+        //There is no layer dependence since the weights rely solely on the layer data and the scale values from
+	//the blend map.
+	float4 texelColor;
+	texelColor.rgb = texel_color0.rgb*weights.x + texel_color1.rgb*weights.y + texel_color2.rgb*weights.z + texel_color3.rgb*weights.w;
+	texelColor.a   = 1.0f;
+	
+	return texelColor;
+}

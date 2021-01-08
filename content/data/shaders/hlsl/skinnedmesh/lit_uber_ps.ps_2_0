@@ -1,0 +1,236 @@
+#include "../DeathScreen.hls"
+#include "../FogOfWar/FogOfWar_PS.hls"
+#include "../Lighting/LightGrid.hls"
+#include "../MipLevels.hls"
+#include "../Transition/Transition.hls"
+
+#ifdef LOW_QUALITY_MODE
+    #define NO_LIGHTING
+    #define DISABLE_SHADOWS
+    #ifndef FORCE_FOW
+        #define DISABLE_FOW
+    #endif
+    #undef FOG_PIXELSHADER_BLEND
+    #undef REFLECTIVE
+#endif
+
+// Diffuse map
+sampler2D DIFFUSE_MAP;
+
+// Funky emissive map which contains diffuse/emissive slider and team color mask
+sampler2D EMISSIVE_MAP;
+
+#ifdef REFLECTIVE
+    samplerCUBE REFLECTION_MAP;
+    sampler2D     GLOSS_MAP;
+#endif
+
+float4 FRESNEL;
+
+#include "../ShadowMap/pcf1.hls"
+
+struct FRAGMENT
+{
+    float4  m_Color0 : COLOR0;
+#ifdef MRT_SUPPORTED
+    float4  m_Color1 : COLOR1;
+    float4  m_Color2 : COLOR2;
+#endif
+};
+
+struct INTERPOLANTS
+{
+    float4    position      : POSITION;
+#ifndef NO_LIGHTING
+    float4  lightingColor      : COLOR0;
+#endif
+#if defined(FOG_PIXELSHADER_BLEND)
+    float4  uv1           : TEXCOORD0;
+#else
+    float2  uv1           : TEXCOORD0;
+#endif
+    float2  worldXZ  : TEXCOORD2;
+#ifdef  SEPARATE_ALPHA_UV
+    float2  alphaUV       : TEXCOORD4;
+#endif
+#ifdef MRT_SUPPORTED
+    float4  worldPosition  : TEXCOORD1;
+#endif
+#ifndef DISABLE_SHADOWS
+    float3  shadowMapUV          : TEXCOORD3;
+#endif
+#ifdef REFLECTIVE
+    float4  reflectRay    : TEXCOORD5;
+    float3  reflTint      : TEXCOORD7;
+#endif
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+///////////////////////////////////////////////////////////////////////////////////////
+FRAGMENT main(INTERPOLANTS interpolants)
+{
+    // Read the diffuse texture
+    float4 texelDiffuse = tex2D(DIFFUSE_MAP, interpolants.uv1.xy);
+    texelDiffuse = ApplyTransition(texelDiffuse, float3(1,1,1), interpolants.uv1.xy);
+
+#ifdef SEPARATE_ALPHA_UV
+    texelDiffuse.a = tex2D(DIFFUSE_MAP, interpolants.alphaUV).a;
+#endif
+    if (texelDiffuse.a == 0.0f)
+    {
+        discard;
+    }
+
+#ifdef MRT_SUPPORTED
+    float fresnelFactor = interpolants.worldPosition.w;
+#endif
+    float3 fresnelColor = FRESNEL.xyz;
+
+    // Incident sun light
+#ifndef NO_LIGHTING
+#ifndef USE_LIGHT_GRID
+        float4 incidentSunLight = float4(interpolants.lightingColor.rgb,1);
+
+    #ifndef DISABLE_SHADOWS
+        // Modulate the incident sun light by the shadow
+        int shadowSamples = 1;
+        
+        float shadowMask = saturate(SampleShadowMap(SHADOW_MAP, interpolants.shadowMapUV)+0.4f);
+        incidentSunLight *= shadowMask;
+    #endif
+
+        // Sum the incident sun light with contributions from environmental and ambient
+        float4 incidentLight = incidentSunLight + AMBIENT_COLOR;
+#else
+    float4 incidentLight = float4(interpolants.lightingColor.rgb,1);
+#endif
+
+    // Read emissive texture which contains emissive/diffuse factor
+    float4 texelEmissive = tex2D(EMISSIVE_MAP, interpolants.uv1.xy);
+    float emissiveFactor = texelEmissive.g;                 /// Amount of color which is emissive
+    float diffuseFactor = saturate(1.f - emissiveFactor);   /// Amount of color which is diffuse
+
+#if defined(FULLBRIGHT) //handle the fullbright debug visualization.
+    float4 lighting = 1.0f;
+#elif defined(USE_LIGHT_GRID)
+    #if defined(SHOW_LIGHTING)
+        float lightScale = 1.0f;
+    #else
+        float lightScale = LightGridTextureScale();
+    #endif
+    float4 lighting = saturate(diffuseFactor * incidentLight * lightScale + emissiveFactor + LightGridFullBrightScale() * float4(SELF_ILLUMINATION, 0.f));
+#else
+    float4 lighting = saturate(diffuseFactor * incidentLight + emissiveFactor + float4(SELF_ILLUMINATION, 0.f));
+#endif
+
+#else // NO_LIGHTING
+    float4 lighting = 1.0f;
+#endif // NO_LIGHTING
+
+
+    // Compute albedo color using a combination of diffuse and emissive values
+    float4 albedoColor = texelDiffuse * lighting;
+
+#ifdef TINTING
+    albedoColor.rgb *= TINT_COLOR.rgb;
+#endif
+
+    // Calculate final color
+    float4 finalColor = saturate(albedoColor);
+    finalColor.a = texelDiffuse.a;
+
+#ifdef REFLECTIVE
+    float3 gloss = tex2D(GLOSS_MAP, interpolants.uv1.xy).rgb;  // sample per pixel tinting and attenuation of reflecitons
+
+    //This reflection vector is used to look up the Reflection color in the cube map.
+    //This color is masked and tinted by the gloss map and also the opacity stored in eyeRay.w (computed in the vertex shader).
+    float3 reflectionColor = gloss * texCUBE(REFLECTION_MAP, interpolants.reflectRay.xyz).rgb * interpolants.reflectRay.w;
+    
+    // The reflection color is modified by the RGB Reflection Tint (computed in the vertex shader)
+    // and added to the pixel color (finalColor).
+    finalColor.rgb += reflectionColor*interpolants.reflTint;
+  
+#ifdef MRT_SUPPORTED
+    // Also additively apply the 'fresnel rolling' effect (e.g. Zac bubble gum look)
+    // We want to mask the intensity of this by the gloss map, but not apply the tint that may be present in the map
+    float gloss_mask = GetLuminance( gloss );   // convert color to luminance (just a single dot product)
+    finalColor.rgb += fresnelFactor * fresnelColor * gloss_mask;
+#else
+    // TODO
+    // Why doesn't this shader variant have support for the 'fresnel rolling' effect?
+    // This makes characters like Zac look noticeably different.
+    // This variant is currently used for quality settings above 'low' when MRT is not available, or outline 'inking' is disabled.
+    // If added, it should go here
+#endif
+
+#endif
+        
+    finalColor.a *= kGrassFade.a; // apply any global alpha factor (e.g., the fading associated with being in the grass)
+
+#if !defined(DISABLE_FOW) && !defined(FULLBRIGHT)
+    float4 fowFactors = GetFogOfWarFactors(interpolants.worldXZ.xy);
+    finalColor.rgb = lerp(fowFactors.rgb, finalColor.rgb, fowFactors.a);
+#endif
+
+//Note: if texture transition is enabled then too many instructions are used if combined with height fog.
+//So fog is disabled during texture transitions.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING)
+    //modify the fog color based on the fog of war...
+    float4 fogColor = tex2D(FOGLIGHTING, interpolants.worldXZ.xy);
+    #ifndef DISABLE_FOW
+        fogColor = lerp(fowFactors, fogColor, fowFactors.a);
+    #endif
+    float fogOpacity = interpolants.lightingColor.a;
+    #ifdef MOD2X_COLORMAP
+        float colorMapOpacity = tex2D(COLORMAP, interpolants.uv1.zw).a;
+        fogOpacity = saturate( fogOpacity*colorMapOpacity*2.0f );
+    #endif
+
+    finalColor.rgb = lerp( finalColor.rgb, fogColor.rgb, fogOpacity );
+#endif
+
+    // Return fragment
+    FRAGMENT fragment;
+    fragment.m_Color0 = finalColor;
+
+#ifdef MRT_SUPPORTED    
+    float3 delta = vCamera.xyz - interpolants.worldPosition.xyz;
+    float dist = DEPTH_SCALE_OFFSET.x * (length(delta) + DEPTH_SCALE_OFFSET.y); 
+    float4 out_color1 = float4(dist*OUTLINE_MOD.x, OUTLINE_MOD.x, 0.f, 1.f);
+
+    //  This has the effect of thinning and lightening the outline as the fog gets more opaque.
+    //However the outline never completely disappears, which is desirable in order to make 
+    //characters easier to see even in foggy conditions.
+    //  In this way the outline can be affected by the fog (it looks terrible otherwise) but 
+    //without effecting the outline pass or drastically effecting performance.
+#if defined(FOG_PIXELSHADER_BLEND) && !defined(FULLBRIGHT) && !defined(NO_LIGHTING)
+    out_color1.xy = lerp(out_color1.xy, 4.0f, fogOpacity);
+#endif
+
+    fragment.m_Color1 = out_color1;
+
+    // we don't support bloom without materials but
+    // we still need to write to the bloom render target with black
+    // or bloom will shine straight through
+    fragment.m_Color2 = float4(0,0,0,1);
+#endif    
+
+    //Editor / Debugging features.
+    #if defined(SHOW_LIGHTING)
+        #if defined(USE_LIGHT_GRID)
+            fragment.m_Color0.rgb = lighting;
+        #else
+            fragment.m_Color0.rgb = lighting*0.25f;
+        #endif
+    #elif defined(GRAYSCALE)
+        float3 LUMINANCE_CONVERSION = float3(0.299f, 0.587f, 0.114f);
+        fragment.m_Color0.rgb = dot( fragment.m_Color0.rgb, LUMINANCE_CONVERSION );
+    #endif
+
+    fragment.m_Color0.rgb = ApplyMipColorsVisualization(fragment.m_Color0.rgb, interpolants.uv1.xy);
+
+    return fragment;
+}

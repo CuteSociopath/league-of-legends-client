@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_threshw_chosenmarker"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_threshw_clonebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_globalsummonbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_threshwbenchbuff"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+}

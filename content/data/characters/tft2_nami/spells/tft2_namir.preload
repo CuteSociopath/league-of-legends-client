@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft2_namirmissile"}}, 
+{Function=BBPreloadSpell, Params={Name="namie"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+}

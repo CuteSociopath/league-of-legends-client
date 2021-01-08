@@ -1,0 +1,12 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="yoneedash"}}, 
+{Function=BBPreloadSpell, Params={Name="yonebasicattack"}}, 
+{Function=BBPreloadSpell, Params={Name="yonecritattack"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender10vision"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneebody"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneereturn"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneedeathmark"}}, 
+{Function=BBPreloadModule, Params={Name="Yone.YoneE"}}, 
+{Function=BBPreloadSpell, Params={Name="yoneescreenflash"}}, 
+}

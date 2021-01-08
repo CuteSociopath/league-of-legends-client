@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Event_URFDeathmatch"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+{Function=BBPreloadSpell, Params={Name="disconnecttimer"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SLIME_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_urfbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_urfdeathmatchparticipant"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_stasis"}}, 
+}

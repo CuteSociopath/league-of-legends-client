@@ -1,0 +1,11 @@
+
+struct INTERPOLANTS
+{
+    float4 position : POSITION;
+    float4 col0     : COLOR0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR
+{
+    return float4(interpolants.col0.rgb * interpolants.col0.a * UI_COLOR.a, interpolants.col0.a * UI_COLOR.a);
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemSoTD"}}, 
+{Function=BBPreloadParticle, Params={Name="sword_of_the_divine_03.troy", SkinID="-1"}}, 
+}

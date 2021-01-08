@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="porosnaxkingbufflockout"}}, 
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_enterfeeneypult"}}, 
+{Function=BBPreloadSpell, Params={Name="porosnaxfeedtoking4_windslash"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.CastInstance"}}, 
+}

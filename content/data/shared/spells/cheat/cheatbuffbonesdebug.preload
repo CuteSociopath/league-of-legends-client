@@ -1,0 +1,3 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="global_debug_point.troy", SkinID="-1"}}, 
+}

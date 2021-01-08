@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="zileanpammo"}}, 
+{Function=BBPreloadSpell, Params={Name="zileanpassivechannel"}}, 
+{Function=BBPreloadModule, Params={Name="Zilean.HeightenedLearning"}}, 
+{Function=BBPreloadSpell, Params={Name="heightenedlearningindicator"}}, 
+}

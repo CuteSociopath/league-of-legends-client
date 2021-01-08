@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="hexdrinkertimerundo"}}, 
+{Function=BBPreloadSpell, Params={Name="hexdrinkertimer"}}, 
+{Function=BBPreloadSpell, Params={Name="lifelinebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="3156mawbuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="lifelinecooldown"}}, 
+}

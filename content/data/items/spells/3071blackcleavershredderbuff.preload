@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.3071BlackCleaverMainBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="3071blackcleavermainbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="3071blackcleavershred"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

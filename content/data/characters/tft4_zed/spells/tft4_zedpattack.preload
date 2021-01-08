@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT4_Zed.TFT4_ZedPBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_zedpdebuff"}}, 
+{Function=BBPreloadModule, Params={Name="TFT4_Zed.TFT4_ZedPDebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_zedpbuff"}}, 
+}

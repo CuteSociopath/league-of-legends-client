@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="srx_buffvfxmanager"}}, 
+{Function=BBPreloadSpell, Params={Name="crestoftheancientgolemlines"}}, 
+}

@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="syndradisguisebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="syndrarvisual"}}, 
+{Function=BBPreloadSpell, Params={Name="syndraqremoval2"}}, 
+{Function=BBPreloadSpell, Params={Name="syndrarecall"}}, 
+{Function=BBPreloadCharacter, Params={Name="testcuberender10vision"}}, 
+{Function=BBPreloadSpell, Params={Name="expirationtimer"}}, 
+{Function=BBPreloadSpell, Params={Name="syndrarecalloverride"}}, 
+}

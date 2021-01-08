@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotneutral"}}, 
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotspecialcc"}}, 
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotrunfromturret"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_SorakaBot.NPCScriptNEXUSBLITZ_SorakaBot"}}, 
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotjuke"}}, 
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotaggressive"}}, 
+{Function=BBPreloadSpell, Params={Name="missionnexusblitz_sorakabotdefensive"}}, 
+}

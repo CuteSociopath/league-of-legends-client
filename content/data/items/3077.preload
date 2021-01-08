@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="tiamatmelee_itm.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="globalhit_physical.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+}

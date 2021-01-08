@@ -1,0 +1,12 @@
+{"JaxRelentlessAssault;f1":{"link":"@special.jaxrmr","coeff":"0.2"}}
+{"JaxRelentlessAssault;f2":{"link":"@special.jaxrarmor","coeff":"0.3"}}
+{"JaxRelentlessAssault;f3":{"link":"","coeff":""}}
+{"JaxRelentlessAssault;f4":{"link":"","coeff":""}}
+{"JaxLeapStrike;f1":{"link":"bonusattackdamage","coeff":"1.0"}}
+{"JaxLeapStrike;f2":{"link":"","coeff":""}}
+{"JaxLeapStrike;f3":{"link":"","coeff":""}}
+{"JaxLeapStrike;f4":{"link":"","coeff":""}}
+{"JaxCounterStrike;f1":{"link":"","coeff":""}}
+{"JaxCounterStrike;f2":{"link":"bonusattackdamage","coeff":"0.5"}}
+{"JaxCounterStrike;f3":{"link":"","coeff":""}}
+{"JaxCounterStrike;f4":{"link":"","coeff":""}}

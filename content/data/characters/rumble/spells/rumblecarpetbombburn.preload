@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="eternals_diedafteractiontracker"}}, 
+{Function=BBPreloadSpell, Params={Name="rumblecarpetbomb"}}, 
+}

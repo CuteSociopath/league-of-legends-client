@@ -1,0 +1,15 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_StagesRoundsPhases"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Loot"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_DragAndDrop"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Matchmaking"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Combat"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Traits"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_tryfillboard"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_NPCs"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Players"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_SharedDraft"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_RoundRewards"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+}

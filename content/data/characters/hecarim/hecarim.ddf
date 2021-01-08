@@ -1,0 +1,16 @@
+{"HecarimRapidSlash;f1":{"link":"bonusattackdamage","coeff":"0.6"}}
+{"HecarimRapidSlash;f2":{"link":"","coeff":""}}
+{"HecarimRapidSlash;f3":{"link":"","coeff":""}}
+{"HecarimRapidSlash;f4":{"link":"","coeff":""}}
+{"HecarimRamp;f1":{"link":"bonusattackdamage","coeff":"0.5"}}
+{"HecarimRamp;f2":{"link":"bonusattackdamage","coeff":"1.0"}}
+{"HecarimRamp;f3":{"link":"","coeff":""}}
+{"HecarimRamp;f4":{"link":"","coeff":""}}
+{"HecarimW;f1":{"link":"","coeff":""}}
+{"HecarimW;f2":{"link":"","coeff":""}}
+{"HecarimW;f3":{"link":"","coeff":""}}
+{"HecarimW;f4":{"link":"","coeff":""}}
+{"HecarimUlt;f1":{"link":"","coeff":""}}
+{"HecarimUlt;f2":{"link":"","coeff":""}}
+{"HecarimUlt;f3":{"link":"","coeff":""}}
+{"HecarimUlt;f4":{"link":"","coeff":""}}

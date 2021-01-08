@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="_globalchampionbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="vorpalspikesdebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="vorpalspikes"}}, 
+{Function=BBPreloadSpell, Params={Name="chogatheattack"}}, 
+{Function=BBPreloadSpell, Params={Name="recentlyflashed"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="varuswempowered"}}, 
+{Function=BBPreloadSpell, Params={Name="varuswdebuff"}}, 
+}

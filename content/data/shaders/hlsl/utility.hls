@@ -1,0 +1,73 @@
+///////////////////////////////////////////////////////////////////////////////
+// UTILITY FUNCTIONS
+///////////////////////////////////////////////////////////////////////////////
+// Common utility/general purpose functions 
+#ifndef UTILITY_HLS_INCLUDED
+#define UTILITY_HLS_INCLUDED
+
+///////////////////////////////////////////////////////////////////////////////
+/*
+    Evaluate a smoothstep unit step
+
+         ^
+      1  |            oooooooooooooooooo
+         |          o
+         |       o
+      0  +-oooooo---------------------------->
+      
+    Return a smooth Hermite polynomial interpolation between 0 and 1 if x is
+    in the given interval [x0,x1] where x1 = x0 + 1/oneOverWidth
+
+    Shader Model 2 and above has a built in smoothstep() function but that
+    is not an atomic, hardware accelerated instruction. It is expanded into
+    the corresponding arithmetic operations by the HLSL shader compiler.
+    
+    We provide this faster alternative to the built-in smoothstep intrinsic which
+    avoids the divide operations to calculate the interval scaling factor since
+    it is supplied already as a reciprical (usually from a shader constant)
+*/
+
+float smoothstep_fast(float x0, float oneOverWidth, float x)
+{
+    // apply bias and scale so we can saturate x to a [0,1] transition interval
+    x = saturate( (x - x0)*oneOverWidth );
+    return x*x*(3.0f-2.0f*x); // evaluate basis polynomial
+}
+
+float2 smoothstep_fast(float2 x0, float2 oneOverWidth, float2 x)
+{
+    // apply bias and scale so we can saturate x to a [0,1] transition interval
+    x = saturate( (x - x0)*oneOverWidth );
+    return x*x*(3.0f-2.0f*x); // evaluate basis polynomial
+}
+
+/*
+    Evaluate a 'smooth' window function with the given endpoints
+    and a transition width on both the leading and trailing edges of delta
+
+         ^
+      1  |            ooooooo
+         |        o             o 
+         |       o               o
+      0  +-oooooo-----------------oooooo---->
+*/
+                 
+// This varition uses linear interpolation on the transitions to reduce the
+// shader instruction count at the cost of smoothness. For a smoother result
+// we could do the same thing with two hermite cubic smoothstep functions.
+float linearwindow(float2 endpoints, float2 inv_ramp_widths, float x)
+{    
+    // To save on arithmetic operations we run a smooth step calculation
+    // for each edge transition in 'parallel' by vectorizing the calc in a float2
+
+    // apply bias and scale so we can saturate x to a [0,1] transition interval
+    // i.e. remap inputs for a canonical step function at the origin
+    float2 t = saturate( (float2(x, x) - endpoints)*inv_ramp_widths );
+    
+    // Now we want to combine these 2 smoothstep transitions so that we get our
+    // window hump transfer function
+    float h = t.x - t.y; 
+    return h;
+}
+
+#endif // UTILITY_HLS_INCLUDED

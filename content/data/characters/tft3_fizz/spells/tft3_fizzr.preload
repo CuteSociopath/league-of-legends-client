@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadCharacter, Params={Name="tft3_fizzshark"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_fizzrsharkbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_fizzrknockup"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_fizzrknockback"}}, 
+}

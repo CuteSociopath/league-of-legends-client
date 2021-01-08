@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadSpell, Params={Name="sheendelay"}}, 
+{Function=BBPreloadSpell, Params={Name="6632_healmis"}}, 
+{Function=BBPreloadSpell, Params={Name="lichbane"}}, 
+}

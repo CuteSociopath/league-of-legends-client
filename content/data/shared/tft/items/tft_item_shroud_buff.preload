@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_checkitemuniquecompatibility"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_Shroud_Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_shroud_debuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_shroud_mis"}}, 
+}

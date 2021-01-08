@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_kalistaepassive"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_duelistmovement"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+}

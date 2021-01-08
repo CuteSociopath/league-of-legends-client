@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="seraphinewcastecho"}}, 
+{Function=BBPreloadModule, Params={Name="Seraphine.SeraphineFunctionModule"}}, 
+}

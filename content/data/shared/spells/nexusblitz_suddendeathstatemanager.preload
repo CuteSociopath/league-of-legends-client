@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_nexusminion_normalstate"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeath_turretplates"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_suddendeath_soulmarker"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_SuddenDeathStateManager"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_nexusminion_channeling"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_nexusminion_vulnerable"}}, 
+}

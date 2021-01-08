@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="sru_waterdragon_buff.troy", SkinID="-1"}}, 
+{Function=BBPreloadModule, Params={Name="Global.SRX_DragonSoulBuffOcean_HoT"}}, 
+}

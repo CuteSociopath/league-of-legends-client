@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="syndrarbounce5"}}, 
+{Function=BBPreloadSpell, Params={Name="syndrarvisual"}}, 
+{Function=BBPreloadSpell, Params={Name="root"}}, 
+{Function=BBPreloadSpell, Params={Name="syndrae5"}}, 
+}

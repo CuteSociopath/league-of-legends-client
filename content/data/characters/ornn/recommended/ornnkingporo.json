@@ -1,0 +1,302 @@
+{
+  "champion": "Ornn",
+  "title": "OrnnARAM",
+  "map": "HA",
+  "mode": "KINGPORO",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "KingPoroSnax", 
+      "recMath": false, 
+      "recSteps": false, 
+      "minSummonerLevel": -1, 
+      "maxSummonerLevel": -1, 
+      "showIfSummonerSpell": "", 
+      "hideIfSummonerSpell": "", 
+      "items": [
+        {
+          "id": "3680", 
+          "count": 1, 
+          "hideCount": false
+        }, 
+        {
+          "id": "3681", 
+          "count": 1, 
+          "hideCount": false
+        }, 
+        {
+          "id": "3682", 
+          "count": 1, 
+          "hideCount": false
+        }, 
+        {
+          "id": "3683", 
+          "count": 1, 
+          "hideCount": false
+        },
+        {
+          "id": "3684", 
+          "count": 1, 
+          "hideCount": false
+        },
+        {
+          "id": "3685", 
+          "count": 1, 
+          "hideCount": false
+        }
+      ]
+    }, 
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "2051",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2031",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3111",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3068",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3110",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3143",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3742",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "situational",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3800",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3075",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3194",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2033",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2138",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+	{
+      "type": "ornnupgrades",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "visibleWithAllOf": [
+        ""
+      ],
+      "hiddenWithAnyOf": [
+        ""
+      ],
+      "items": [
+        {
+          "id": "3373",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3379",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3387",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3383",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3382",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3389",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3371",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3380",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3384",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3388",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3390",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3374",
+          "count": 1,
+          "hideCount": true
+        },
+        {
+          "id": "3386",
+          "count": 1,
+          "hideCount": true
+        }
+      ]
+    }
+  ]
+}

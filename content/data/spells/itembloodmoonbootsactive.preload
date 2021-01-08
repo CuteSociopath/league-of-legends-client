@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredator.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyStolen.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/Predator/PredatorActive.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredatorActive.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKeyPredatorActiveVisual.lua"}}, 
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Domination/Predator/PredatorActiveVisual.lua"}}, 
+}

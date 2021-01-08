@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="asheqfalloffcontrollera"}}, 
+{Function=BBPreloadSpell, Params={Name="asheqfalloffcontrollerb"}}, 
+{Function=BBPreloadSpell, Params={Name="asheqcastready"}}, 
+{Function=BBPreloadSpell, Params={Name="asheq"}}, 
+}

@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_gnarrknockbackcc"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_gnarr"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_gnartransform"}}, 
+}

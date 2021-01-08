@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="flask_internal"}}, 
+{Function=BBPreloadSpell, Params={Name="itemdarkflaskburn"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemDarkFlaskBurn"}}, 
+}

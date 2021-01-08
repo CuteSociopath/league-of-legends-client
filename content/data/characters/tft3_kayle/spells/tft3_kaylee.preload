@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_kayleebuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_kayleeattack"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_kaylepenragemis"}}, 
+}

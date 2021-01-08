@@ -1,0 +1,27 @@
+#ifndef LIGHTING_MODEL_V2
+
+float4 SH_DATA[7]; // corresponds to SHGPUData in SphericalHarmonics.h
+
+float3 EvaluateSH(float3 direction)
+{
+        float4 vNormal = float4(direction, 1.0);
+        float3 x1, x2, x3;
+
+        // Linear + constant polynomial terms
+        x1.r = dot(SH_DATA[0], vNormal);
+        x1.g = dot(SH_DATA[1], vNormal);
+        x1.b = dot(SH_DATA[2], vNormal);
+
+        // 4 of the quadratic polynomials
+        float4 vB = vNormal.xyzz * vNormal.yzzx;
+        x2.r = dot(SH_DATA[3], vB);
+        x2.g = dot(SH_DATA[4], vB);
+        x2.b = dot(SH_DATA[5], vB);
+
+        // Final quadratic polynomial
+        float vC = vNormal.x * vNormal.x - vNormal.y * vNormal.y;
+        x3 = SH_DATA[6].rgb * vC;
+        return max(x1 + x2 + x3, float3(0.0f, 0.0f, 0.0f));
+}
+
+#endif

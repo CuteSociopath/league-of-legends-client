@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="global_ss_barrier.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_dodgeballmissile"}}, 
+}

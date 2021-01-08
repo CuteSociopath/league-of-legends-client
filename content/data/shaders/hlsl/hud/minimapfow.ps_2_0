@@ -1,0 +1,15 @@
+sampler2D SAMPLER;
+
+struct INTERPOLANTS
+{
+    float4 position  : POSITION;
+    float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+float4 main(INTERPOLANTS interpolants) : COLOR0
+{
+    float factor = tex2D(SAMPLER, interpolants.texcoord0).r;
+
+    return float4(0.0f, 0.0f, 0.0f, (1-factor)*0.64f);
+}

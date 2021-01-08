@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Khazix.KhazixQPassiveIsolation"}}, 
+{Function=BBPreloadSpell, Params={Name="khazixisolated"}}, 
+}

@@ -1,0 +1,148 @@
+{
+  "champion": "Akali",
+  "title": "Beginner",
+  "map": "SR",
+  "mode": "INTRO",
+  "type": "riot",
+  "customTag": "",
+  "customPanel": "",
+  "customPanelCurrencyType": "",
+  "customPanelBuffCurrencyName": "",
+  "blocks": [
+    {
+      "type": "beginner_Starter",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": 4,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_Starter",
+      "recMath": false,
+      "minSummonerLevel": 5,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1054",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_Advanced",
+      "recMath": true,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1028",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1052",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3136",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_MovementSpeed",
+      "recMath": true,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3020",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_LegendaryItem",
+      "recMath": true,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3136",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "1026",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3151",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_MoreLegendaryItems",
+      "recMath": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3116",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3089",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3135",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

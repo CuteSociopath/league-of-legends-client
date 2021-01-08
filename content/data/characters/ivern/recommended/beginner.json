@@ -1,0 +1,143 @@
+{
+  "champion": "Ivern",
+  "title": "Beginner",
+  "map": "SR",
+  "mode": "INTRO",
+  "type": "riot",
+  "customTag": "",
+  "sortrank": 0,
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "beginner_starter",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1056",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2003",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_advanced",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1004",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "3114",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_movementspeed",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "1001",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3158",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_legendaryitem",
+      "recMath": true,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "ItemTeleportCancel",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3114",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3801",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3107",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "beginner_morelegendaryitems",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "appendAfterSection": "",
+      "items": [
+        {
+          "id": "3190",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3174",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3504",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3109",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

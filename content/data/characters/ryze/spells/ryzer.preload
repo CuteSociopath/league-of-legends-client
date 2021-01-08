@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="ryzerchannel"}}, 
+{Function=BBPreloadSpell, Params={Name="eternals_killsafteractiontracker"}}, 
+}

@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadAssetsLua, Params={Name="ASSETS/Perks/Styles/Inspiration/MasterKey/MasterKey_Aery_AllyShield.lua"}}, 
+{Function=BBPreloadSpell, Params={Name="sowthewind"}}, 
+}

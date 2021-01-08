@@ -1,0 +1,148 @@
+#include "IOParam/IODefine_VS.hls"
+#include "../FogOfWar/FogOfWar_VS.hls"
+#include "unpack.hls"
+#include "../ParticleSystem/navmeshmask_vs.hls"
+
+#include "skinning.hls"
+
+#ifdef REFLECTIVE
+float4  vReflection;
+#endif
+
+// Fresnel Parameters
+// set from R3D_SHADER_VS_CONSTANT_FRESNEL in C++ code
+float4  vFresnel;    // FresnelRed, FresnelGreen, FresnelBlue, FresnelPower
+
+
+column_major float3x3 vParticleUVTransform;
+column_major float3x3 vParticleUVTransformMult;
+
+float4   kColorFactor;    // R3D_SHADER_VS_CONSTANT_PARTICLE_COLOR_FACTOR
+
+struct VERTEX
+{
+    float3      position        : X3D_VSIN_POSITION;
+    float4      blendWeight     : X3D_VSIN_BLENDWEIGHT;
+    float3      normal          : X3D_VSIN_NORMAL;
+#ifdef USE_VERTEX_COLORS
+    float4      color0          : X3D_VSIN_COLOR0;
+#endif
+    blendindex4 blendIndices    : X3D_VSIN_BLENDINDICES;
+    float2      texcoord0       : X3D_VSIN_TEXCOORD0;
+};
+
+struct INTERPOLANTS
+{
+    float4  position        : POSITION;
+    float4  color0          : TEXCOORD0;    // N.B. colors can be > 1 (e.g. mod2x), so use a full interpolator and not COLOR0 which saturates on ps_2_0
+
+    float3  uv0_positionW   : TEXCOORD1;
+    // xy = uv0
+    // z  = projection W, eye z used to compensate for perspective correction for screen space uv
+
+#ifndef DISABLE_FOW
+    float2  uvFOW           : TEXCOORD2;
+#endif 
+    
+    // define TEXCOORD3 according to shader variant to minimize interpolators
+#if defined( SEPARATE_ALPHA_UV ) && defined( MULT_PASS )
+    float4  uvMult_uvAlpha  : TEXCOORD3;
+#elif defined( SEPARATE_ALPHA_UV )
+    float2  uvAlpha         : TEXCOORD3;
+#elif defined( MULT_PASS )
+    float2  uvMult          : TEXCOORD3;
+#endif
+
+#ifdef REFLECTIVE
+    float4  reflectRay      : TEXCOORD4;
+#endif
+// @todo this is not currently supported, why? should it be?
+#ifdef MASKED
+    float2  maskUVs         : TEXCOORD6;
+#endif
+
+    float3  fresnelColor    : COLOR0;       // fresnel based rim effect available even w/o reflection map
+};
+
+INTERPOLANTS main(VERTEX input)
+{
+    INTERPOLANTS output;
+
+#if EXPERIMENTAL_UNPACK_VERTS
+    UnpackAttributes(input.blendWeight, input.normal, input.texcoord0);     // unpack fixed point attributes
+#endif
+
+    // Compute skinned position
+    float3 skinnedPosition;
+    float3 worldNormal;
+    SkinPositionAndNormal(input.position, input.normal, input.blendIndices, input.blendWeight, skinnedPosition, worldNormal);
+
+    // Output homogeneous position
+    output.position = mul(float4(skinnedPosition, 1.0f), mProj ); 
+
+    output.color0 = kColorFactor;
+#ifdef USE_VERTEX_COLORS
+    output.color0 *= input.color0.VCOLORSWIZZLE;
+#endif // USE_VERTEX_COLORS
+
+#ifdef SCREEN_SPACE_UV
+    float2 uv = output.position.xy / output.position.w;	// screen space uv
+#else
+    float2 uv = input.texcoord0;
+#endif
+    
+    // note: calculations unnecessary for a particular shader variant are optimized away by the compiler
+    float2 uv0 = mul(float3(uv, 1), vParticleUVTransform).xy;
+    float2 uvAlpha = mul(float3(uv, 0), vParticleUVTransform).xy; // 0 to ignore translation
+
+    // mult texture stays anchored to the model, even in screen space UV mode
+    float2 uvMult = mul(float3(input.texcoord0, 1), vParticleUVTransformMult).xy;
+
+#ifdef SCREEN_SPACE_UV
+    uv0     *= output.position.w;
+    uvAlpha *= output.position.w;
+#endif  
+    
+
+    float3 eyeRay = normalize( skinnedPosition.xyz - vCamera.xyz );
+
+#ifdef REFLECTIVE
+    float reflectFresnelPower = vReflection.x;
+    output.reflectRay.xyz = reflect(eyeRay, worldNormal );
+    //store the fresnel factor in the w component of the reflectRay. This is done in the vertex shader, so a proper power can be used.
+    //base fresnel is the 0 to 1 reflection intensity based on the fresnel power.
+    float baseReflectFresnel = 1.0f - pow( saturate( dot(-eyeRay, worldNormal.xyz) ), reflectFresnelPower );
+    //the final scaled result factors in the minimum and maximum reflection intensities supplied by the artists.
+    output.reflectRay.w  = lerp(vReflection.y, vReflection.z, baseReflectFresnel);
+#endif
+
+    // fresnel rim effect
+    float fresnelPower = vFresnel.w;
+    float baseFresnel = 1.0f - pow( saturate( dot(-eyeRay, worldNormal.xyz) ), fresnelPower );
+    output.fresnelColor = baseFresnel * vFresnel.rgb;
+
+    // @todo no fogging?
+    
+    //****
+    // Assemble remaining output interpolants
+    // Note that the compiler will optimize away calculations above that
+    // don't get used in the assignment to an output
+    output.uv0_positionW = float3(uv0, output.position.w);
+
+#ifndef DISABLE_FOW
+    output.uvFOW = FogOfWarTextureCoordinates(skinnedPosition.xyz).xy;
+#endif
+    
+#if defined( SEPARATE_ALPHA_UV ) && defined( MULT_PASS )
+    output.uvMult_uvAlpha = float4(uvMult, uvAlpha);
+#elif defined( SEPARATE_ALPHA_UV )
+    output.uvAlpha = uvAlpha;
+#elif defined( MULT_PASS )
+    output.uvMult = uvMult;
+#endif
+#ifdef MASKED
+    output.maskUVs = GetNavmeshMaskUVS(skinnedPosition);
+#endif
+
+    return output;
+}

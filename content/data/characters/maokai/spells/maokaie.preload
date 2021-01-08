@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="maokaiemissilebrush"}}, 
+{Function=BBPreloadSpell, Params={Name="maokaiemissile"}}, 
+{Function=BBPreloadModule, Params={Name="Maokai.MaokaiPassive"}}, 
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_FeatureToggles"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_GrievousWounds"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_Item_HextechGunblade_Buff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_hextechgunblade_vfx_buff"}}, 
+}

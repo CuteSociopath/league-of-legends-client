@@ -1,0 +1,28 @@
+{"KarmaChakra;f1":{"link":"@cooldownchampion","coeff":"30/25/20"}}
+{"KarmaChakra;f2":{"link":"","coeff":""}}
+{"KarmaChakra;f3":{"link":"","coeff":""}}
+{"KarmaChakra;f4":{"link":"","coeff":""}}
+{"KarmaMantra;f1":{"link":"","coeff":""}}
+{"KarmaMantra;f2":{"link":"","coeff":""}}
+{"KarmaMantra;f3":{"link":"","coeff":""}}
+{"KarmaMantra;f4":{"link":"","coeff":""}}
+{"KarmaSpiritBind;f1":{"link":"@text","coeff":"75/150/225/300", "ranksWith": "KarmaMantra"}}
+{"KarmaSpiritBind;f2":{"link":"","coeff":""}}
+{"KarmaSpiritBind;f3":{"link":"","coeff":""}}
+{"KarmaSpiritBind;f4":{"link":"","coeff":""}}
+{"KarmaPassive;f1":{"link":"","coeff":""}}
+{"KarmaPassive;f2":{"link":"","coeff":""}}
+{"KarmaPassive;f3":{"link":"","coeff":""}}
+{"KarmaPassive;f4":{"link":"","coeff":""}}
+{"ScarmaSpiritBind;f1":{"link":"@text","coeff":"75/150/225/300", "ranksWith": "KarmaMantra"}}
+{"ScarmaSpiritBind;f2":{"link":"","coeff":""}}
+{"ScarmaSpiritBind;f3":{"link":"","coeff":""}}
+{"ScarmaSpiritBind;f4":{"link":"","coeff":""}}
+{"KarmaQ;f1":{"link":"@text","coeff":"25/75/125/175", "ranksWith": "KarmaMantra"}}
+{"KarmaQ;f2":{"link":"@text","coeff":"50/150/250/350", "ranksWith": "KarmaMantra"}}
+{"KarmaQ;f3":{"link":"","coeff":""}}
+{"KarmaQ;f4":{"link":"","coeff":""}}
+{"KarmaSolKimShield;f1":{"link":"@text","coeff":"60/140/220/300", "ranksWith": "KarmaMantra"}}
+{"KarmaSolKimShield;f2":{"link":"","coeff":""}}
+{"KarmaSolKimShield;f3":{"link":"","coeff":""}}
+{"KarmaSolKimShield;f4":{"link":"","coeff":""}}

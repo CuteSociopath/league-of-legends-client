@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="itemimmolatedamage"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemImmolateDamage"}}, 
+{Function=BBPreloadSpell, Params={Name="item3068dot"}}, 
+}

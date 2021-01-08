@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="TFT3_WuKong.TFT3_WuKongR"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_wukongrmark"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_wukongrknockup"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+}

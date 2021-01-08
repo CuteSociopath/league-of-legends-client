@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="nexusblitz_dodgeball"}}, 
+{Function=BBPreloadSpell, Params={Name="nexusblitz_dodgeballreflect"}}, 
+--{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_Manager"}}, 
+}

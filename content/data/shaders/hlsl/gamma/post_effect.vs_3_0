@@ -1,0 +1,6 @@
+// we need to have a vs_3_0 version of this
+// vertex shader to use with the matching ps_3_0
+// for FXAA. However, they are identical except
+// for the file extension that makes it get compiled as
+// vs_3_0.
+#include "POST_EFFECT.vs_2_0"

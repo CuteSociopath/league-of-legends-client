@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_rivenr_missilecenter"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_rivenr_missileleft"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_rivenr_missileright"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_rivenr_shield"}}, 
+}

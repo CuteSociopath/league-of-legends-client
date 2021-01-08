@@ -1,0 +1,9 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadParticle, Params={Name="dreadnought_full_impact.troy", SkinID="-1"}}, 
+{Function=BBPreloadSpell, Params={Name="slow"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemMomentumUnique"}}, 
+{Function=BBPreloadModule, Params={Name="Global.ItemFunctions"}}, 
+{Function=BBPreloadParticle, Params={Name="dreadnoughtspeed_max.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="dreadnoughtspeed_low.troy", SkinID="-1"}}, 
+{Function=BBPreloadParticle, Params={Name="dreadnoughtspeed_med.troy", SkinID="-1"}}, 
+}

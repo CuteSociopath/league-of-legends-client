@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft3_rivenq1"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_rivenq2"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_rivenr_shield"}}, 
+}

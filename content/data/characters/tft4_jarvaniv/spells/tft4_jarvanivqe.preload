@@ -1,0 +1,7 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT4_UnitBuffMage"}}, 
+{Function=BBPreloadModule, Params={Name="TFT4_JarvanIV.TFT4_JarvanIVQE"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_jarvanivknockup"}}, 
+{Function=BBPreloadCharacter, Params={Name="tft4_jarvanivstandard"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_jarvanivflagmarker"}}, 
+}

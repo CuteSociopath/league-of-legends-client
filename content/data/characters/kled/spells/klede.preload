@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="klededash"}}, 
+--{Function=BBPreloadModule, Params={Name="Kled.KledGetSpellData"}}, 
+}

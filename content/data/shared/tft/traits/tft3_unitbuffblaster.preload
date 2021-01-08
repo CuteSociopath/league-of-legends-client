@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT3_UnitBuffBlaster"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_traiteffect_blasterattack"}}, 
+}

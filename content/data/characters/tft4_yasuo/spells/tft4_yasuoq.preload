@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft4_yasuoqstab"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_yasuoqmovement"}}, 
+}

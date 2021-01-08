@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="urgotpassiveenemywarning"}}, 
+{Function=BBPreloadModule, Params={Name="Urgot.UrgotPassive"}}, 
+{Function=BBPreloadSpell, Params={Name="urgotpassive_eternaltracker"}}, 
+}

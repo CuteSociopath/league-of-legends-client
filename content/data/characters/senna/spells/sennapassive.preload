@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="sennapassivestacks"}}, 
+{Function=BBPreloadModule, Params={Name="Senna.SennaFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="sennapassivehaste"}}, 
+{Function=BBPreloadSpell, Params={Name="sennabasicattacksouls"}}, 
+}

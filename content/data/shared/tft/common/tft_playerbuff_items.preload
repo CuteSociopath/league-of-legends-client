@@ -1,0 +1,15 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Items"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT3_PlayerBuff_Breadcrumbs_TwoItemMax"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_requestmakeitemforplayer"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Items"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff_Breadcrumbs_ItemsMutuallyExclusive"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_ScriptDataFunctionModule"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_validatecomponents"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_isephemeral"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_itemcompletionceremony"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Players"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_item_inmotion"}}, 
+}

@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Shop"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_Elements"}}, 
+{Function=BBPreloadModule, Params={Name="Global.TFT_LevelScript_UnitRecords"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_luxmanager"}}, 
+}

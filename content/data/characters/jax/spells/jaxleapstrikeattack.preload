@@ -1,0 +1,4 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="jaxleapstrike"}}, 
+{Function=BBPreloadModule, Params={Name="Jax.JaxEmpowerTwo"}}, 
+}

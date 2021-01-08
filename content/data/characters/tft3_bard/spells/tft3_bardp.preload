@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_PlayerBuff"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_bardmeep"}}, 
+{Function=BBPreloadModule, Params={Name="TFT3_Bard.TFT3_BardMeep"}}, 
+{Function=BBPreloadSpell, Params={Name="tft3_bardpmissile"}}, 
+}

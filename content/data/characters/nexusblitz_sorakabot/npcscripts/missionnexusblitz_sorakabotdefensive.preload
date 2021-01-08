@@ -1,0 +1,8 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_SorakaBot.MissionNEXUSBLITZ_SorakaBotDefensive"}}, 
+{Function=BBPreloadModule, Params={Name="NEXUSBLITZ_SorakaBot.NPCScriptNEXUSBLITZ_SorakaBot"}}, 
+{Function=BBPreloadSpell, Params={Name="actioncastspell"}}, 
+{Function=BBPreloadSpell, Params={Name="actioncasttargetedspell"}}, 
+{Function=BBPreloadSpell, Params={Name="actionleashtopoint"}}, 
+{Function=BBPreloadSpell, Params={Name="actionattacktarget"}}, 
+}

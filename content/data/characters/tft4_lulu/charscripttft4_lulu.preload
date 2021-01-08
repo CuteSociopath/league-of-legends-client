@@ -1,0 +1,5 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.TFT_SpellTargeting"}}, 
+{Function=BBPreloadSpell, Params={Name="tft4_lulurmarker"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_castspellsuccess"}}, 
+}

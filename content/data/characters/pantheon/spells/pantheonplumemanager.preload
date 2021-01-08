@@ -1,0 +1,6 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="pantheonspawninvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrecallvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonrecallstartvfx"}}, 
+{Function=BBPreloadSpell, Params={Name="pantheonplumevfx"}}, 
+}

@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_benchfull"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_maxunits"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_placeunits"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_buyunits"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_buyxp"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_placeitems"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_itembenchfull"}}, 
+{Function=BBPreloadSpell, Params={Name="tft_playerbuff_breadcrumbs_neekofailed"}}, 
+}

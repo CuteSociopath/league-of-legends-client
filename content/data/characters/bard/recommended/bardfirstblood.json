@@ -1,0 +1,142 @@
+{
+  "champion": "Bard",
+  "title": "BardFIRSTBLOOD",
+  "map": "HA",
+  "mode": "FIRSTBLOOD",
+  "type": "riot",
+  "customTag": "",
+  "extensionPage": false,
+  "customPanel": null,
+  "blocks": [
+    {
+      "type": "starting",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 2,
+          "hideCount": false
+        },
+        {
+          "id": "3340",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3303",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "essential",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2049",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3117",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3098",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "defensive",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3110",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3102",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3143",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "support",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "3222",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3105",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "3050",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    },
+    {
+      "type": "consumables",
+      "recMath": false,
+      "recSteps": false,
+      "minSummonerLevel": -1,
+      "maxSummonerLevel": -1,
+      "showIfSummonerSpell": "",
+      "hideIfSummonerSpell": "",
+      "items": [
+        {
+          "id": "2003",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2043",
+          "count": 1,
+          "hideCount": false
+        },
+        {
+          "id": "2138",
+          "count": 1,
+          "hideCount": false
+        }
+      ]
+    }
+  ]
+}

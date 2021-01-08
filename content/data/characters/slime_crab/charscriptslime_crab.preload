@@ -1,0 +1,10 @@
+PreLoadBuildingBlocks = {
+{Function=BBPreloadModule, Params={Name="Global.JungleCampSpawn"}}, 
+{Function=BBPreloadModule, Params={Name="Global.NEXUSBLITZ_EventManager"}}, 
+{Function=BBPreloadSpell, Params={Name="slime_sharedmonsterbuff"}}, 
+{Function=BBPreloadSpell, Params={Name="regenerationruneaura"}}, 
+{Function=BBPreloadSpell, Params={Name="npcinitializer"}}, 
+{Function=BBPreloadSpell, Params={Name="monsterminiondamageamp"}}, 
+{Function=BBPreloadSpell, Params={Name="outofcombatdebuffmanager"}}, 
+{Function=BBPreloadCharacter, Params={Name="slime_crabward"}}, 
+}

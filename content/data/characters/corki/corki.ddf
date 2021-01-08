@@ -1,0 +1,12 @@
+{"GGun;f1":{"link":"bonusattackdamage","coeff":"0.4"}}
+{"GGun;f2":{"link":"","coeff":""}}
+{"GGun;f3":{"link":"","coeff":""}}
+{"GGun;f4":{"link":"","coeff":""}}
+{"MissileBarrage;f1":{"link":"@cooldownchampion","coeff":"10"}}
+{"MissileBarrage;f2":{"link":"","coeff":""}}
+{"MissileBarrage;f3":{"link":"@dynamic.attackdamage","coeff":"Effect5"}}
+{"MissileBarrage;f4":{"link":"","coeff":""}}
+{"PhosphorusBomb;f1":{"link":"","coeff":""}}
+{"PhosphorusBomb;f2":{"link":"","coeff":""}}
+{"PhosphorusBomb;f3":{"link":"","coeff":""}}
+{"PhosphorusBomb;f4":{"link":"","coeff":""}}
