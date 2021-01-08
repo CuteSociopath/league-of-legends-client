@@ -1,0 +1,101 @@
+─────────────────────────────────────────────────────────────────────────────────
+░░░░-░░░▓-░░░▓-░░░▓-░▓░▓-░▓▓▓░▓-░░░▓-░-░░░-░░-
+░▓▓▓-░▓░▓-░▓░▓▓-░▓▓-░▓░▓-░░▓▓░▓-░▓▓▓-░-░-░-░-░
+░░▓▓-░▓░▓-░░░▓▓-░▓▓-░▓░▓-░░░▓░▓-░░░▓-░-░-░-░-░
+░▓▓▓-░▓░▓-░░▓▓▓-░▓▓-░▓░▓-░▓░░░▓-░▓▓▓-░-░-░-░-░
+░▓▓▓-░░░▓-░▓░▓▓-░▓▓-░░░▓-░▓▓░░▓-░░░▓-░-░-░-░░-
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+R O Y A L  A R M S  E X O S U I T   W E A P O N S  S Y S T E M  L O A D E R v5.37
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+
+Welcome back ...
+─────────────────────────────────────────────────────────────────────────────────
+00:48:15  Base Model:ROYAL ARMS
+00:48:15 -- Base Version: STANDARD ISSUE
+00:48:16 -- Manufacturer:ROYAL SPACE MILITARY
+00:48:16 -- Contractor:FORTUNE INDUSTRIES (DEFUNCT)
+─────────────────────────────────────────────────────────────────────────────────
+---------------------------------------------------------------------------------
+
+Verifying Boot Image...DONE
+Loading Kernel...DONE
+
+---------------------------------------------------------------------------------
+
+00:48:16 -- Systems check initiated.
+00:48:16 -- RSM NETWORK: CONNECTION FAILED
+00:48:17 -- Error log #222:
+
+Could not connect to RSM Network. 
+Please contact your network administrator.  
+
+00:48:17 -- Boot Without Network?
+[Y/N] Y		
+
+---------------------------------------------------------------------------------
+
+Verifying...
+
+00:48:20 -- Pilot:KAI’SA [ID. 4589213]
+00:48:20 -- Status:INACTIVE
+…
+…
+…
+00:48:22 -- WARNING:Did not find authorization for KAI’SA
+00:48:22 -- WARNING:Did not find authorization for KAI’SA 
+00:48:22 -- WARNING:Did not find authorization for KAI’SA 
+00:48:22 -- Error log #223:Override key ADC35 initiated.....DECLINED	
+00:48:22 -- █Error log #224:
+Override key GG579 initiated.....DECLINED	
+00:48:22 -- █Error log #225:
+Override key MF59 initiated.....APPROVED				
+AUTHORIZED…..OK 
+
+---------------------------------------------------------------------------------
+
+Running diagnostics…
+
+[ARTILLERY]
+00:48:25 -- X01 BUTTERFLY CANNON:OK	
+00:48:25 -- THRUSTERS:OK
+00:48:25 -- FEMTOSECOND LASERS:OK
+00:48:26 -- RECOIL CALIBRATION:OK
+00:48:26 -- ONBOARD V.I.OK
+
+[SETTINGS]
+00:48:27 -- SAFETY MODE:DISABLED
+00:48:27 -- CONSERVATION MODE:ENABLED 
+00:48:27 -- IFF:ENABLED 
+00:48:28 -- HEAT MAP:ENABLED
+00:48:28 -- RSM LOCATION SHARING:DISABLED 
+00:48:28 -- RSM BOUNTY NETWORK:EMULATING
+00:48:29 -- BOUNTY BROKER NETWORK:ENABLED
+00:48:29 -- GHOST BROKER NETWORK:RECEIVING
+
+----------------------------------------------------------------------------
+
+Checking for updates…
+
+[BOUNTY NETWORKS]
+00:48:31 -- RSM Bounty Network:1 NEW LISTING 
+00:48:31 -- BOUNTY Broker Network:512 NEW LISTINGS
+00:48:32 -- GHOST Broker Network:1,693 NEW LISTINGS
+...
+…
+…
+Accessing RSM BOUNTY NETWORK…
+00:48:34 -- RSM BOUNTY NETWORK:1 NEW LISTING
+NAME: UNKNOWN
+AGE: APPROX. 24-26
+SEX: FEMALE
+HEIGHT: APPROX. 5’5”-5’8”
+EYE COLOR: UNKNOWN	
+HAIR COLOR: RED
+WEAPON: EXOSUIT (CUSTOM MODEL)
+WANTED FOR: MASS MURDER OF FORMER AND CURRENT MILITARY GENERALS, PLANET-KILLING, DESTRUCTION OF NUMEROUS SPACE STATIONS... [TRUNCATED]
+REWARD: CU$62,680,959,387 
+▓(DEAD OR ALIVE)
+
+▐Saving listing…
+
+-- Systems check complete. Ready to launch --
