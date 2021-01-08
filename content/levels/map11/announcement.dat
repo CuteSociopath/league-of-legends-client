@@ -1,0 +1,44 @@
+#######################################################################################################
+; start a line with a semicolon for a comment
+# start a line with a # for a comment
+#######################################################################################################
+
+#######################################################################################################
+[ Announcer ini file name ]
+; We do not support different game type for now. 
+#######################################################################################################
+
+<CLASSIC TUTORIAL URF ARSR SNOWURF ONEFORALL PRACTICETOOL> # GAME MODE
+Def  Announcements_CLASSIC.ini
+Font AnnouncementsFont.ini
+
+<ODIN> # GAME MODE 
+Def  Announcements_ODIN.ini
+Font AnnouncementsFont.ini
+
+<SIEGE> # GAME MODE
+Def  Announcements_SIEGE.ini
+Font AnnouncementsFont.ini
+
+<ASSASSINATE> # GAME MODE
+Def  Announcements_ASSASSINATE.ini
+Font AnnouncementsFont.ini
+
+<DOOMBOTSTEEMO> # GAME MODE
+Def  Announcements_DOOMBOTSTEEMO.ini
+Font AnnouncementsFont.ini
+
+<TUTORIAL_MODULE_1> # GAME MODE
+Def  Announcements_TUTORIAL_MODULE_1.ini
+Font AnnouncementsFont.ini
+
+<TUTORIAL_MODULE_2> # GAME MODE
+Def  Announcements_TUTORIAL_MODULE_2.ini
+Font AnnouncementsFont.ini
+
+<TUTORIAL_MODULE_3> # GAME MODE
+Def  Announcements_TUTORIAL_MODULE_3.ini
+Font AnnouncementsFont.ini
+
+
+#######################################################################################################

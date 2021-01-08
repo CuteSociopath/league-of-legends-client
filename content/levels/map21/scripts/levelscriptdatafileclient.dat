@@ -1,0 +1,17 @@
+#######################################################################################################
+; start a line with a semicolon for a comment
+# start a line with a # for a comment
+#######################################################################################################
+
+; Usage:
+; <[MODE/Mutator name]> # [Comment]
+; [Summoner project name 1]    [Solution static name in project 1]
+; [Summoner project name 2]    [Solution static name in project 2]
+; ...
+
+#################
+# Level scripts #
+#################
+
+
+#######################################################################################################

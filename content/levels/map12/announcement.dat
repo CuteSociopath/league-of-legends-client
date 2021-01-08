@@ -1,0 +1,31 @@
+#######################################################################################################
+; start a line with a semicolon for a comment
+# start a line with a # for a comment
+#######################################################################################################
+
+#######################################################################################################
+[ Announcer ini file name ]
+; We do not support different game type for now. 
+#######################################################################################################
+
+<CLASSIC TUTORIAL> # GAME MODE
+Def  Announcements_CLASSIC.ini
+Font AnnouncementsFont.ini
+
+<ODIN> # GAME MODE 
+Def  Announcements_ODIN.ini
+Font AnnouncementsFont.ini
+
+<ARAM> # GAME MODE 
+Def  Announcements_ARAM.ini
+Font AnnouncementsFont.ini
+
+<FIRSTBLOOD> # GAME MODE
+Def  Announcements_FIRSTBLOOD.ini
+Font AnnouncementsFont.ini
+
+<KINGPORO> # GAME MODE 
+Def  Announcements_KINGPORO.ini
+Font AnnouncementsFont.ini
+
+#######################################################################################################
